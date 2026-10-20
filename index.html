@@ -14,17 +14,10 @@
 
 <style>
 :root {
-  --dark:#263b37;
-  --deep:#183b35;
-  --green:#009879;
-  --green2:#08745f;
-  --beige:#f2e8d5;
-  --light:#fbf7ef;
-  --white:#fff;
-  --ink:#20312d;
-  --muted:#687873;
-  --line:#dce5df;
-  --radius:20px;
+  --dark:#263b37; --deep:#183b35; --green:#009879;
+  --green2:#08745f; --beige:#f2e8d5; --light:#fbf7ef;
+  --white:#fff; --ink:#20312d; --muted:#687873;
+  --line:#dce5df; --radius:20px;
   --shadow:0 12px 34px rgba(24,59,53,.09);
 }
 *{box-sizing:border-box}
@@ -41,12 +34,13 @@ header{position:sticky;top:0;z-index:20;background:rgba(251,247,239,.97);border-
 .logo{height:58px;width:58px;flex-shrink:0;display:grid;place-items:center;background:var(--deep);color:var(--beige);border:2px solid var(--green);border-radius:17px;font-size:13px;font-weight:900;text-align:center;line-height:1.3}
 .brand-name{font-size:16px;font-weight:900;color:var(--deep);line-height:1.5}
 .brand-name small{display:block;font-size:11px;color:var(--muted)}
-.links{display:flex;align-items:center;gap:17px;font-size:13px;font-weight:800}
+.links{display:flex;align-items:center;gap:15px;font-size:13px;font-weight:800;flex-wrap:wrap}
 .links a:hover{color:var(--green2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 19px;border:0;border-radius:12px;font-weight:800;cursor:pointer;text-align:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border:0;border-radius:12px;font-weight:800;cursor:pointer;text-align:center}
 .primary{background:var(--green);color:white}
 .primary:hover{background:var(--green2)}
 .secondary{background:var(--beige);color:var(--deep);border:1px solid #e3d6bd}
+.admin-link{background:var(--deep);color:white}
 .hero{padding:65px 0 55px;background:radial-gradient(circle at 10% 10%,#00987920,transparent 35%),linear-gradient(135deg,#f8f1e4,#fffdf8)}
 .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:35px;align-items:center}
 .badge{display:inline-block;background:#dff4eb;color:var(--green2);padding:5px 13px;border-radius:30px;font-size:13px;font-weight:900}
@@ -114,8 +108,8 @@ footer small{color:#b9cbc3}
 }
 </style>
 </head>
-
 <body>
+
 <div class="topbar">
   <div class="container">
     <span>🥋 نادي التحدي وادي سقان للجودو</span>
@@ -127,17 +121,19 @@ footer small{color:#b9cbc3}
   <div class="container nav">
     <a href="#home" class="brand">
       <div class="logo">AST<br>JUDO</div>
-      <div class="brand-name">
-        نادي التحدي وادي سقان
+      <div class="brand-name">نادي التحدي وادي سقان
         <small>AST OUED SEGUEN · JUDO</small>
       </div>
     </a>
+
     <nav class="links" aria-label="القائمة الرئيسية">
       <a href="#home">الرئيسية</a>
       <a href="#about">عن النادي</a>
       <a href="#schedule">التوقيت</a>
       <a href="#register">التسجيل</a>
+      <a class="btn admin-link" href="./admin.html">Admin Login</a>
     </nav>
+
     <a class="btn primary" href="#register">سجّل الآن</a>
   </div>
 </header>
@@ -152,6 +148,7 @@ footer small{color:#b9cbc3}
       <div class="actions">
         <a class="btn primary" href="#register">طلب تسجيل جديد</a>
         <a class="btn secondary" href="#schedule">مواعيد التدريب</a>
+        <a class="btn admin-link" href="./admin.html">دخول الإدارة</a>
       </div>
     </div>
     <div class="hero-card">
@@ -169,21 +166,9 @@ footer small{color:#b9cbc3}
       <p>بيئة رياضية تساعد أبناءنا على التعلم والتطور خطوة بخطوة.</p>
     </div>
     <div class="features">
-      <article class="card">
-        <div class="feature-icon">🥋</div>
-        <h3>تعليم الجودو</h3>
-        <p>تدريب تدريجي على المهارات الأساسية مع مراعاة مستوى الرياضي وقواعد السلامة.</p>
-      </article>
-      <article class="card">
-        <div class="feature-icon">🤝</div>
-        <h3>الاحترام والانضباط</h3>
-        <p>تعزيز احترام المدرب والزملاء والالتزام بقواعد التدريب والروح الرياضية.</p>
-      </article>
-      <article class="card">
-        <div class="feature-icon">🏆</div>
-        <h3>التطور والمنافسة</h3>
-        <p>تطوير المهارات واللياقة والاستعداد التدريجي للمنافسات حسب المستوى.</p>
-      </article>
+      <article class="card"><div class="feature-icon">🥋</div><h3>تعليم الجودو</h3><p>تدريب تدريجي على المهارات الأساسية مع مراعاة مستوى الرياضي وقواعد السلامة.</p></article>
+      <article class="card"><div class="feature-icon">🤝</div><h3>الاحترام والانضباط</h3><p>تعزيز احترام المدرب والزملاء والالتزام بقواعد التدريب والروح الرياضية.</p></article>
+      <article class="card"><div class="feature-icon">🏆</div><h3>التطور والمنافسة</h3><p>تطوير المهارات واللياقة والاستعداد التدريجي للمنافسات حسب المستوى.</p></article>
     </div>
   </div>
 </section>
@@ -196,22 +181,19 @@ footer small{color:#b9cbc3}
     </div>
     <div class="groups">
       <article class="card group-card">
-        <h3>المبتدئون</h3>
-        <p>الفئة العمرية: 5–12 سنة</p>
-        <p class="time">الجمعة: <bdi>16:00 – 17:30</bdi></p>
-        <p class="time">السبت: <bdi>15:00 – 16:30</bdi></p>
+        <h3>المبتدئون</h3><p>الفئة العمرية: 5–12 سنة</p>
+        <p class="time">الجمعة — البداية: <bdi>16:00</bdi> | النهاية: <bdi>17:30</bdi></p>
+        <p class="time">السبت — البداية: <bdi>15:00</bdi> | النهاية: <bdi>16:30</bdi></p>
       </article>
       <article class="card group-card">
-        <h3>الأكابر</h3>
-        <p>الفئة العمرية: 13 سنة فما فوق</p>
-        <p class="time">الجمعة: <bdi>09:30 – 11:00</bdi></p>
-        <p class="time">الاثنين: <bdi>17:00 – 18:30</bdi></p>
+        <h3>الأكابر</h3><p>الفئة العمرية: 13 سنة فما فوق</p>
+        <p class="time">الجمعة — البداية: <bdi>09:30</bdi> | النهاية: <bdi>11:00</bdi></p>
+        <p class="time">الاثنين — البداية: <bdi>17:00</bdi> | النهاية: <bdi>18:30</bdi></p>
       </article>
       <article class="card group-card">
-        <h3>أصاغر المنافسات</h3>
-        <p>الفئة العمرية: 8–13 سنة</p>
-        <p class="time">الجمعة: <bdi>08:00 – 09:30</bdi></p>
-        <p class="time">الأربعاء: <bdi>17:00 – 18:30</bdi></p>
+        <h3>أصاغر المنافسات</h3><p>الفئة العمرية: 8–13 سنة</p>
+        <p class="time">الجمعة — البداية: <bdi>08:00</bdi> | النهاية: <bdi>09:30</bdi></p>
+        <p class="time">الأربعاء — البداية: <bdi>17:00</bdi> | النهاية: <bdi>18:30</bdi></p>
       </article>
     </div>
   </div>
@@ -237,78 +219,21 @@ footer small{color:#b9cbc3}
       <form class="panel card" id="registrationForm">
         <h3 class="form-title">معلومات الرياضي</h3>
         <div class="fields">
-          <div class="field full">
-            <label for="full_name">الاسم واللقب الكامل *</label>
-            <input id="full_name" name="full_name" required maxlength="120" autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="date_of_birth">تاريخ الميلاد *</label>
-            <input id="date_of_birth" name="date_of_birth" type="date" required>
-          </div>
-          <div class="field">
-            <label for="birth_place">مكان الميلاد *</label>
-            <input id="birth_place" name="birth_place" required maxlength="120">
-          </div>
-          <div class="field">
-            <label for="gender">الجنس *</label>
-            <select id="gender" name="gender" required>
-              <option value="">اختر</option>
-              <option value="ذكر">ذكر</option>
-              <option value="أنثى">أنثى</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="residence">مكان الإقامة *</label>
-            <input id="residence" name="residence" required maxlength="180">
-          </div>
-          <div class="field">
-            <label for="practiced_before">هل سبق له ممارسة الجودو؟ *</label>
-            <select id="practiced_before" name="practiced_before" required>
-              <option value="">اختر</option>
-              <option value="نعم">نعم</option>
-              <option value="لا">لا</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="belt">الحزام الحالي</label>
-            <select id="belt" name="belt">
-              <option value="">لا يوجد / لم يحدد</option>
-              <option value="أبيض">أبيض</option>
-              <option value="أصفر">أصفر</option>
-              <option value="برتقالي">برتقالي</option>
-              <option value="أخضر">أخضر</option>
-              <option value="أزرق">أزرق</option>
-              <option value="بني">بني</option>
-              <option value="أسود">أسود</option>
-              <option value="آخر">آخر</option>
-            </select>
-          </div>
-          <div class="field full">
-            <label for="requested_group_id">مجموعة التدريب المطلوبة *</label>
-            <select id="requested_group_id" name="requested_group_id" required>
-              <option value="">اختر المجموعة</option>
-              <option value="1">المبتدئون (5–12 سنة)</option>
-              <option value="2">الأكابر (13 سنة فما فوق)</option>
-              <option value="3">أصاغر المنافسات (8–13 سنة)</option>
-            </select>
-            <span class="hint">يتم إرسال معرّف المجموعة الصحيح إلى قاعدة البيانات.</span>
-          </div>
+          <div class="field full"><label for="full_name">الاسم واللقب الكامل *</label><input id="full_name" name="full_name" required maxlength="120" autocomplete="name"></div>
+          <div class="field"><label for="date_of_birth">تاريخ الميلاد *</label><input id="date_of_birth" name="date_of_birth" type="date" required></div>
+          <div class="field"><label for="birth_place">مكان الميلاد *</label><input id="birth_place" name="birth_place" required maxlength="120"></div>
+          <div class="field"><label for="gender">الجنس *</label><select id="gender" name="gender" required><option value="">اختر</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select></div>
+          <div class="field"><label for="residence">مكان الإقامة *</label><input id="residence" name="residence" required maxlength="180"></div>
+          <div class="field"><label for="practiced_before">هل سبق له ممارسة الجودو؟ *</label><select id="practiced_before" name="practiced_before" required><option value="">اختر</option><option value="نعم">نعم</option><option value="لا">لا</option></select></div>
+          <div class="field"><label for="belt">الحزام الحالي</label><select id="belt" name="belt"><option value="">لا يوجد / لم يحدد</option><option value="أبيض">أبيض</option><option value="أصفر">أصفر</option><option value="برتقالي">برتقالي</option><option value="أخضر">أخضر</option><option value="أزرق">أزرق</option><option value="بني">بني</option><option value="أسود">أسود</option><option value="آخر">آخر</option></select></div>
+          <div class="field full"><label for="requested_group_id">مجموعة التدريب المطلوبة *</label><select id="requested_group_id" name="requested_group_id" required><option value="">اختر المجموعة</option><option value="1">المبتدئون (5–12 سنة)</option><option value="2">الأكابر (13 سنة فما فوق)</option><option value="3">أصاغر المنافسات (8–13 سنة)</option></select><span class="hint">تُرسل قاعدة البيانات رقم المجموعة وليس اسمها.</span></div>
         </div>
 
         <h3 class="form-title">معلومات ولي الأمر</h3>
         <div class="fields">
-          <div class="field">
-            <label for="guardian_name">الاسم الكامل لولي الأمر *</label>
-            <input id="guardian_name" name="guardian_name" required maxlength="120">
-          </div>
-          <div class="field">
-            <label for="guardian_phone">رقم هاتف ولي الأمر *</label>
-            <input id="guardian_phone" name="guardian_phone" type="tel" inputmode="tel" required maxlength="30">
-          </div>
-          <div class="field full">
-            <label for="guardian_place">مكان إقامة ولي الأمر (اختياري)</label>
-            <input id="guardian_place" name="guardian_place" maxlength="180">
-          </div>
+          <div class="field"><label for="guardian_name">الاسم الكامل لولي الأمر *</label><input id="guardian_name" name="guardian_name" required maxlength="120"></div>
+          <div class="field"><label for="guardian_phone">رقم هاتف ولي الأمر *</label><input id="guardian_phone" name="guardian_phone" type="tel" inputmode="tel" required maxlength="30"></div>
+          <div class="field full"><label for="guardian_place">مكان إقامة ولي الأمر (اختياري)</label><input id="guardian_place" name="guardian_place" maxlength="180"></div>
         </div>
 
         <button class="btn primary" type="submit" id="submitButton">إرسال طلب التسجيل</button>
@@ -323,6 +248,7 @@ footer small{color:#b9cbc3}
     <div class="contact">
       <h2 style="color:var(--deep);margin-top:0">نرحب بكم في نادي التحدي وادي سقان</h2>
       <p style="color:var(--muted);margin-bottom:0">للاستفسار عن التسجيل أو التدريب، يرجى التواصل مع إدارة النادي.</p>
+      <p><a class="btn admin-link" href="./admin.html">Admin Login · دخول الإدارة</a></p>
     </div>
   </div>
 </section>
@@ -352,7 +278,7 @@ footer small{color:#b9cbc3}
   }
 
   if (!window.supabase || !window.supabase.createClient) {
-    showMessage("تعذر تحميل خدمة التسجيل. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.", "err");
+    showMessage("تعذر تحميل خدمة التسجيل. تحقق من الإنترنت ثم أعد تحميل الصفحة.", "err");
     submitButton.disabled = true;
     return;
   }
@@ -362,37 +288,29 @@ footer small{color:#b9cbc3}
   form.addEventListener("submit", async function(event) {
     event.preventDefault();
     messageBox.className = "message";
-
     if (!form.reportValidity()) return;
 
     submitButton.disabled = true;
     submitButton.textContent = "جارٍ إرسال الطلب…";
 
     const values = new FormData(form);
-    const groupValue = String(values.get("requested_group_id") || "");
+    const groupId = Number(values.get("requested_group_id"));
     const practicedValue = String(values.get("practiced_before") || "");
 
-    const groupId = Number(groupValue);
-
-    if (!Number.isInteger(groupId) || ![1, 2, 3].includes(groupId)) {
+    if (!Number.isInteger(groupId) || ![1,2,3].includes(groupId)) {
       showMessage("يرجى اختيار مجموعة تدريب صحيحة.", "err");
       submitButton.disabled = false;
       submitButton.textContent = "إرسال طلب التسجيل";
       return;
     }
 
-    if (!["نعم", "لا"].includes(practicedValue)) {
+    if (!["نعم","لا"].includes(practicedValue)) {
       showMessage("يرجى تحديد ما إذا كان الرياضي قد مارس الجودو سابقًا.", "err");
       submitButton.disabled = false;
       submitButton.textContent = "إرسال طلب التسجيل";
       return;
     }
 
-    /*
-      تنبيه توافق قاعدة البيانات:
-      practiced_before أُرسل كنص لأن نوع العمود تغيّر سابقًا إلى TEXT.
-      requested_group_id يُرسل كرقم لأن العمود من النوع bigint.
-    */
     const payload = {
       full_name: String(values.get("full_name") || "").trim(),
       date_of_birth: String(values.get("date_of_birth") || "") || null,
@@ -409,38 +327,27 @@ footer small{color:#b9cbc3}
     };
 
     try {
-      const { error } = await db
-        .from("registrations")
-        .insert(payload);
+      const { error } = await db.from("registrations").insert(payload);
+      if (error) throw error;
 
-      if (error) {
-        console.error("Supabase registration error:", error);
-        throw error;
-      }
-
-      showMessage(
-        "تم إرسال طلب التسجيل بنجاح. ستقوم إدارة النادي بمراجعته.",
-        "ok"
-      );
+      showMessage("تم إرسال طلب التسجيل بنجاح. ستقوم إدارة النادي بمراجعته.", "ok");
       form.reset();
     } catch (error) {
       console.error("Registration error:", error);
-
       let message = error?.message || "خطأ غير معروف";
 
       if (error?.code === "23503") {
         message = "معرّف مجموعة التدريب غير موجود في جدول المجموعات.";
       } else if (error?.code === "23502") {
-        message = "يوجد حقل إلزامي في قاعدة البيانات لم يتم توفيره: " +
-          (error?.message || "");
+        message = "يوجد حقل إلزامي لم يتم توفيره: " + message;
       } else if (error?.code === "42501") {
-        message = "رفضت صلاحيات قاعدة البيانات الطلب. يجب مراجعة سياسات RLS.";
+        message = "رفضت صلاحيات قاعدة البيانات الطلب. تحقق من سياسة RLS.";
       } else if (error?.code === "42703" || /column .* does not exist/i.test(message)) {
         message = "يوجد اختلاف بين حقول الاستمارة وأعمدة جدول registrations: " + message;
       } else if (/invalid input syntax for type boolean/i.test(message)) {
-        message = "نوع practiced_before في قاعدة البيانات لا يتوافق مع الإعداد الحالي. العمود TEXT متوقع في هذا الإصدار.";
+        message = "نوع practiced_before لا يتوافق مع الإعداد الحالي؛ الكود يرسل نعم أو لا كنص.";
       } else if (/invalid input syntax for type bigint/i.test(message)) {
-        message = "تعذر قبول معرّف مجموعة التدريب. تأكد من أن العمود requested_group_id يستقبل رقم المجموعة.";
+        message = "معرّف المجموعة غير صالح. يجب إرسال 1 أو 2 أو 3.";
       }
 
       showMessage("تعذر إرسال الطلب: " + message, "err");
