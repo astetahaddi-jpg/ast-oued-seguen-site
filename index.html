@@ -9,38 +9,55 @@
 <title>AST OUED SEGUEN | نادي الجودو</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-  --dark:#263b37; --deep:#183b35; --green:#009879;
-  --green2:#08745f; --beige:#f2e8d5; --light:#fbf7ef;
-  --white:#fff; --ink:#20312d; --muted:#687873;
-  --line:#dce5df; --radius:20px;
+  --dark:#263b37;
+  --deep:#183b35;
+  --green:#009879;
+  --green2:#08745f;
+  --beige:#f2e8d5;
+  --light:#fbf7ef;
+  --white:#fff;
+  --ink:#20312d;
+  --muted:#687873;
+  --line:#dce5df;
+  --radius:20px;
   --shadow:0 12px 34px rgba(24,59,53,.09);
+  --admin-url:"https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html";
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:100px}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
 body{margin:0;font-family:"Cairo",sans-serif;background:var(--light);color:var(--ink);line-height:1.8}
 button,input,select{font:inherit}
 a{text-decoration:none;color:inherit}
 .container{width:min(1120px,calc(100% - 30px));margin:auto}
-.topbar{background:var(--deep);color:white;padding:7px 0;font-size:13px}
-.topbar .container{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-header{position:sticky;top:0;z-index:20;background:rgba(251,247,239,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+
+.topbar{background:var(--deep);color:white;padding:8px 0;font-size:13px}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.topbar-admin{display:inline-flex;align-items:center;justify-content:center;background:#f2e8d5;color:#183b35;padding:5px 12px;border-radius:9px;font-weight:900}
+
+header{position:sticky;top:0;z-index:30;background:rgba(251,247,239,.98);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
 .nav{min-height:82px;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.brand{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
 .logo{height:58px;width:58px;flex-shrink:0;display:grid;place-items:center;background:var(--deep);color:var(--beige);border:2px solid var(--green);border-radius:17px;font-size:13px;font-weight:900;text-align:center;line-height:1.3}
 .brand-name{font-size:16px;font-weight:900;color:var(--deep);line-height:1.5}
 .brand-name small{display:block;font-size:11px;color:var(--muted)}
-.links{display:flex;align-items:center;gap:15px;font-size:13px;font-weight:800;flex-wrap:wrap}
-.links a:hover{color:var(--green2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border:0;border-radius:12px;font-weight:800;cursor:pointer;text-align:center}
+
+.links{display:flex;align-items:center;justify-content:center;gap:15px;font-size:13px;font-weight:800;flex-wrap:wrap}
+.links a:not(.btn):hover{color:var(--green2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border:0;border-radius:12px;font-weight:900;cursor:pointer;text-align:center;transition:background .2s,transform .2s}
+.btn:hover{transform:translateY(-1px)}
 .primary{background:var(--green);color:white}
 .primary:hover{background:var(--green2)}
 .secondary{background:var(--beige);color:var(--deep);border:1px solid #e3d6bd}
-.admin-link{background:var(--deep);color:white}
+.admin-link{background:var(--deep);color:white!important;border:2px solid var(--green);box-shadow:0 4px 12px #183b3520}
+.admin-link:hover{background:var(--green2)}
+.nav-admin{white-space:nowrap;padding:10px 13px}
+
 .hero{padding:65px 0 55px;background:radial-gradient(circle at 10% 10%,#00987920,transparent 35%),linear-gradient(135deg,#f8f1e4,#fffdf8)}
 .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:35px;align-items:center}
 .badge{display:inline-block;background:#dff4eb;color:var(--green2);padding:5px 13px;border-radius:30px;font-size:13px;font-weight:900}
@@ -51,6 +68,7 @@ h1{font-size:clamp(28px,4.5vw,52px);line-height:1.45;color:var(--deep);margin:15
 .hero-logo{width:112px;height:112px;margin:0 auto 18px;border:2px solid var(--green);border-radius:30px;display:grid;place-items:center;color:var(--beige);font-weight:900;font-size:23px;line-height:1.3}
 .hero-card h2{font-size:21px;margin:0 0 8px}
 .hero-card p{font-size:14px;color:#d7e4df;margin:0}
+
 section{padding:55px 0}
 .section-head{text-align:center;max-width:720px;margin:0 auto 28px}
 .section-head h2{font-size:clamp(24px,3vw,34px);color:var(--deep);margin:0 0 8px;font-weight:900}
@@ -63,6 +81,7 @@ section{padding:55px 0}
 .schedule{background:#f4efe5}
 .group-card{border-top:4px solid var(--green)}
 .group-card .time{font-weight:900;color:var(--green2)}
+
 .registration{background:var(--beige)}
 .form-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:22px;align-items:start}
 .form-intro{background:var(--deep);color:white;border-radius:var(--radius);padding:27px;position:sticky;top:105px}
@@ -87,24 +106,53 @@ button:disabled{opacity:.6;cursor:wait}
 footer{background:#142f2a;color:#e8f0ec;text-align:center;padding:25px 0}
 footer p{margin:3px 0}
 footer small{color:#b9cbc3}
+
+/* زر الإدارة الثابت: يظهر أيضًا على شاشات الهاتف */
+.floating-admin{
+  position:fixed;
+  left:15px;
+  bottom:15px;
+  z-index:100;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:12px 17px;
+  background:#183b35;
+  color:#fff;
+  border:2px solid #009879;
+  border-radius:14px;
+  box-shadow:0 5px 22px #0003;
+  font-family:"Cairo",sans-serif;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.5;
+}
+.floating-admin:hover{background:#08745f}
+.floating-admin .admin-icon{font-size:18px}
+
 @media(max-width:850px){
  .hero-grid,.form-layout{grid-template-columns:1fr}
  .features,.groups{grid-template-columns:repeat(2,minmax(0,1fr))}
  .form-intro{position:static}
- .nav{padding:12px 0;flex-wrap:wrap}
+ .nav{padding:12px 0;flex-wrap:wrap;justify-content:center}
  .links{gap:10px;flex-wrap:wrap}
 }
 @media(max-width:560px){
  .container{width:calc(100% - 22px)}
- .nav{justify-content:center}
+ .topbar .container{justify-content:center;text-align:center}
+ .nav{gap:10px}
  .brand{width:100%;justify-content:center}
- .links{justify-content:center}
+ .links{width:100%;justify-content:center;gap:8px}
+ .links a{font-size:12px}
+ .links .nav-admin{font-size:13px;padding:8px 12px}
+ .nav>.primary{width:100%}
  .hero{padding:40px 0}
  section{padding:40px 0}
  .features,.groups,.fields{grid-template-columns:1fr}
  .full{grid-column:auto}
  .hero-card{padding:23px}
- .topbar .container{justify-content:center;text-align:center}
+ .floating-admin{left:10px;bottom:10px;padding:10px 13px;font-size:13px}
 }
 </style>
 </head>
@@ -114,6 +162,7 @@ footer small{color:#b9cbc3}
   <div class="container">
     <span>🥋 نادي التحدي وادي سقان للجودو</span>
     <span>AST OUED SEGUEN · ميلة، الجزائر</span>
+    <a class="topbar-admin" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html">🔐 دخول الإدارة</a>
   </div>
 </div>
 
@@ -131,12 +180,18 @@ footer small{color:#b9cbc3}
       <a href="#about">عن النادي</a>
       <a href="#schedule">التوقيت</a>
       <a href="#register">التسجيل</a>
-      <a class="btn admin-link" href="./admin.html">Admin Login</a>
+      <a class="btn admin-link nav-admin" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html">🔐 دخول الإدارة</a>
     </nav>
 
     <a class="btn primary" href="#register">سجّل الآن</a>
   </div>
 </header>
+
+<!-- زر ظاهر باستمرار للوصول السريع إلى الإدارة -->
+<a class="floating-admin" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html" aria-label="فتح صفحة دخول الإدارة">
+  <span class="admin-icon">🔐</span>
+  <span>دخول الإدارة</span>
+</a>
 
 <main>
 <section class="hero" id="home">
@@ -148,7 +203,7 @@ footer small{color:#b9cbc3}
       <div class="actions">
         <a class="btn primary" href="#register">طلب تسجيل جديد</a>
         <a class="btn secondary" href="#schedule">مواعيد التدريب</a>
-        <a class="btn admin-link" href="./admin.html">دخول الإدارة</a>
+        <a class="btn admin-link" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html">🔐 دخول الإدارة</a>
       </div>
     </div>
     <div class="hero-card">
@@ -214,6 +269,7 @@ footer small{color:#b9cbc3}
           <li>أدخل رقم هاتف ولي الأمر بشكل صحيح.</li>
           <li>اختر مجموعة التدريب المطلوبة.</li>
         </ul>
+        <p><a class="btn admin-link" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html">🔐 دخول الإدارة</a></p>
       </aside>
 
       <form class="panel card" id="registrationForm">
@@ -248,7 +304,7 @@ footer small{color:#b9cbc3}
     <div class="contact">
       <h2 style="color:var(--deep);margin-top:0">نرحب بكم في نادي التحدي وادي سقان</h2>
       <p style="color:var(--muted);margin-bottom:0">للاستفسار عن التسجيل أو التدريب، يرجى التواصل مع إدارة النادي.</p>
-      <p><a class="btn admin-link" href="./admin.html">Admin Login · دخول الإدارة</a></p>
+      <p><a class="btn admin-link" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html">🔐 Admin Login · دخول الإدارة</a></p>
     </div>
   </div>
 </section>
