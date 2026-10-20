@@ -1,0 +1,771 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#244b3b">
+  <title>لوحة الإدارة | AST OUED SEGUEN</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --green: #245640;
+      --green-dark: #183d2d;
+      --green-light: #e6f0e9;
+      --beige: #f4efdf;
+      --bg: #f6f7f3;
+      --text: #26342b;
+      --muted: #718075;
+      --border: #dce4dc;
+      --red: #b83232;
+      --orange: #98630b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      background: var(--green-dark);
+      color: white;
+      padding: 19px 20px;
+    }
+
+    .top-inner {
+      max-width: 1150px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .brand small {
+      display: block;
+      color: #d8e7dc;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 28px auto;
+      padding: 0 16px 40px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 5px 22px #203b2a0a;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 { font-size: 25px; }
+    h2 { font-size: 20px; }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: white;
+      color: var(--text);
+      margin-bottom: 15px;
+      outline-color: var(--green);
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 17px;
+      font-weight: 700;
+    }
+
+    .primary {
+      background: var(--green);
+      color: white;
+    }
+
+    .primary:hover { background: var(--green-dark); }
+
+    .secondary {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
+
+    .logout {
+      background: #ffffff1c;
+      color: white;
+      border: 1px solid #ffffff55;
+    }
+
+    .danger {
+      background: #fae9e7;
+      color: var(--red);
+    }
+
+    .success {
+      background: #e3f3e7;
+      color: #23643a;
+    }
+
+    .warning {
+      background: #fff1d4;
+      color: var(--orange);
+    }
+
+    .hidden { display: none !important; }
+
+    .message {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin: 12px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .error-box {
+      background: #fff0ee;
+      color: #9b2929;
+    }
+
+    .info-box {
+      background: #edf4ee;
+      color: #28573c;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: var(--beige);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      color: var(--green-dark);
+      margin-top: 5px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toolbar input {
+      flex: 1;
+      min-width: 180px;
+      margin: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: right;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f4ef;
+      color: var(--green-dark);
+      white-space: nowrap;
+    }
+
+    td { overflow-wrap: anywhere; }
+
+    .status {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-weight: 700;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .status-pending {
+      background: #fff0ce;
+      color: #865a06;
+    }
+
+    .status-accepted {
+      background: #dff3e4;
+      color: #23633a;
+    }
+
+    .status-rejected {
+      background: #fae4e2;
+      color: #9d2929;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .actions button {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: 1fr; }
+      .panel { padding: 16px; }
+      h1 { font-size: 22px; }
+      .topbar { padding: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="top-inner">
+    <div class="brand">
+      AST OUED SEGUEN
+      <small>لوحة إدارة التسجيلات</small>
+    </div>
+    <button id="logoutBtn" class="logout hidden" type="button">
+      تسجيل الخروج
+    </button>
+  </div>
+</header>
+
+<main class="container">
+
+  <section id="loginPanel" class="panel">
+    <h1>تسجيل دخول المدير</h1>
+    <p class="muted">هذه الصفحة مخصصة للمستخدمين المعتمدين لإدارة طلبات التسجيل.</p>
+
+    <form id="loginForm">
+      <label for="email">البريد الإلكتروني</label>
+      <input id="email" type="email" autocomplete="username"
+             placeholder="admin@example.com" required>
+
+      <label for="password">كلمة المرور</label>
+      <input id="password" type="password"
+             autocomplete="current-password"
+             placeholder="أدخل كلمة المرور" required>
+
+      <button id="loginBtn" class="primary" type="submit" style="width:100%">
+        تسجيل الدخول
+      </button>
+    </form>
+
+    <div id="loginMessage" role="status" aria-live="polite"></div>
+    <p class="muted">إذا لم يكن حسابك مضافًا إلى قائمة المدراء، فلن تتمكن من عرض التسجيلات.</p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="panel">
+      <h1>إدارة طلبات التسجيل</h1>
+      <p id="welcome" class="muted"></p>
+
+      <div class="stats">
+        <div class="stat">
+          <span>جميع الطلبات</span>
+          <strong id="totalCount">0</strong>
+        </div>
+        <div class="stat">
+          <span>قيد الانتظار</span>
+          <strong id="pendingCount">0</strong>
+        </div>
+        <div class="stat">
+          <span>مقبولة</span>
+          <strong id="acceptedCount">0</strong>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input id="searchInput" type="search"
+               placeholder="ابحث باسم الرياضي أو رقم هاتف الولي">
+        <button id="refreshBtn" class="secondary" type="button">
+          تحديث القائمة
+        </button>
+      </div>
+
+      <div id="dashboardMessage" role="status" aria-live="polite"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>اسم الرياضي</th>
+              <th>تاريخ الميلاد</th>
+              <th>مكان الميلاد</th>
+              <th>الجنس</th>
+              <th>الإقامة</th>
+              <th>الفئة المطلوبة</th>
+              <th>المستوى السابق</th>
+              <th>الحزام</th>
+              <th>اسم الولي</th>
+              <th>هاتف الولي</th>
+              <th>مكان إقامة الولي</th>
+              <th>الحالة</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="registrationsBody">
+            <tr><td colspan="13">لم يتم تحميل الطلبات بعد.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  AST OUED SEGUEN · الإدارة
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  const SUPABASE_URL = 'https://saeuzlgtbvwxdifhxyrq.supabase.co';
+  const SUPABASE_ANON_KEY =
+    'sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2';
+
+  const ADMIN_UID = '3775b47c-78c5-4064-963b-e0d615c9495a';
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+  const $ = id => document.getElementById(id);
+
+  const loginPanel = $('loginPanel');
+  const dashboard = $('dashboard');
+  const loginMessage = $('loginMessage');
+  const dashboardMessage = $('dashboardMessage');
+  const registrationsBody = $('registrationsBody');
+  const logoutBtn = $('logoutBtn');
+
+  let registrations = [];
+  let loading = false;
+
+  function showMessage(element, message, isError = false) {
+    element.replaceChildren();
+
+    if (!message) return;
+
+    const div = document.createElement('div');
+    div.className = 'message ' + (isError ? 'error-box' : 'info-box');
+    div.textContent = message;
+    element.appendChild(div);
+  }
+
+  function showLogin() {
+    loginPanel.classList.remove('hidden');
+    dashboard.classList.add('hidden');
+    logoutBtn.classList.add('hidden');
+  }
+
+  function showDashboard(email) {
+    loginPanel.classList.add('hidden');
+    dashboard.classList.remove('hidden');
+    logoutBtn.classList.remove('hidden');
+    $('welcome').textContent = 'تم تسجيل الدخول: ' + (email || '');
+  }
+
+  function safeText(value) {
+    if (value === null || value === undefined || value === '') return '—';
+    return String(value);
+  }
+
+  function addCell(row, value) {
+    const cell = document.createElement('td');
+    cell.textContent = safeText(value);
+    row.appendChild(cell);
+    return cell;
+  }
+
+  function groupName(value) {
+    const names = {
+      '1': 'المبتدئون',
+      '2': 'الأكابر',
+      '3': 'أصاغر المنافسات'
+    };
+    return names[String(value)] || safeText(value);
+  }
+
+  function statusName(value) {
+    const labels = {
+      pending: 'قيد الانتظار',
+      accepted: 'مقبول',
+      rejected: 'مرفوض',
+      approved: 'مقبول',
+      declined: 'مرفوض'
+    };
+    return labels[String(value).toLowerCase()] || safeText(value);
+  }
+
+  function statusClass(value) {
+    const v = String(value || '').toLowerCase();
+    if (v === 'accepted' || v === 'approved') return 'status-accepted';
+    if (v === 'rejected' || v === 'declined') return 'status-rejected';
+    return 'status-pending';
+  }
+
+  function renderRows() {
+    const query = $('searchInput').value.trim().toLowerCase();
+
+    const filtered = registrations.filter(item => {
+      const text = [
+        item.full_name,
+        item.guardian_name,
+        item.guardian_phone,
+        item.residence
+      ].map(v => String(v || '').toLowerCase()).join(' ');
+
+      return text.includes(query);
+    });
+
+    registrationsBody.replaceChildren();
+
+    $('totalCount').textContent = registrations.length;
+    $('pendingCount').textContent = registrations.filter(r =>
+      String(r.status || 'pending').toLowerCase() === 'pending'
+    ).length;
+    $('acceptedCount').textContent = registrations.filter(r =>
+      ['accepted', 'approved'].includes(String(r.status || '').toLowerCase())
+    ).length;
+
+    if (!filtered.length) {
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.colSpan = 13;
+      cell.textContent = registrations.length
+        ? 'لا توجد نتائج مطابقة للبحث.'
+        : 'لا توجد طلبات تسجيل حتى الآن.';
+      row.appendChild(cell);
+      registrationsBody.appendChild(row);
+      return;
+    }
+
+    filtered.forEach(item => {
+      const row = document.createElement('tr');
+
+      addCell(row, item.full_name);
+      addCell(row, item.date_of_birth);
+      addCell(row, item.birth_place);
+      addCell(row, item.gender);
+      addCell(row, item.residence);
+      addCell(row, groupName(item.requested_group_id));
+      addCell(row, item.practiced_before);
+      addCell(row, item.belt);
+      addCell(row, item.guardian_name);
+      addCell(row, item.guardian_phone);
+      addCell(row, item.guardian_place);
+
+      const statusCell = document.createElement('td');
+      const badge = document.createElement('span');
+      badge.className = 'status ' + statusClass(item.status);
+      badge.textContent = statusName(item.status || 'pending');
+      statusCell.appendChild(badge);
+      row.appendChild(statusCell);
+
+      const actionsCell = document.createElement('td');
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const accept = document.createElement('button');
+      accept.type = 'button';
+      accept.className = 'success';
+      accept.textContent = 'قبول';
+      accept.addEventListener('click', () => updateStatus(item, 'accepted'));
+
+      const reject = document.createElement('button');
+      reject.type = 'button';
+      reject.className = 'danger';
+      reject.textContent = 'رفض';
+      reject.addEventListener('click', () => updateStatus(item, 'rejected'));
+
+      actions.append(accept, reject);
+      actionsCell.appendChild(actions);
+      row.appendChild(actionsCell);
+
+      registrationsBody.appendChild(row);
+    });
+  }
+
+  async function verifyAdmin(user) {
+    if (!user) return false;
+
+    if (user.id !== ADMIN_UID) {
+      showMessage(
+        loginMessage,
+        'هذا الحساب ليس حساب المدير المعتمد لهذا الموقع.',
+        true
+      );
+      return false;
+    }
+
+    const { data, error } = await client
+      .from('admin_users')
+      .select('user_id')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (error) {
+      showMessage(
+        loginMessage,
+        'تعذر التحقق من صلاحيات المدير. تحقق من GRANT SELECT على admin_users وسياسات RLS. التفاصيل: ' + error.message,
+        true
+      );
+      return false;
+    }
+
+    if (!data) {
+      showMessage(loginMessage, 'هذا الحساب غير مسجل في قائمة المدراء.', true);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function loadRegistrations() {
+    if (loading) return;
+    loading = true;
+    $('refreshBtn').disabled = true;
+    showMessage(dashboardMessage, 'جارٍ تحميل طلبات التسجيل...');
+
+    try {
+      const { data, error } = await client
+        .from('registrations')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      registrations = data || [];
+      showMessage(dashboardMessage, '');
+      renderRows();
+    } catch (error) {
+      showMessage(
+        dashboardMessage,
+        'تعذر تحميل التسجيلات. تحقق من سياسات RLS وصلاحيات SELECT. التفاصيل: ' +
+          (error.message || String(error)),
+        true
+      );
+    } finally {
+      loading = false;
+      $('refreshBtn').disabled = false;
+    }
+  }
+
+  async function updateStatus(item, status) {
+    const name = safeText(item.full_name);
+
+    if (!confirm(
+      'هل تريد ' + (status === 'accepted' ? 'قبول' : 'رفض') +
+      ' طلب الرياضي: ' + name + '؟'
+    )) return;
+
+    if (item.id === undefined || item.id === null) {
+      showMessage(
+        dashboardMessage,
+        'لا يوجد عمود id لهذا الطلب. لا يمكن تحديثه بهذا الكود.',
+        true
+      );
+      return;
+    }
+
+    showMessage(dashboardMessage, 'جارٍ تحديث حالة الطلب...');
+
+    try {
+      const { data, error } = await client
+        .from('registrations')
+        .update({ status: status })
+        .eq('id', item.id)
+        .select('id, status');
+
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        throw new Error(
+          'لم يتم تحديث أي صف. تحقق من سياسة UPDATE ومن وجود العمود id.'
+        );
+      }
+
+      showMessage(dashboardMessage, 'تم تحديث حالة الطلب بنجاح.');
+      await loadRegistrations();
+    } catch (error) {
+      showMessage(
+        dashboardMessage,
+        'تعذر تحديث حالة الطلب. التفاصيل: ' +
+          (error.message || String(error)),
+        true
+      );
+    }
+  }
+
+  $('loginForm').addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const button = $('loginBtn');
+    button.disabled = true;
+    showMessage(loginMessage, 'جارٍ تسجيل الدخول...');
+
+    try {
+      const email = $('email').value.trim();
+      const password = $('password').value;
+
+      const { data, error } = await client.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      const user = data.user;
+      const allowed = await verifyAdmin(user);
+
+      if (!allowed) {
+        await client.auth.signOut();
+        return;
+      }
+
+      showMessage(loginMessage, '');
+      showDashboard(user.email);
+      await loadRegistrations();
+    } catch (error) {
+      showMessage(
+        loginMessage,
+        'تعذر تسجيل الدخول. تحقق من البريد الإلكتروني وكلمة المرور. التفاصيل: ' +
+          (error.message || String(error)),
+        true
+      );
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  logoutBtn.addEventListener('click', async () => {
+    await client.auth.signOut();
+    registrations = [];
+    registrationsBody.replaceChildren();
+    $('loginForm').reset();
+    showMessage(loginMessage, 'تم تسجيل الخروج.');
+    showLogin();
+  });
+
+  $('refreshBtn').addEventListener('click', loadRegistrations);
+  $('searchInput').addEventListener('input', renderRows);
+
+  async function initialize() {
+    try {
+      const { data, error } = await client.auth.getSession();
+      if (error) throw error;
+
+      const user = data.session?.user;
+
+      if (!user) {
+        showLogin();
+        return;
+      }
+
+      const allowed = await verifyAdmin(user);
+
+      if (!allowed) {
+        await client.auth.signOut();
+        showLogin();
+        return;
+      }
+
+      showDashboard(user.email);
+      await loadRegistrations();
+    } catch (error) {
+      showLogin();
+      showMessage(
+        loginMessage,
+        'تعذر التحقق من جلسة الدخول. التفاصيل: ' +
+          (error.message || String(error)),
+        true
+      );
+    }
+  }
+
+  initialize();
+})();
+</script>
+</body>
+</html>
