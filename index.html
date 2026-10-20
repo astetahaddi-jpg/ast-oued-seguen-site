@@ -93,7 +93,6 @@ button:disabled{opacity:.6;cursor:wait}
 footer{background:#142f2a;color:#e8f0ec;text-align:center;padding:25px 0}
 footer p{margin:3px 0}
 footer small{color:#b9cbc3}
-.loading,.empty{text-align:center;padding:20px;color:var(--muted);background:white;border:1px dashed #c9d6cf;border-radius:14px;grid-column:1/-1}
 @media(max-width:850px){
  .hero-grid,.form-layout{grid-template-columns:1fr}
  .features,.groups{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -199,20 +198,20 @@ footer small{color:#b9cbc3}
       <article class="card group-card">
         <h3>المبتدئون</h3>
         <p>الفئة العمرية: 5–12 سنة</p>
-        <p class="time">الجمعة: 16:00 – 17:30</p>
-        <p class="time">السبت: 15:00 – 16:30</p>
+        <p class="time">الجمعة: <bdi>16:00 – 17:30</bdi></p>
+        <p class="time">السبت: <bdi>15:00 – 16:30</bdi></p>
       </article>
       <article class="card group-card">
         <h3>الأكابر</h3>
         <p>الفئة العمرية: 13 سنة فما فوق</p>
-        <p class="time">الجمعة: 09:30 – 11:00</p>
-        <p class="time">الاثنين: 17:00 – 18:30</p>
+        <p class="time">الجمعة: <bdi>09:30 – 11:00</bdi></p>
+        <p class="time">الاثنين: <bdi>17:00 – 18:30</bdi></p>
       </article>
       <article class="card group-card">
         <h3>أصاغر المنافسات</h3>
         <p>الفئة العمرية: 8–13 سنة</p>
-        <p class="time">الجمعة: 08:00 – 09:30</p>
-        <p class="time">الأربعاء: 17:00 – 18:30</p>
+        <p class="time">الجمعة: <bdi>08:00 – 09:30</bdi></p>
+        <p class="time">الأربعاء: <bdi>17:00 – 18:30</bdi></p>
       </article>
     </div>
   </div>
@@ -288,11 +287,11 @@ footer small{color:#b9cbc3}
             <label for="requested_group_id">مجموعة التدريب المطلوبة *</label>
             <select id="requested_group_id" name="requested_group_id" required>
               <option value="">اختر المجموعة</option>
-              <option value="المبتدئون">المبتدئون (5–12 سنة)</option>
-              <option value="الأكابر">الأكابر (13 سنة فما فوق)</option>
-              <option value="أصاغر المنافسات">أصاغر المنافسات (8–13 سنة)</option>
+              <option value="1">المبتدئون (5–12 سنة)</option>
+              <option value="2">الأكابر (13 سنة فما فوق)</option>
+              <option value="3">أصاغر المنافسات (8–13 سنة)</option>
             </select>
-            <span class="hint">إذا كان عمود requested_group_id مرتبطًا بمفتاح أجنبي في قاعدة البيانات، يجب اختيار معرّف المجموعة الحقيقي بدل اسمها. راجع الملاحظة أسفل الكود.</span>
+            <span class="hint">يتم إرسال معرّف المجموعة الصحيح إلى قاعدة البيانات.</span>
           </div>
         </div>
 
@@ -337,65 +336,120 @@ footer small{color:#b9cbc3}
 </footer>
 
 <script>
-const SUPABASE_URL = "https://saeuzlgtbvwxdifhxyrq.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+(() => {
+  "use strict";
 
-const form = document.getElementById("registrationForm");
-const submitButton = document.getElementById("submitButton");
-const messageBox = document.getElementById("formMessage");
+  const SUPABASE_URL = "https://saeuzlgtbvwxdifhxyrq.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2";
 
-function showMessage(message, type) {
-  messageBox.textContent = message;
-  messageBox.className = "message show " + type;
-}
+  const form = document.getElementById("registrationForm");
+  const submitButton = document.getElementById("submitButton");
+  const messageBox = document.getElementById("formMessage");
 
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-  messageBox.className = "message";
-  submitButton.disabled = true;
-  submitButton.textContent = "جارٍ إرسال الطلب…";
-
-  const values = new FormData(form);
-  const selectedGroup = values.get("requested_group_id");
-
-  // ملاحظة: هذا الحقل يُرسل كقيمة نصية للمجموعة.
-  // إذا كان requested_group_id في قاعدة البيانات مفتاحًا أجنبيًا،
-  // فيجب استبدال اسم المجموعة بمعرّفها الحقيقي قبل النشر.
-  const payload = {
-    full_name: String(values.get("full_name") || "").trim(),
-    date_of_birth: values.get("date_of_birth") || null,
-    birth_place: String(values.get("birth_place") || "").trim(),
-    gender: values.get("gender"),
-    residence: String(values.get("residence") || "").trim(),
-    guardian_name: String(values.get("guardian_name") || "").trim(),
-    guardian_place: String(values.get("guardian_place") || "").trim() || null,
-    practiced_before: values.get("practiced_before"),
-    belt: values.get("belt") || null,
-    guardian_phone: String(values.get("guardian_phone") || "").trim(),
-    requested_group_id: selectedGroup || null,
-    status: "pending"
-  };
-
-  try {
-    const { error } = await db.from("registrations").insert([payload]);
-    if (error) throw error;
-
-    showMessage("تم إرسال طلب التسجيل بنجاح. ستقوم إدارة النادي بمراجعته.", "ok");
-    form.reset();
-  } catch (error) {
-    console.error("Registration error:", error);
-    showMessage(
-      "تعذر إرسال الطلب. تحقق من إعدادات جدول registrations وسياسات RLS في Supabase. تفاصيل: " +
-      (error.message || "خطأ غير معروف"),
-      "err"
-    );
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "إرسال طلب التسجيل";
+  function showMessage(message, type) {
+    messageBox.textContent = message;
+    messageBox.className = "message show " + type;
   }
-});
+
+  if (!window.supabase || !window.supabase.createClient) {
+    showMessage("تعذر تحميل خدمة التسجيل. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.", "err");
+    submitButton.disabled = true;
+    return;
+  }
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    messageBox.className = "message";
+
+    if (!form.reportValidity()) return;
+
+    submitButton.disabled = true;
+    submitButton.textContent = "جارٍ إرسال الطلب…";
+
+    const values = new FormData(form);
+    const groupValue = String(values.get("requested_group_id") || "");
+    const practicedValue = String(values.get("practiced_before") || "");
+
+    const groupId = Number(groupValue);
+
+    if (!Number.isInteger(groupId) || ![1, 2, 3].includes(groupId)) {
+      showMessage("يرجى اختيار مجموعة تدريب صحيحة.", "err");
+      submitButton.disabled = false;
+      submitButton.textContent = "إرسال طلب التسجيل";
+      return;
+    }
+
+    if (!["نعم", "لا"].includes(practicedValue)) {
+      showMessage("يرجى تحديد ما إذا كان الرياضي قد مارس الجودو سابقًا.", "err");
+      submitButton.disabled = false;
+      submitButton.textContent = "إرسال طلب التسجيل";
+      return;
+    }
+
+    /*
+      تنبيه توافق قاعدة البيانات:
+      practiced_before أُرسل كنص لأن نوع العمود تغيّر سابقًا إلى TEXT.
+      requested_group_id يُرسل كرقم لأن العمود من النوع bigint.
+    */
+    const payload = {
+      full_name: String(values.get("full_name") || "").trim(),
+      date_of_birth: String(values.get("date_of_birth") || "") || null,
+      birth_place: String(values.get("birth_place") || "").trim(),
+      gender: String(values.get("gender") || ""),
+      residence: String(values.get("residence") || "").trim(),
+      guardian_name: String(values.get("guardian_name") || "").trim(),
+      guardian_place: String(values.get("guardian_place") || "").trim() || null,
+      practiced_before: practicedValue,
+      belt: String(values.get("belt") || "").trim() || null,
+      guardian_phone: String(values.get("guardian_phone") || "").trim(),
+      requested_group_id: groupId,
+      status: "pending"
+    };
+
+    try {
+      const { error } = await db
+        .from("registrations")
+        .insert(payload);
+
+      if (error) {
+        console.error("Supabase registration error:", error);
+        throw error;
+      }
+
+      showMessage(
+        "تم إرسال طلب التسجيل بنجاح. ستقوم إدارة النادي بمراجعته.",
+        "ok"
+      );
+      form.reset();
+    } catch (error) {
+      console.error("Registration error:", error);
+
+      let message = error?.message || "خطأ غير معروف";
+
+      if (error?.code === "23503") {
+        message = "معرّف مجموعة التدريب غير موجود في جدول المجموعات.";
+      } else if (error?.code === "23502") {
+        message = "يوجد حقل إلزامي في قاعدة البيانات لم يتم توفيره: " +
+          (error?.message || "");
+      } else if (error?.code === "42501") {
+        message = "رفضت صلاحيات قاعدة البيانات الطلب. يجب مراجعة سياسات RLS.";
+      } else if (error?.code === "42703" || /column .* does not exist/i.test(message)) {
+        message = "يوجد اختلاف بين حقول الاستمارة وأعمدة جدول registrations: " + message;
+      } else if (/invalid input syntax for type boolean/i.test(message)) {
+        message = "نوع practiced_before في قاعدة البيانات لا يتوافق مع الإعداد الحالي. العمود TEXT متوقع في هذا الإصدار.";
+      } else if (/invalid input syntax for type bigint/i.test(message)) {
+        message = "تعذر قبول معرّف مجموعة التدريب. تأكد من أن العمود requested_group_id يستقبل رقم المجموعة.";
+      }
+
+      showMessage("تعذر إرسال الطلب: " + message, "err");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "إرسال طلب التسجيل";
+    }
+  });
+})();
 </script>
 </body>
 </html>
-
