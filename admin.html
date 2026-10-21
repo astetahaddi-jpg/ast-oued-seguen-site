@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -11,6 +12,7 @@
 <style>
 :root{--navy:#123b70;--blue:#2584e8;--blue2:#eaf4ff;--red:#ef4b55;--redbg:#fff0f1;--green:#169b62;--greenbg:#eafaf1;--gold:#a86a00;--goldbg:#fff5df;--purple:#7654d6;--purplebg:#f2edff;--ink:#20344d;--muted:#718198;--line:#e2ebf5;--bg:#f4f8fd;--white:#fff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Tahoma,sans-serif}button,input,select,textarea{font:inherit}button{border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:#fff;cursor:pointer;font-weight:700;transition:.15s}button:hover{filter:brightness(.96);transform:translateY(-1px)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d6e1ef;border-radius:10px;background:#fff;color:var(--ink);outline:none;min-width:0}input:focus,select:focus,textarea:focus{border-color:#69aaf0;box-shadow:0 0 0 3px #2584e81a}label{font-size:13px;color:var(--muted);display:block;margin:5px 0;font-weight:700}textarea{min-height:75px;resize:vertical}header{background:linear-gradient(115deg,#fff,#eef6ff);border-bottom:1px solid var(--line);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:0;z-index:5;box-shadow:0 4px 18px #244a7510}header .header-inner{width:100%;max-width:1600px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px}.header-inner h1{font-size:23px;margin:0;color:var(--navy);letter-spacing:.3px}.header-inner p{margin:6px 0 0;color:#45658b;font-weight:700}.header-inner button{background:var(--red)}main{max-width:1600px;margin:0 auto;padding:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 18px #244a7508}h2{font-size:19px;margin:0 0 15px;color:var(--navy)}h3{font-size:16px;margin:0 0 12px}.hidden{display:none!important}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.secondary{background:#eef5ff!important;color:var(--navy)!important;border:1px solid #d9e8fa!important}.danger{background:var(--red)!important;color:white!important}.small{padding:6px 9px;font-size:12px;margin:2px}.tabs{display:flex;flex-direction:column;gap:5px;margin:0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;height:max-content;position:sticky;top:112px}.tabs button{display:flex;align-items:center;text-align:right;background:transparent;color:#49627e;border:1px solid transparent;border-radius:10px;padding:12px;font-weight:700}.tabs button:hover{background:#f4f8ff;transform:none}.tabs button.active{background:var(--blue2);color:var(--navy);border-color:#d9e8fa}.layout{max-width:1600px;margin:auto;display:grid;grid-template-columns:235px minmax(0,1fr);gap:16px;align-items:start}.content{min-width:0}.status{padding:12px;border-radius:10px;background:#eef5ff;margin:12px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;border:1px solid #d9e8fa}.status.error{background:var(--redbg);color:#8b2424;border-color:#f3c9cd}.status.ok{background:var(--greenbg);color:#17643e;border-color:#c8efd9}.table-wrap{overflow-x:auto;width:100%;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:650px;font-size:13px}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}th{background:#f4f8ff;color:var(--navy);white-space:nowrap}td{overflow-wrap:anywhere}.muted{color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}.metric{background:#f8fbff;border:1px solid var(--line);padding:15px;border-radius:12px}.metric strong{font-size:24px;display:block;color:var(--navy)}.metric span{font-size:12px;color:var(--muted)}footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}#loginPanel{max-width:450px;margin:8vh auto;padding:24px}#loginPanel h2{margin-top:0}hr{border:0;border-top:1px solid var(--line);margin:20px 0}summary{color:var(--navy)}
+.subscription-matrix{min-width:900px}.subscription-matrix th,.subscription-matrix td{text-align:center;vertical-align:middle;padding:7px}.subscription-matrix th:first-child,.subscription-matrix td:first-child{text-align:right;min-width:190px;position:sticky;right:0;background:#fff;z-index:1}.subscription-matrix th:first-child{background:#f4f8ff;z-index:2}.payment-cell{width:100%;min-width:72px;padding:9px 7px;font-size:12px;border-radius:8px;font-weight:800}.payment-paid{background:#d9f7e5!important;color:#12683d!important;border:1px solid #8ed7ae!important}.payment-unpaid{background:#ffe0e2!important;color:#9a2029!important;border:1px solid #f0a4aa!important}.payment-empty{background:#f1f4f8!important;color:#596779!important;border:1px dashed #c5ced8!important}
 @media(max-width:900px){header{position:static;padding:14px}.header-inner h1{font-size:18px}.layout{grid-template-columns:1fr;padding:0}.tabs{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:8px}.tabs button{font-size:12px;padding:10px 7px}main{padding:9px}.panel{padding:12px}.header-inner p{font-size:12px}}@media(max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric strong{font-size:21px}.actions button{flex:1}.header-inner h1{font-size:16px}}
 </style>
 </head>
@@ -76,7 +78,7 @@
  
  <section id="tab-registrations" class="panel tab">
   <h2>طلبات التسجيل</h2>
-  <p class="muted">عند قبول الطلب، يُنشأ سجل الرياضي تلقائيًا مع محاولة منع التكرار. تُضاف سجلات التأمين والاشتراكات يدويًا وفق الدفع الفعلي، دون إنشاء مبالغ أو دفعات افتراضية.</p>
+  <p class="muted">عند قبول الطلب يُضاف الرياضي تلقائيًا إلى قائمة الاشتراكات مع أشهر الموسم غير مدفوعة. وعند رفض الطلب يُحذف من قائمة الطلبات.</p>
   <div class="grid">
    <div><label>تصفية حسب الحالة</label>
     <select id="registrationFilter">
@@ -141,50 +143,29 @@
  
  <section id="tab-subscriptions" class="panel tab hidden">
   <h2>الاشتراكات الشهرية</h2>
-  <p class="muted">اختر السنة والشهر لكل اشتراك. تُحفظ قيمة الشهر كتاريخ صالح في قاعدة البيانات، وتُحفظ السنة في season_year.</p>
-  <form id="subscriptionForm">
+  <p class="muted">يعرض الجدول جميع الرياضيين وأشهر الموسم من أكتوبر إلى جوان. اضغط على خانة الشهر لتبديل الحالة بين مدفوع وغير مدفوع. لون أخضر يعني مدفوع، وأحمر يعني غير مدفوع. أدوات الشهر والسنة أدناه للتحليل فقط ولا تغيّر محتوى الجدول.</p>
+  <form id="subscriptionAthleteForm">
    <div class="grid">
-    <div><label>الرياضي</label><select name="athlete_id" id="subscriptionAthlete" required><option value="">اختر الرياضي</option></select></div>
-    <div><label>السنة الدراسية / سنة الاشتراك</label><input id="subscriptionYear" name="season_year" type="number" min="2000" max="2100" required></div>
-    <div><label>الشهر</label>
-     <select id="subscriptionMonth" name="subscription_month" required>
-      <option value="">اختر الشهر</option>
-      <option value="09">سبتمبر — September</option>
-      <option value="10">أكتوبر — October</option>
-      <option value="11">نوفمبر — November</option>
-      <option value="12">ديسمبر — December</option>
-      <option value="01">جانفي — January</option>
-      <option value="02">فيفري — February</option>
-      <option value="03">مارس — March</option>
-      <option value="04">أفريل — April</option>
-      <option value="05">ماي — May</option>
-      <option value="06">جوان — June</option>
-     </select>
-    </div>
-    <div><label>المبلغ</label><input name="amount" type="number" min="0" step="0.01" value="0" required></div>
-    <div><label>تم الدفع؟</label><select name="paid"><option value="true">نعم</option><option value="false">لا</option></select></div>
-    <div><label>تاريخ الدفع</label><input name="paid_at" type="date"></div>
+    <div><label>الاسم</label><input name="first_name" required></div>
+    <div><label>اللقب</label><input name="last_name" required></div>
    </div>
-   <div class="actions"><button type="submit">حفظ الاشتراك</button><button type="reset" class="secondary">مسح الحقول</button></div>
+   <div class="actions"><button type="submit">إضافة رياضي جديد إلى الاشتراكات</button></div>
   </form>
- 
   <hr>
   <h3>تحليل الاشتراكات حسب الشهر والسنة</h3>
   <div class="grid">
-   <div><label>تصفية حسب السنة</label><select id="subscriptionYearFilter"><option value="">كل السنوات</option></select></div>
-   <div><label>تصفية حسب الشهر</label>
+   <div><label>تصفية التحليل حسب السنة</label><select id="subscriptionYearFilter"><option value="">كل السنوات</option></select></div>
+   <div><label>شهر التحليل</label>
     <select id="subscriptionFilter">
      <option value="">كل الأشهر</option>
-     <option value="09">سبتمبر — September</option><option value="10">أكتوبر — October</option>
-     <option value="11">نوفمبر — November</option><option value="12">ديسمبر — December</option>
-     <option value="01">جانفي — January</option><option value="02">فيفري — February</option>
-     <option value="03">مارس — March</option><option value="04">أفريل — April</option>
-     <option value="05">ماي — May</option><option value="06">جوان — June</option>
+     <option value="10">أكتوبر</option><option value="11">نوفمبر</option><option value="12">ديسمبر</option>
+     <option value="01">جانفي</option><option value="02">فيفري</option><option value="03">مارس</option>
+     <option value="04">أفريل</option><option value="05">ماي</option><option value="06">جوان</option>
     </select>
    </div>
   </div>
-  <div class="actions"><button onclick="loadSubscriptions()">تحديث الاشتراكات</button><button class="secondary" onclick="exportTable('subscriptions')">تصدير CSV</button></div>
   <div id="subscriptionSummary" class="status hidden"></div>
+  <div class="actions"><button onclick="loadSubscriptions()">تحديث الاشتراكات</button><button class="secondary" onclick="exportTable('subscriptions')">تصدير CSV</button></div>
   <div id="subscriptionsMsg" class="status hidden"></div>
   <div id="subscriptionsTable" class="table-wrap"></div>
  </section>
@@ -262,7 +243,7 @@ function subscriptionYear(r){
 }
 function monthLabel(v){const code=monthCode(v);return monthNames[code]||String(v||'—')}
 function fillAthleteOptions(){
- ['insuranceAthlete','subscriptionAthlete','examAthlete'].forEach(id=>{
+ ['insuranceAthlete','examAthlete'].forEach(id=>{
   const s=$(id);if(!s)return;const old=s.value;
   s.innerHTML='<option value="">اختر الرياضي</option>'+cache.athletes.map(a=>`<option value="${esc(a.id)}">${esc(a.full_name)}${a.status==='paused'?' (paused)':''}</option>`).join('');
   if(old)s.value=old;
@@ -344,31 +325,40 @@ async function loadRegistrations(){
 $('registrationFilter').addEventListener('change',loadRegistrations);
 $('registrationSearch').addEventListener('input',loadRegistrations);
 async function decideRegistration(id,status){
- const action=status==='accepted'?'قبول':'رفض';if(!confirm(`هل تريد ${action} طلب التسجيل؟`))return;
+ const action=status==='accepted'?'قبول':'رفض';
+ if(!confirm(status==='accepted'?'هل تريد قبول الطلب وإضافة الرياضي تلقائيًا إلى جدول الاشتراكات؟':'هل تريد رفض الطلب وحذفه نهائيًا من قائمة الطلبات؟'))return;
  try{
   const request=cache.registrations.find(r=>String(r.id)===String(id));
-  if(!request)throw new Error('لم يتم العثور على طلب التسجيل. حدّث قائمة الطلبات وحاول مجددًا.');
-  if(String(request.status||'pending').toLowerCase()===status){showMsg('registrationsMsg',`الطلب حالته بالفعل ${status}.`);return;}
+  if(!request)throw new Error('لم يتم العثور على طلب التسجيل. حدّث القائمة وحاول مجددًا.');
   if(status==='accepted'){
    const fullName=String(request.full_name||'').trim();
    if(!fullName)throw new Error('لا يمكن قبول الطلب لأن الاسم الكامل غير موجود.');
    const phone=String(request.guardian_phone||'').trim();
-   const existing=cache.athletes.find(a=>String(a.full_name||'').trim().toLowerCase()===fullName.toLowerCase() && (!phone || String(a.guardian_phone||'').trim()===phone));
-   if(!existing){
-    const athlete={full_name:fullName};
+   let athlete=cache.athletes.find(a=>String(a.full_name||'').trim().toLowerCase()===fullName.toLowerCase() && (!phone || String(a.guardian_phone||'').trim()===phone));
+   if(!athlete){
+    const payload={full_name:fullName};
     ['date_of_birth','birth_place','gender','residence','guardian_name','guardian_phone','practiced_before','belt','father_name'].forEach(k=>{
-     if(request[k]!==undefined&&request[k]!==null&&request[k]!=='')athlete[k]=request[k];
+     if(request[k]!==undefined&&request[k]!==null&&request[k]!=='')payload[k]=request[k];
     });
-    if(athlete.practiced_before!==undefined)athlete.practiced_before=boolValue(String(athlete.practiced_before));
+    if(payload.practiced_before!==undefined)payload.practiced_before=boolValue(String(payload.practiced_before));
     const requestedGroup=request.requested_group_id;
-    if(requestedGroup!==undefined&&requestedGroup!==null&&requestedGroup!==''&&cache.training_groups.some(g=>String(g.id)===String(requestedGroup)))athlete.group_id=Number(requestedGroup);
-    athlete.status='active';
-    await insertOne('athletes',athlete);
+    if(requestedGroup!==undefined&&requestedGroup!==null&&requestedGroup!==''&&cache.training_groups.some(g=>String(g.id)===String(requestedGroup)))payload.group_id=Number(requestedGroup);
+    payload.status='active';
+    const {data,error}=await db.from('athletes').insert(payload).select('*').single();
+    if(error)throw new Error('تعذر إنشاء سجل الرياضي: '+errorText(error));
+    athlete=data;
    }
+   await ensureSeasonSubscriptions(athlete.id);
+   const {error}=await db.from('registrations').delete().eq('id',id);
+   if(error)throw new Error('تم إنشاء/تأكيد الرياضي، لكن تعذر حذف الطلب من القائمة: '+errorText(error));
+   await loadRegistrations();await loadAthletes();await loadSubscriptions();
+   showMsg('registrationsMsg','تم قبول الطلب وإضافة الرياضي إلى الاشتراكات تلقائيًا، وحُذف الطلب من قائمة الطلبات.');
+  }else{
+   const {error}=await db.from('registrations').delete().eq('id',id);
+   if(error)throw new Error(errorText(error));
+   await loadRegistrations();
+   showMsg('registrationsMsg','تم رفض الطلب وحذفه من قائمة الطلبات.');
   }
-  const {error}=await db.from('registrations').update({status}).eq('id',id);if(error)throw error;
-  await Promise.all([loadRegistrations(),loadAthletes()]);
-  showMsg('registrationsMsg',status==='accepted'?'تم قبول الطلب وإنشاء سجل الرياضي تلقائيًا، أو ربطه بسجل موجود لتفادي التكرار. أضف التأمين والاشتراكات من تبويباتها حسب الدفع الفعلي.':`تم تحديث حالة الطلب إلى ${status}.`);
  }catch(e){showMsg('registrationsMsg','تعذر إكمال العملية: '+errorText(e),true)}
 }
 window.decideRegistration=decideRegistration;
@@ -448,10 +438,32 @@ async function deleteInsurance(id){
 }
 window.changeInsuranceStatus=changeInsuranceStatus;window.deleteInsurance=deleteInsurance;
  
-/* الاشتراكات: subscription_month من نوع DATE و season_year من نوع INTEGER */
+/* الاشتراكات: مصفوفة شهرية، مع فصل التحليل عن محتوى الجدول */
+const seasonMonths=['10','11','12','01','02','03','04','05','06'];
+const seasonMonthNames={'10':'أكتوبر','11':'نوفمبر','12':'ديسمبر','01':'جانفي','02':'فيفري','03':'مارس','04':'أفريل','05':'ماي','06':'جوان'};
+function currentSeasonYear(){
+ const now=new Date();return now.getMonth()>=9?now.getFullYear():now.getFullYear()-1;
+}
+function subscriptionRowYear(r){
+ if(r.season_year!==undefined&&r.season_year!==null&&r.season_year!=='')return Number(r.season_year);
+ return subscriptionYear(r);
+}
+function isPaid(r){return r&&(r.paid===true||String(r.paid)==='true')}
+async function ensureSeasonSubscriptions(athleteId){
+ const season=currentSeasonYear();
+ const existing=cache.subscriptions.filter(r=>String(r.athlete_id)===String(athleteId)&&subscriptionRowYear(r)===season);
+ const existingMonths=new Set(existing.map(r=>monthCode(r.subscription_month)));
+ for(const m of seasonMonths){
+  if(existingMonths.has(m))continue;
+  const calendarYear=Number(m)>=10?season:season+1;
+  const payload={athlete_id:athleteId,season_year:season,subscription_month:`${calendarYear}-${m}-01`,amount:0,paid:false};
+  const {error}=await db.from('subscriptions').insert(payload);
+  if(error)throw new Error('أُضيف الرياضي لكن تعذر إنشاء شهر '+seasonMonthNames[m]+' في الاشتراكات: '+errorText(error));
+ }
+}
 function populateSubscriptionYears(){
  const s=$('subscriptionYearFilter'),old=s.value;
- const years=[...new Set(cache.subscriptions.map(subscriptionYear).filter(Boolean))].sort((a,b)=>b-a);
+ const years=[...new Set(cache.subscriptions.map(subscriptionRowYear).filter(Boolean))].sort((a,b)=>b-a);
  s.innerHTML='<option value="">كل السنوات</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
  if(old&&years.includes(Number(old)))s.value=old;
 }
@@ -459,62 +471,73 @@ async function loadSubscriptions(){
  try{
   cache.subscriptions=await selectAll('subscriptions');
   populateSubscriptionYears();
-  const month=$('subscriptionFilter').value,year=$('subscriptionYearFilter').value;
-  const rows=cache.subscriptions.filter(r=>(!month||monthCode(r.subscription_month)===month)&&(!year||subscriptionYear(r)===Number(year)));
-  const paidRows=rows.filter(r=>r.paid===true||String(r.paid)==='true');
+  const analysisMonth=$('subscriptionFilter').value,analysisYear=$('subscriptionYearFilter').value;
+  const analysisRows=cache.subscriptions.filter(r=>(!analysisMonth||monthCode(r.subscription_month)===analysisMonth)&&(!analysisYear||subscriptionRowYear(r)===Number(analysisYear)));
+  const paidRows=analysisRows.filter(isPaid),unpaid=analysisRows.length-paidRows.length;
   const total=paidRows.reduce((sum,r)=>sum+Number(r.amount||0),0);
-  const unpaid=rows.length-paidRows.length;
-  showMsg('subscriptionSummary',`السنة: ${year||'كل السنوات'} | الشهر: ${month?monthNames[month]:'كل الأشهر'} | عدد السجلات: ${rows.length} | المدفوع: ${paidRows.length} | غير المدفوع: ${unpaid} | مجموع المبالغ المدفوعة: ${total.toFixed(2)}`);
-  $('subscriptionsTable').innerHTML=tableHTML([
-   {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name||'الرياضي #'+r.athlete_id)},
-   {label:'السنة',render:r=>subscriptionYear(r)??'—'},
-   {label:'الشهر',render:r=>esc(monthLabel(r.subscription_month))},
-   {label:'تاريخ الشهر في قاعدة البيانات',render:r=>dateText(r.subscription_month)},
-   {label:'المبلغ',key:'amount'},
-   {label:'مدفوع؟',render:r=>(r.paid===true||String(r.paid)==='true')?'نعم':'لا'},
-   {label:'تاريخ الدفع',render:r=>dateText(r.paid_at)},
-   {label:'الإجراء',render:r=>`<button class="small" onclick="toggleSubscription('${esc(r.id)}',${!(r.paid===true||String(r.paid)==='true')})">${(r.paid===true||String(r.paid)==='true')?'تحديد غير مدفوع':'تحديد مدفوع'}</button><button class="small danger" onclick="deleteSubscription('${esc(r.id)}')">حذف السجل</button>`}
-  ],rows);
+  showMsg('subscriptionSummary',`تحليل فقط — السنة: ${analysisYear||'كل السنوات'} | الشهر: ${analysisMonth?seasonMonthNames[analysisMonth]||monthNames[analysisMonth]:'كل الأشهر'} | عدد السجلات: ${analysisRows.length} | المدفوع: ${paidRows.length} | غير المدفوع: ${unpaid} | مجموع المبالغ المسجلة للمدفوع: ${total.toFixed(2)} دج`);
+  const season=currentSeasonYear();
+  const athletes=[...cache.athletes].sort((a,b)=>String(a.full_name||'').localeCompare(String(b.full_name||''),'ar'));
+  const records=cache.subscriptions.filter(r=>subscriptionRowYear(r)===season);
+  const byKey=new Map(records.map(r=>[`${r.athlete_id}|${monthCode(r.subscription_month)}`,r]));
+  let html='<table class="subscription-matrix"><thead><tr><th>اسم الرياضي واللقب</th>'+seasonMonths.map(m=>`<th>${seasonMonthNames[m]}</th>`).join('')+'<th>السنة الرياضية</th></tr></thead><tbody>';
+  if(!athletes.length)html+='<tr><td colspan="11">لا يوجد رياضيون بعد. أضف رياضيًا من النموذج أعلاه أو اقبل طلب تسجيل.</td></tr>';
+  for(const athlete of athletes){
+   html+='<tr><td>'+esc(athlete.full_name||'—')+'</td>';
+   for(const m of seasonMonths){
+    const rec=byKey.get(`${athlete.id}|${m}`);
+    const paid=isPaid(rec);
+    const cls=rec?(paid?'payment-paid':'payment-unpaid'):'payment-empty';
+    const label=rec?(paid?'مدفوع':'غير مدفوع'):'إنشاء الشهر';
+    html+=`<td><button class="payment-cell ${cls}" onclick="toggleMatrixSubscription('${esc(athlete.id)}','${m}','${esc(rec?.id||'')}')">${label}</button></td>`;
+   }
+   html+=`<td>${season}–${season+1}</td></tr>`;
+  }
+  html+='</tbody></table>';
+  $('subscriptionsTable').innerHTML=html;
   hideMsg('subscriptionsMsg');updateCounts();
  }catch(e){showMsg('subscriptionsMsg',errorText(e),true);throw e}
 }
 $('subscriptionFilter').addEventListener('change',loadSubscriptions);
 $('subscriptionYearFilter').addEventListener('change',loadSubscriptions);
-$('subscriptionForm').addEventListener('submit',async e=>{
+$('subscriptionAthleteForm').addEventListener('submit',async e=>{
  e.preventDefault();
  try{
-  const p=formObject(e.currentTarget);
-  p.athlete_id=Number(p.athlete_id);
-  p.amount=Number(p.amount||0);
-  p.paid=boolValue(p.paid);
-  p.season_year=Number(p.season_year);
-  const month=String(p.subscription_month).padStart(2,'0');
-  if(!monthOrder.includes(month))throw new Error('يرجى اختيار شهر صحيح.');
-  /* نخزن اليوم الأول من الشهر لأن العمود subscription_month من نوع DATE */
-  p.subscription_month=`${p.season_year}-${month}-01`;
-  if(p.paid&&!p.paid_at)p.paid_at=new Date().toISOString().slice(0,10);
-  if(!p.paid)delete p.paid_at;
-  await insertOne('subscriptions',p);
+  const fd=new FormData(e.currentTarget);
+  const first=String(fd.get('first_name')||'').trim(),last=String(fd.get('last_name')||'').trim();
+  if(!first||!last)throw new Error('يرجى إدخال الاسم واللقب.');
+  const full_name=`${first} ${last}`.trim();
+  if(cache.athletes.some(a=>String(a.full_name||'').trim().toLowerCase()===full_name.toLowerCase()))throw new Error('هذا الرياضي موجود بالفعل في قائمة الرياضيين.');
+  const {data,error}=await db.from('athletes').insert({full_name,status:'active'}).select('*').single();
+  if(error)throw new Error(errorText(error));
+  try{await ensureSeasonSubscriptions(data.id)}catch(err){showMsg('subscriptionsMsg','تمت إضافة الرياضي، لكن تعذر إكمال كل أشهر الاشتراك: '+errorText(err),true);await loadAthletes();await loadSubscriptions();return}
   e.currentTarget.reset();
-  $('subscriptionYear').value=new Date().getFullYear();
-  showMsg('subscriptionsMsg','تم حفظ الاشتراك والسنة بنجاح.');
-  await loadSubscriptions();
- }catch(err){showMsg('subscriptionsMsg','تعذر حفظ الاشتراك: '+errorText(err),true)}
+  await loadAthletes();await loadSubscriptions();
+  showMsg('subscriptionsMsg','تمت إضافة الرياضي وإنشاء أشهر الموسم بحالة غير مدفوع.');
+ }catch(err){showMsg('subscriptionsMsg','تعذرت إضافة الرياضي: '+errorText(err),true)}
 });
-async function toggleSubscription(id,paid){
+async function toggleMatrixSubscription(athleteId,month,recordId){
  try{
-  const payload={paid};
-  if(paid)payload.paid_at=new Date().toISOString().slice(0,10);
-  else payload.paid_at=null;
-  await updateOne('subscriptions',id,payload);await loadSubscriptions();showMsg('subscriptionsMsg','تم تحديث حالة الدفع.')
- }catch(e){showMsg('subscriptionsMsg',errorText(e),true)}
+  const season=currentSeasonYear(),calendarYear=Number(month)>=10?season:season+1;
+  if(recordId){
+   const rec=cache.subscriptions.find(r=>String(r.id)===String(recordId));
+   const nextPaid=!isPaid(rec),payload={paid:nextPaid,paid_at:nextPaid?new Date().toISOString().slice(0,10):null};
+   await updateOne('subscriptions',recordId,payload);
+  }else{
+   const payload={athlete_id:athleteId,season_year:season,subscription_month:`${calendarYear}-${month}-01`,amount:0,paid:true,paid_at:new Date().toISOString().slice(0,10)};
+   const {error}=await db.from('subscriptions').insert(payload);
+   if(error)throw new Error(errorText(error));
+  }
+  await loadSubscriptions();
+ }catch(e){showMsg('subscriptionsMsg','تعذر تحديث حالة الشهر: '+errorText(e),true)}
 }
 async function deleteSubscription(id){
- if(!confirm('هل تريد حذف سجل الاشتراك هذا فقط؟ لن يتم حذف الرياضي.'))return;
+ if(!confirm('هل تريد حذف سجل الاشتراك هذا فقط؟'))return;
  try{await deleteOne('subscriptions',id);await loadSubscriptions();showMsg('subscriptionsMsg','تم حذف سجل الاشتراك.')}
  catch(e){showMsg('subscriptionsMsg',errorText(e),true)}
 }
-window.toggleSubscription=toggleSubscription;window.deleteSubscription=deleteSubscription;
+window.toggleMatrixSubscription=toggleMatrixSubscription;
+window.deleteSubscription=deleteSubscription;
  
 async function loadExams(){
  try{
