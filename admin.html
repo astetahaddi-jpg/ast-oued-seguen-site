@@ -52,6 +52,7 @@ td{overflow-wrap:anywhere}
 .metric span{font-size:12px}
 footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
 #loginPanel{max-width:460px;margin:35px auto}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 </style>
 </head>
 <body>
@@ -66,702 +67,553 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
 </header>
 
 <main>
- <section id="loginPanel" class="panel">
-  <h2>تسجيل دخول المسؤول</h2>
-  <form id="loginForm">
-   <div style="margin-bottom:12px">
-    <label for="email">البريد الإلكتروني</label>
-    <input id="email" type="email" autocomplete="username" required>
+<section id="loginPanel" class="panel">
+ <h2>تسجيل دخول المسؤول</h2>
+ <form id="loginForm">
+  <div style="margin-bottom:12px">
+   <label for="email">البريد الإلكتروني</label>
+   <input id="email" type="email" autocomplete="username" required>
+  </div>
+  <div>
+   <label for="password">كلمة المرور</label>
+   <input id="password" type="password" autocomplete="current-password" required>
+  </div>
+  <div class="actions"><button type="submit">Login / تسجيل الدخول</button></div>
+ </form>
+ <div id="loginMsg" class="status hidden"></div>
+</section>
+
+<section id="dashboard" class="hidden">
+ <div id="globalMsg" class="status hidden"></div>
+ <div class="panel">
+  <div class="cards">
+   <div class="metric"><strong id="countAthletes">—</strong><span>الرياضيون</span></div>
+   <div class="metric"><strong id="countRegistrations">—</strong><span>طلبات التسجيل</span></div>
+   <div class="metric"><strong id="countInsurance">—</strong><span>سجلات التأمين</span></div>
+   <div class="metric"><strong id="countSubscriptions">—</strong><span>الاشتراكات</span></div>
+  </div>
+ </div>
+
+ <nav class="tabs" aria-label="خيارات لوحة الإدارة">
+  <button class="active" data-tab="registrations">طلبات التسجيل</button>
+  <button data-tab="athletes">الرياضيون</button>
+  <button data-tab="insurance">التأمين</button>
+  <button data-tab="subscriptions">الاشتراكات</button>
+  <button data-tab="exams">الامتحانات</button>
+  <button data-tab="groups">مجموعات التدريب</button>
+ </nav>
+
+ <section id="tab-registrations" class="panel tab">
+  <h2>طلبات التسجيل</h2>
+  <p class="muted">يتم تحديث حالة الطلب عند القبول أو الرفض. إضافة الرياضي تلقائيًا تعتمد على إعدادات قاعدة البيانات.</p>
+  <div class="grid">
+   <div><label>تصفية حسب الحالة</label>
+    <select id="registrationFilter">
+     <option value="">كل الحالات</option><option value="pending">pending</option><option value="accepted">accepted</option><option value="rejected">rejected</option>
+    </select>
    </div>
-   <div>
-    <label for="password">كلمة المرور</label>
-    <input id="password" type="password" autocomplete="current-password" required>
-   </div>
-   <div class="actions"><button type="submit">Login / تسجيل الدخول</button></div>
-  </form>
-  <div id="loginMsg" class="status hidden"></div>
+   <div><label>بحث بالاسم</label><input id="registrationSearch" placeholder="اسم الرياضي"></div>
+  </div>
+  <div class="actions"><button onclick="loadRegistrations()">تحديث الطلبات</button><button class="secondary" onclick="exportTable('registrations')">تصدير CSV</button></div>
+  <div id="registrationsMsg" class="status hidden"></div>
+  <div id="registrationsTable" class="table-wrap"></div>
  </section>
 
- <section id="dashboard" class="hidden">
-  <div id="globalMsg" class="status hidden"></div>
-  <div class="panel">
-   <div class="cards">
-    <div class="metric"><strong id="countAthletes">—</strong><span>الرياضيون</span></div>
-    <div class="metric"><strong id="countRegistrations">—</strong><span>طلبات التسجيل</span></div>
-    <div class="metric"><strong id="countInsurance">—</strong><span>سجلات التأمين</span></div>
-    <div class="metric"><strong id="countSubscriptions">—</strong><span>الاشتراكات</span></div>
-   </div>
+ <section id="tab-athletes" class="panel tab hidden">
+  <h2>إدارة الرياضيين</h2>
+  <details open>
+   <summary style="cursor:pointer;font-weight:700;margin-bottom:14px">إضافة رياضي جديد</summary>
+   <form id="athleteForm">
+    <div class="grid">
+     <div><label>الاسم الكامل</label><input name="full_name" required></div>
+     <div><label>تاريخ الميلاد</label><input name="date_of_birth" type="date"></div>
+     <div><label>مكان الميلاد</label><input name="birth_place"></div>
+     <div><label>الجنس</label><select name="gender"><option value="">غير محدد</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select></div>
+     <div><label>مكان الإقامة</label><input name="residence"></div>
+     <div><label>اسم الأب / الولي</label><input name="father_name"></div>
+     <div><label>اسم الولي</label><input name="guardian_name"></div>
+     <div><label>هاتف الولي</label><input name="guardian_phone" type="tel"></div>
+     <div><label>مارس الجودو سابقًا؟</label><select name="practiced_before"><option value="">غير محدد</option><option value="true">نعم</option><option value="false">لا</option></select></div>
+     <div><label>الحزام</label><input name="belt"></div>
+     <div><label>مجموعة التدريب</label><select name="group_id" id="athleteGroup"><option value="">بدون مجموعة</option></select></div>
+     <div><label>الحالة</label><select name="status"><option value="active">active</option><option value="paused">paused</option></select></div>
+    </div>
+    <div class="actions"><button type="submit">حفظ الرياضي</button><button type="reset" class="secondary">مسح الحقول</button></div>
+   </form>
+  </details>
+  <hr>
+  <div class="grid">
+   <div><label>بحث عن رياضي</label><input id="athleteSearch" placeholder="الاسم أو الهاتف"></div>
+   <div><label>الحالة</label><select id="athleteFilter"><option value="">الكل</option><option value="active">active</option><option value="paused">paused</option></select></div>
   </div>
+  <div class="actions"><button onclick="loadAthletes()">تحديث الرياضيين</button><button class="secondary" onclick="exportTable('athletes')">تصدير CSV</button></div>
+  <div id="athletesMsg" class="status hidden"></div>
+  <div id="athletesTable" class="table-wrap"></div>
+ </section>
 
-  <nav class="tabs" aria-label="خيارات لوحة الإدارة">
-   <button class="active" data-tab="registrations">طلبات التسجيل</button>
-   <button data-tab="athletes">الرياضيون</button>
-   <button data-tab="insurance">التأمين</button>
-   <button data-tab="subscriptions">الاشتراكات</button>
-   <button data-tab="exams">الامتحانات</button>
-   <button data-tab="groups">مجموعات التدريب</button>
-  </nav>
+ <section id="tab-insurance" class="panel tab hidden">
+  <h2>التأمين الرياضي</h2>
+  <form id="insuranceForm">
+   <div class="grid">
+    <div><label>الرياضي</label><select name="athlete_id" id="insuranceAthlete" required><option value="">اختر الرياضي</option></select></div>
+    <div><label>سنة التأمين</label><input name="insurance_year" type="number" min="2000" max="2100" required></div>
+    <div><label>حالة التأمين</label><select name="status"><option value="Paid">Paid</option><option value="Pending">Pending</option></select></div>
+    <div><label>ملاحظات</label><input name="notes"></div>
+   </div>
+   <div class="actions"><button type="submit">حفظ التأمين</button></div>
+  </form>
+  <p class="muted">تُحفظ سجلات التأمين في جدول insurance ولا ينشأ رياضي جديد عند حفظ التأمين.</p>
+  <div class="actions"><button onclick="loadInsurance()">تحديث التأمين</button><button class="secondary" onclick="exportTable('insurance')">تصدير CSV</button></div>
+  <div id="insuranceMsg" class="status hidden"></div>
+  <div id="insuranceTable" class="table-wrap"></div>
+ </section>
 
-  <section id="tab-registrations" class="panel tab">
-   <h2>طلبات التسجيل</h2>
-   <p class="muted">عند قبول الطلب، يتم تحديث حالته إلى accepted. إذا كان مشروعك يستخدم Trigger لإضافة الرياضي تلقائيًا، فسيستمر العمل به.</p>
-   <div class="grid" style="margin-bottom:12px">
-    <div><label>تصفية حسب الحالة</label>
-     <select id="registrationFilter">
-      <option value="">كل الحالات</option>
-      <option value="pending">pending</option>
-      <option value="accepted">accepted</option>
-      <option value="rejected">rejected</option>
+ <section id="tab-subscriptions" class="panel tab hidden">
+  <h2>الاشتراكات الشهرية</h2>
+  <p class="muted">اختر السنة والشهر لكل اشتراك. تُحفظ قيمة الشهر كتاريخ صالح في قاعدة البيانات، وتُحفظ السنة في season_year.</p>
+  <form id="subscriptionForm">
+   <div class="grid">
+    <div><label>الرياضي</label><select name="athlete_id" id="subscriptionAthlete" required><option value="">اختر الرياضي</option></select></div>
+    <div><label>السنة الدراسية / سنة الاشتراك</label><input id="subscriptionYear" name="season_year" type="number" min="2000" max="2100" required></div>
+    <div><label>الشهر</label>
+     <select id="subscriptionMonth" name="subscription_month" required>
+      <option value="">اختر الشهر</option>
+      <option value="09">سبتمبر — September</option>
+      <option value="10">أكتوبر — October</option>
+      <option value="11">نوفمبر — November</option>
+      <option value="12">ديسمبر — December</option>
+      <option value="01">جانفي — January</option>
+      <option value="02">فيفري — February</option>
+      <option value="03">مارس — March</option>
+      <option value="04">أفريل — April</option>
+      <option value="05">ماي — May</option>
+      <option value="06">جوان — June</option>
      </select>
     </div>
-    <div><label>بحث بالاسم</label><input id="registrationSearch" placeholder="اسم الرياضي"></div>
+    <div><label>المبلغ</label><input name="amount" type="number" min="0" step="0.01" value="0" required></div>
+    <div><label>تم الدفع؟</label><select name="paid"><option value="true">نعم</option><option value="false">لا</option></select></div>
+    <div><label>تاريخ الدفع</label><input name="paid_at" type="date"></div>
    </div>
-   <div class="actions"><button onclick="loadRegistrations()">تحديث الطلبات</button><button class="secondary" onclick="exportTable('registrations')">تصدير CSV</button></div>
-   <div id="registrationsMsg" class="status hidden"></div>
-   <div id="registrationsTable" class="table-wrap"></div>
-  </section>
+   <div class="actions"><button type="submit">حفظ الاشتراك</button><button type="reset" class="secondary">مسح الحقول</button></div>
+  </form>
 
-  <section id="tab-athletes" class="panel tab hidden">
-   <h2>إدارة الرياضيين</h2>
-   <details open>
-    <summary style="cursor:pointer;font-weight:700;margin-bottom:14px">إضافة رياضي جديد</summary>
-    <form id="athleteForm">
-     <div class="grid">
-      <div><label>الاسم الكامل</label><input name="full_name" required></div>
-      <div><label>تاريخ الميلاد</label><input name="date_of_birth" type="date"></div>
-      <div><label>مكان الميلاد</label><input name="birth_place"></div>
-      <div><label>الجنس</label><select name="gender"><option value="">غير محدد</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select></div>
-      <div><label>مكان الإقامة</label><input name="residence"></div>
-      <div><label>اسم الأب / الولي</label><input name="father_name"></div>
-      <div><label>اسم الولي (حقل التسجيل)</label><input name="guardian_name"></div>
-      <div><label>هاتف الولي</label><input name="guardian_phone" type="tel"></div>
-      <div><label>مارس الجودو سابقًا؟</label><select name="practiced_before"><option value="">غير محدد</option><option value="true">نعم</option><option value="false">لا</option></select></div>
-      <div><label>الحزام</label><input name="belt"></div>
-      <div><label>مجموعة التدريب</label><select name="group_id" id="athleteGroup"><option value="">بدون مجموعة</option></select></div>
-      <div><label>الحالة</label><select name="status"><option value="active">active</option><option value="paused">paused</option></select></div>
-     </div>
-     <div class="actions"><button type="submit">حفظ الرياضي</button><button type="reset" class="secondary">مسح الحقول</button></div>
-    </form>
-   </details>
-   <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
-   <div class="grid">
-    <div><label>بحث عن رياضي</label><input id="athleteSearch" placeholder="الاسم أو الهاتف"></div>
-    <div><label>الحالة</label><select id="athleteFilter"><option value="">الكل</option><option value="active">active</option><option value="paused">paused</option></select></div>
+  <hr>
+  <h3>تحليل الاشتراكات حسب الشهر والسنة</h3>
+  <div class="grid">
+   <div><label>تصفية حسب السنة</label><select id="subscriptionYearFilter"><option value="">كل السنوات</option></select></div>
+   <div><label>تصفية حسب الشهر</label>
+    <select id="subscriptionFilter">
+     <option value="">كل الأشهر</option>
+     <option value="09">سبتمبر — September</option><option value="10">أكتوبر — October</option>
+     <option value="11">نوفمبر — November</option><option value="12">ديسمبر — December</option>
+     <option value="01">جانفي — January</option><option value="02">فيفري — February</option>
+     <option value="03">مارس — March</option><option value="04">أفريل — April</option>
+     <option value="05">ماي — May</option><option value="06">جوان — June</option>
+    </select>
    </div>
-   <div class="actions"><button onclick="loadAthletes()">تحديث الرياضيين</button><button class="secondary" onclick="exportTable('athletes')">تصدير CSV</button></div>
-   <div id="athletesMsg" class="status hidden"></div>
-   <div id="athletesTable" class="table-wrap"></div>
-  </section>
-
-  <section id="tab-insurance" class="panel tab hidden">
-   <h2>التأمين الرياضي</h2>
-   <form id="insuranceForm">
-    <div class="grid">
-     <div><label>الرياضي</label><select name="athlete_id" id="insuranceAthlete" required><option value="">اختر الرياضي</option></select></div>
-     <div><label>سنة التأمين</label><input name="insurance_year" type="number" min="2000" max="2100" required></div>
-     <div><label>حالة التأمين</label><select name="status"><option value="Paid">Paid</option><option value="Pending">Pending</option></select></div>
-     <div><label>ملاحظات</label><input name="notes"></div>
-    </div>
-    <div class="actions"><button type="submit">حفظ التأمين</button></div>
-   </form>
-   <p class="muted">تُعرض السجلات المرتبطة بالرياضيين من جدول insurance، ولا يتم إنشاء سجل رياضي جديد عند تسجيل التأمين.</p>
-   <div class="actions"><button onclick="loadInsurance()">تحديث التأمين</button><button class="secondary" onclick="exportTable('insurance')">تصدير CSV</button></div>
-   <div id="insuranceMsg" class="status hidden"></div>
-   <div id="insuranceTable" class="table-wrap"></div>
-  </section>
-
-  <section id="tab-subscriptions" class="panel tab hidden">
-   <h2>الاشتراكات الشهرية</h2>
-   <form id="subscriptionForm">
-    <div class="grid">
-     <div><label>الرياضي</label><select name="athlete_id" id="subscriptionAthlete" required><option value="">اختر الرياضي</option></select></div>
-     <div><label>الشهر</label>
-      <select name="subscription_month" required>
-       <option value="">اختر الشهر</option>
-       <option value="September">سبتمبر — September</option>
-       <option value="October">أكتوبر — October</option>
-       <option value="November">نوفمبر — November</option>
-       <option value="December">ديسمبر — December</option>
-       <option value="January">جانفي — January</option>
-       <option value="February">فيفري — February</option>
-       <option value="March">مارس — March</option>
-       <option value="April">أفريل — April</option>
-       <option value="May">ماي — May</option>
-       <option value="June">جوان — June</option>
-      </select>
-     </div>
-     <div><label>المبلغ المدفوع</label><input name="amount" type="number" min="0" step="0.01" value="0" required></div>
-     <div><label>تم الدفع؟</label><select name="paid"><option value="true">نعم</option><option value="false">لا</option></select></div>
-     <div><label>تاريخ الدفع</label><input name="paid_at" type="date"></div>
-    </div>
-    <div class="actions"><button type="submit">حفظ الاشتراك</button></div>
-   </form>
-   <div class="grid" style="margin-top:15px">
-    <div><label>تصفية حسب الشهر</label><select id="subscriptionFilter"><option value="">كل الأشهر</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option><option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option></select></div>
-   </div>
-   <div class="actions"><button onclick="loadSubscriptions()">تحديث الاشتراكات</button><button class="secondary" onclick="exportTable('subscriptions')">تصدير CSV</button></div>
-   <div id="subscriptionSummary" class="status hidden"></div>
-   <div id="subscriptionsMsg" class="status hidden"></div>
-   <div id="subscriptionsTable" class="table-wrap"></div>
-  </section>
-
-  <section id="tab-exams" class="panel tab hidden">
-   <h2>الامتحانات والأحزمة</h2>
-   <form id="examForm">
-    <div class="grid">
-     <div><label>الرياضي</label><select name="athlete_id" id="examAthlete" required><option value="">اختر الرياضي</option></select></div>
-     <div><label>تاريخ الامتحان</label><input name="exam_date" type="date" required></div>
-     <div><label>الحزام قبل الامتحان</label><input name="belt_before"></div>
-     <div><label>الحزام بعد الامتحان</label><input name="belt_after"></div>
-     <div><label>النتيجة</label><select name="result"><option value="">غير محدد</option><option value="نجاح">نجاح</option><option value="رسوب">رسوب</option><option value="ناجح">Passed</option><option value="راسب">Failed</option></select></div>
-     <div><label>ملاحظات</label><input name="notes"></div>
-    </div>
-    <div class="actions"><button type="submit">حفظ نتيجة الامتحان</button></div>
-   </form>
-   <div class="actions"><button onclick="loadExams()">تحديث الامتحانات</button><button class="secondary" onclick="exportTable('exams')">تصدير CSV</button></div>
-   <div id="examsMsg" class="status hidden"></div>
-   <div id="examsTable" class="table-wrap"></div>
-  </section>
-
-  <section id="tab-groups" class="panel tab hidden">
-   <h2>مجموعات التدريب</h2>
-   <form id="groupForm">
-    <div class="grid">
-     <div><label>اسم المجموعة</label><input name="name" required></div>
-     <div><label>أقل عمر</label><input name="min_age" type="number" min="0"></div>
-     <div><label>أكبر عمر</label><input name="max_age" type="number" min="0"></div>
-    </div>
-    <div class="actions"><button type="submit">إضافة مجموعة</button></div>
-   </form>
-   <div class="actions"><button onclick="loadGroups()">تحديث المجموعات</button><button class="secondary" onclick="exportTable('training_groups')">تصدير CSV</button></div>
-   <div id="groupsMsg" class="status hidden"></div>
-   <div id="groupsTable" class="table-wrap"></div>
-  </section>
+  </div>
+  <div class="actions"><button onclick="loadSubscriptions()">تحديث الاشتراكات</button><button class="secondary" onclick="exportTable('subscriptions')">تصدير CSV</button></div>
+  <div id="subscriptionSummary" class="status hidden"></div>
+  <div id="subscriptionsMsg" class="status hidden"></div>
+  <div id="subscriptionsTable" class="table-wrap"></div>
  </section>
+
+ <section id="tab-exams" class="panel tab hidden">
+  <h2>الامتحانات والأحزمة</h2>
+  <form id="examForm">
+   <div class="grid">
+    <div><label>الرياضي</label><select name="athlete_id" id="examAthlete" required><option value="">اختر الرياضي</option></select></div>
+    <div><label>تاريخ الامتحان</label><input name="exam_date" type="date" required></div>
+    <div><label>الحزام قبل الامتحان</label><input name="belt_before"></div>
+    <div><label>الحزام بعد الامتحان</label><input name="belt_after"></div>
+    <div><label>النتيجة</label><select name="result"><option value="">غير محدد</option><option value="نجاح">نجاح</option><option value="رسوب">رسوب</option><option value="ناجح">Passed</option><option value="راسب">Failed</option></select></div>
+    <div><label>ملاحظات</label><input name="notes"></div>
+   </div>
+   <div class="actions"><button type="submit">حفظ نتيجة الامتحان</button></div>
+  </form>
+  <div class="actions"><button onclick="loadExams()">تحديث الامتحانات</button><button class="secondary" onclick="exportTable('exams')">تصدير CSV</button></div>
+  <div id="examsMsg" class="status hidden"></div>
+  <div id="examsTable" class="table-wrap"></div>
+ </section>
+
+ <section id="tab-groups" class="panel tab hidden">
+  <h2>مجموعات التدريب</h2>
+  <form id="groupForm">
+   <div class="grid">
+    <div><label>اسم المجموعة</label><input name="name" required></div>
+    <div><label>أقل عمر</label><input name="min_age" type="number" min="0"></div>
+    <div><label>أكبر عمر</label><input name="max_age" type="number" min="0"></div>
+   </div>
+   <div class="actions"><button type="submit">إضافة مجموعة</button></div>
+  </form>
+  <div class="actions"><button onclick="loadGroups()">تحديث المجموعات</button><button class="secondary" onclick="exportTable('training_groups')">تصدير CSV</button></div>
+  <div id="groupsMsg" class="status hidden"></div>
+  <div id="groupsTable" class="table-wrap"></div>
+ </section>
+</section>
 </main>
 <footer>AST Oued Seguen · Administration</footer>
 
 <script>
-const SUPABASE_URL = 'https://saeuzlgtbvwxdifhxyrq.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2';
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://saeuzlgtbvwxdifhxyrq.supabase.co';
+const SUPABASE_KEY='sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null;
+let cache={registrations:[],athletes:[],insurance:[],subscriptions:[],exams:[],training_groups:[]};
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const monthNames={'01':'جانفي — January','02':'فيفري — February','03':'مارس — March','04':'أفريل — April','05':'ماي — May','06':'جوان — June','09':'سبتمبر — September','10':'أكتوبر — October','11':'نوفمبر — November','12':'ديسمبر — December'};
+const monthOrder=['09','10','11','12','01','02','03','04','05','06'];
 
-let currentUser = null;
-let cache = {
-  registrations: [], athletes: [], insurance: [],
-  subscriptions: [], exams: [], training_groups: []
-};
+function showMsg(id,message,error=false){const el=$(id);if(!el)return;el.textContent=message;el.className='status'+(error?' error':' ok');el.classList.remove('hidden')}
+function hideMsg(id){if($(id))$(id).classList.add('hidden')}
+function errorText(e){return e?.message||e?.details||String(e||'خطأ غير معروف')}
+function dateText(v){return v?esc(String(v).slice(0,10)):'—'}
+function tableHTML(headers,rows){
+ if(!rows.length)return '<p class="muted">لا توجد سجلات لعرضها.</p>';
+ return '<table><thead><tr>'+headers.map(h=>'<th>'+esc(h.label)+'</th>').join('')+'</tr></thead><tbody>'+
+ rows.map(r=>'<tr>'+headers.map(h=>'<td>'+(h.render?h.render(r):esc(r[h.key]??'—'))+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+}
+function formObject(form){const out={};new FormData(form).forEach((v,k)=>{if(v!=='')out[k]=v});return out}
+function boolValue(v){if(v==='true')return true;if(v==='false')return false;return v}
+function monthCode(v){
+ if(!v)return '';
+ const s=String(v);
+ if(/^\d{4}-\d{2}-\d{2}/.test(s))return s.slice(5,7);
+ const m={'September':'09','October':'10','November':'11','December':'12','January':'01','February':'02','March':'03','April':'04','May':'05','June':'06'};
+ return m[s]||'';
+}
+function subscriptionYear(r){
+ if(r.season_year!==null&&r.season_year!==undefined&&r.season_year!=='')return Number(r.season_year);
+ const d=r.subscription_month||r.paid_at||r.created_at;
+ return d?Number(String(d).slice(0,4)):null;
+}
+function monthLabel(v){const code=monthCode(v);return monthNames[code]||String(v||'—')}
+function fillAthleteOptions(){
+ ['insuranceAthlete','subscriptionAthlete','examAthlete'].forEach(id=>{
+  const s=$(id);if(!s)return;const old=s.value;
+  s.innerHTML='<option value="">اختر الرياضي</option>'+cache.athletes.map(a=>`<option value="${esc(a.id)}">${esc(a.full_name)}${a.status==='paused'?' (paused)':''}</option>`).join('');
+  if(old)s.value=old;
+ });
+ const gs=$('athleteGroup');if(gs){const old=gs.value;gs.innerHTML='<option value="">بدون مجموعة</option>'+cache.training_groups.map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('');if(old)gs.value=old}
+}
+async function selectAll(table,order='created_at'){
+ let q=db.from(table).select('*');if(order)q=q.order(order,{ascending:false});
+ const {data,error}=await q;if(error)throw new Error(table+': '+errorText(error));return data||[];
+}
+async function insertOne(table,payload){const {error}=await db.from(table).insert(payload);if(error)throw new Error(table+': '+errorText(error))}
+async function updateOne(table,id,payload){const {error}=await db.from(table).update(payload).eq('id',id);if(error)throw new Error(table+': '+errorText(error))}
+async function deleteOne(table,id){const {error}=await db.from(table).delete().eq('id',id);if(error)throw new Error(table+': '+errorText(error))}
 
-const $ = id => document.getElementById(id);
-const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
-  '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
-}[c]));
-
-function showMsg(id, message, error=false) {
-  const el = $(id);
-  if (!el) return;
-  el.textContent = message;
-  el.className = 'status' + (error ? ' error' : ' ok');
-  el.classList.remove('hidden');
+async function ensureAdmin(user){
+ const {data,error}=await db.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();
+ if(error)throw new Error('تعذر التحقق من حساب المسؤول في admin_users: '+errorText(error));
+ if(!data)throw new Error('هذا الحساب غير موجود في جدول admin_users. أضف user_id الخاص به من Supabase قبل الدخول.');
 }
-function hideMsg(id) {
-  const el = $(id);
-  if (el) el.classList.add('hidden');
+async function login(email,password){
+ const {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;
+ currentUser=data.user;await ensureAdmin(currentUser);
+ $('loginPanel').classList.add('hidden');$('dashboard').classList.remove('hidden');$('logoutBtn').classList.remove('hidden');
+ hideMsg('loginMsg');await refreshAll();
 }
-function errorText(error) {
-  return error?.message || error?.details || String(error || 'خطأ غير معروف');
+async function logout(){
+ await db.auth.signOut();currentUser=null;
+ $('dashboard').classList.add('hidden');$('logoutBtn').classList.add('hidden');$('loginPanel').classList.remove('hidden');
 }
-function dateText(value) {
-  return value ? esc(String(value).slice(0,10)) : '—';
-}
-function tableHTML(headers, rows) {
-  if (!rows.length) return '<p class="muted">لا توجد سجلات لعرضها.</p>';
-  return '<table><thead><tr>' +
-    headers.map(h => '<th>' + esc(h.label) + '</th>').join('') +
-    '</tr></thead><tbody>' +
-    rows.map(row => '<tr>' + headers.map(h =>
-      '<td>' + (h.render ? h.render(row) : esc(row[h.key] ?? '—')) + '</td>'
-    ).join('') + '</tr>').join('') +
-    '</tbody></table>';
-}
-function formObject(form) {
-  const out = {};
-  new FormData(form).forEach((value,key) => {
-    if (value !== '') out[key] = value;
-  });
-  return out;
-}
-function boolValue(value) {
-  if (value === 'true') return true;
-  if (value === 'false') return false;
-  return value;
-}
-function fillAthleteOptions() {
-  ['insuranceAthlete','subscriptionAthlete','examAthlete'].forEach(id => {
-    const select = $(id);
-    if (!select) return;
-    const old = select.value;
-    select.innerHTML = '<option value="">اختر الرياضي</option>' +
-      cache.athletes.map(a =>
-        `<option value="${esc(a.id)}">${esc(a.full_name)}${a.status === 'paused' ? ' (paused)' : ''}</option>`
-      ).join('');
-    if (old) select.value = old;
-  });
-  const groupSelect = $('athleteGroup');
-  if (groupSelect) {
-    const old = groupSelect.value;
-    groupSelect.innerHTML = '<option value="">بدون مجموعة</option>' +
-      cache.training_groups.map(g =>
-        `<option value="${esc(g.id)}">${esc(g.name)}</option>`
-      ).join('');
-    if (old) groupSelect.value = old;
-  }
-}
-async function selectAll(table, order='created_at') {
-  let q = db.from(table).select('*');
-  if (order) q = q.order(order, {ascending:false});
-  const {data,error} = await q;
-  if (error) throw new Error(table + ': ' + errorText(error));
-  return data || [];
-}
-async function insertOne(table, payload) {
-  const {error} = await db.from(table).insert(payload);
-  if (error) throw new Error(table + ': ' + errorText(error));
-}
-async function updateOne(table, id, payload) {
-  const {error} = await db.from(table).update(payload).eq('id',id);
-  if (error) throw new Error(table + ': ' + errorText(error));
-}
-async function deleteOne(table, id) {
-  const {error} = await db.from(table).delete().eq('id',id);
-  if (error) throw new Error(table + ': ' + errorText(error));
-}
-
-async function ensureAdmin(user) {
-  const {data,error} = await db.from('admin_users')
-    .select('user_id').eq('user_id', user.id).maybeSingle();
-  if (error) throw new Error('تعذر التحقق من حساب المسؤول في admin_users: ' + errorText(error));
-  if (!data) throw new Error('هذا الحساب غير موجود في جدول admin_users. أضف user_id الخاص به من Supabase قبل الدخول.');
-}
-
-async function login(email,password) {
-  const {data,error} = await db.auth.signInWithPassword({email,password});
-  if (error) throw error;
-  currentUser = data.user;
-  await ensureAdmin(currentUser);
-  $('loginPanel').classList.add('hidden');
-  $('dashboard').classList.remove('hidden');
-  $('logoutBtn').classList.remove('hidden');
-  hideMsg('loginMsg');
-  await refreshAll();
-}
-async function logout() {
-  await db.auth.signOut();
-  currentUser = null;
-  $('dashboard').classList.add('hidden');
-  $('logoutBtn').classList.add('hidden');
-  $('loginPanel').classList.remove('hidden');
-}
-
-$('loginForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  hideMsg('loginMsg');
-  try {
-    await login($('email').value.trim(), $('password').value);
-  } catch (err) {
-    await db.auth.signOut();
-    $('dashboard').classList.add('hidden');
-    $('loginPanel').classList.remove('hidden');
-    showMsg('loginMsg', errorText(err), true);
-  }
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();hideMsg('loginMsg');
+ try{await login($('email').value.trim(),$('password').value)}
+ catch(err){await db.auth.signOut();currentUser=null;$('dashboard').classList.add('hidden');$('loginPanel').classList.remove('hidden');showMsg('loginMsg',errorText(err),true)}
 });
-
-db.auth.onAuthStateChange(async (_event, session) => {
-  if (!session?.user || currentUser) return;
-  currentUser = session.user;
-  try {
-    await ensureAdmin(currentUser);
-    $('loginPanel').classList.add('hidden');
-    $('dashboard').classList.remove('hidden');
-    $('logoutBtn').classList.remove('hidden');
-    await refreshAll();
-  } catch (err) {
-    showMsg('loginMsg', errorText(err), true);
-    $('loginPanel').classList.remove('hidden');
-  }
+db.auth.onAuthStateChange(async(_event,session)=>{
+ if(!session?.user||currentUser)return;
+ currentUser=session.user;
+ try{await ensureAdmin(currentUser);$('loginPanel').classList.add('hidden');$('dashboard').classList.remove('hidden');$('logoutBtn').classList.remove('hidden');await refreshAll()}
+ catch(err){currentUser=null;showMsg('loginMsg',errorText(err),true);$('loginPanel').classList.remove('hidden')}
 });
-
-async function refreshAll() {
-  showMsg('globalMsg','جارٍ تحميل البيانات...');
-  const jobs = [
-    ['registrations',loadRegistrations],
-    ['athletes',loadAthletes],
-    ['insurance',loadInsurance],
-    ['subscriptions',loadSubscriptions],
-    ['exams',loadExams],
-    ['groups',loadGroups]
-  ];
-  const errors = [];
-  for (const [name,fn] of jobs) {
-    try { await fn(); }
-    catch (err) { errors.push(name + ': ' + errorText(err)); }
-  }
-  if (errors.length) showMsg('globalMsg',
-    'تم تحميل ما أمكن، وتوجد أخطاء في بعض الجداول:\n' + errors.join('\n'), true);
-  else showMsg('globalMsg','تم تحميل البيانات بنجاح.');
-  updateCounts();
+async function refreshAll(){
+ showMsg('globalMsg','جارٍ تحميل البيانات...');
+ const jobs=[['registrations',loadRegistrations],['athletes',loadAthletes],['insurance',loadInsurance],['subscriptions',loadSubscriptions],['exams',loadExams],['groups',loadGroups]];
+ const errors=[];
+ for(const [name,fn] of jobs){try{await fn()}catch(e){errors.push(name+': '+errorText(e))}}
+ if(errors.length)showMsg('globalMsg','تم تحميل ما أمكن، وتوجد أخطاء في بعض الجداول:\n'+errors.join('\n'),true);
+ else showMsg('globalMsg','تم تحميل البيانات بنجاح.');
+ updateCounts();
+}
+function updateCounts(){
+ $('countAthletes').textContent=cache.athletes.length;
+ $('countRegistrations').textContent=cache.registrations.length;
+ $('countInsurance').textContent=cache.insurance.length;
+ $('countSubscriptions').textContent=cache.subscriptions.length;
 }
 
-function updateCounts() {
-  $('countAthletes').textContent = cache.athletes.length;
-  $('countRegistrations').textContent = cache.registrations.length;
-  $('countInsurance').textContent = cache.insurance.length;
-  $('countSubscriptions').textContent = cache.subscriptions.length;
-}
-
-async function loadRegistrations() {
-  try {
-    cache.registrations = await selectAll('registrations');
-    const term = $('registrationSearch').value.trim().toLowerCase();
-    const status = $('registrationFilter').value;
-    let rows = cache.registrations.filter(r =>
-      (!status || String(r.status||'pending').toLowerCase() === status) &&
-      (!term || String(r.full_name||'').toLowerCase().includes(term))
-    );
-    $('registrationsTable').innerHTML = tableHTML([
-      {label:'الاسم',key:'full_name'},
-      {label:'تاريخ الميلاد',render:r=>dateText(r.date_of_birth)},
-      {label:'مكان الميلاد',key:'birth_place'},
-      {label:'الجنس',key:'gender'},
-      {label:'الإقامة',key:'residence'},
-      {label:'الولي',key:'guardian_name'},
-      {label:'الهاتف',key:'guardian_phone'},
-      {label:'المجموعة المطلوبة',key:'requested_group_id'},
-      {label:'الحالة',key:'status'},
-      {label:'الإجراء',render:r=>{
-        const s=String(r.status||'pending').toLowerCase();
-        if (s==='accepted'||s==='rejected') return '—';
-        return `<button class="small" onclick="decideRegistration('${esc(r.id)}','accepted')">قبول</button>
-        <button class="small danger" onclick="decideRegistration('${esc(r.id)}','rejected')">رفض</button>`;
-      }}
-    ],rows);
-    hideMsg('registrationsMsg');
-    updateCounts();
-  } catch(err) { showMsg('registrationsMsg',errorText(err),true); throw err; }
+async function loadRegistrations(){
+ try{
+  cache.registrations=await selectAll('registrations');
+  const term=$('registrationSearch').value.trim().toLowerCase(),status=$('registrationFilter').value;
+  const rows=cache.registrations.filter(r=>(!status||String(r.status||'pending').toLowerCase()===status)&&(!term||String(r.full_name||'').toLowerCase().includes(term)));
+  $('registrationsTable').innerHTML=tableHTML([
+   {label:'الاسم',key:'full_name'},{label:'تاريخ الميلاد',render:r=>dateText(r.date_of_birth)},
+   {label:'مكان الميلاد',key:'birth_place'},{label:'الجنس',key:'gender'},{label:'الإقامة',key:'residence'},
+   {label:'الولي',key:'guardian_name'},{label:'الهاتف',key:'guardian_phone'},{label:'المجموعة المطلوبة',key:'requested_group_id'},
+   {label:'الحالة',key:'status'},
+   {label:'الإجراء',render:r=>{const s=String(r.status||'pending').toLowerCase();return s==='accepted'||s==='rejected'?'—':`<button class="small" onclick="decideRegistration('${esc(r.id)}','accepted')">قبول</button><button class="small danger" onclick="decideRegistration('${esc(r.id)}','rejected')">رفض</button>`}}
+  ],rows);
+  hideMsg('registrationsMsg');updateCounts();
+ }catch(e){showMsg('registrationsMsg',errorText(e),true);throw e}
 }
 $('registrationFilter').addEventListener('change',loadRegistrations);
 $('registrationSearch').addEventListener('input',loadRegistrations);
-
-async function decideRegistration(id,status) {
-  const action = status === 'accepted' ? 'قبول' : 'رفض';
-  if (!confirm(`هل تريد ${action} طلب التسجيل؟`)) return;
-  try {
-    const {error} = await db.from('registrations').update({status}).eq('id',id);
-    if (error) throw error;
-    showMsg('registrationsMsg',`تم تحديث حالة الطلب إلى ${status}.`);
-    await loadRegistrations();
-    if (status==='accepted') {
-      try { await loadAthletes(); }
-      catch(e) { showMsg('registrationsMsg','تم تحديث الطلب، لكن تعذر تحديث قائمة الرياضيين: '+errorText(e),true); }
-    }
-  } catch(err) { showMsg('registrationsMsg','تعذر تحديث الطلب: '+errorText(err),true); }
+async function decideRegistration(id,status){
+ const action=status==='accepted'?'قبول':'رفض';if(!confirm(`هل تريد ${action} طلب التسجيل؟`))return;
+ try{
+  const {error}=await db.from('registrations').update({status}).eq('id',id);if(error)throw error;
+  await loadRegistrations();
+  if(status==='accepted')await loadAthletes();
+  showMsg('registrationsMsg',`تم تحديث حالة الطلب إلى ${status}.`);
+ }catch(e){showMsg('registrationsMsg','تعذر تحديث الطلب: '+errorText(e),true)}
 }
-window.decideRegistration = decideRegistration;
+window.decideRegistration=decideRegistration;
 
-async function loadAthletes() {
-  try {
-    cache.athletes = await selectAll('athletes');
-    const term = $('athleteSearch').value.trim().toLowerCase();
-    const status = $('athleteFilter').value;
-    const rows = cache.athletes.filter(a =>
-      (!status || a.status===status) &&
-      (!term || String(a.full_name||'').toLowerCase().includes(term) ||
-       String(a.guardian_phone||'').includes(term))
-    );
-    $('athletesTable').innerHTML = tableHTML([
-      {label:'الاسم',key:'full_name'},
-      {label:'تاريخ الميلاد',render:a=>dateText(a.date_of_birth)},
-      {label:'مكان الميلاد',key:'birth_place'},
-      {label:'اسم الأب',key:'father_name'},
-      {label:'الهاتف',key:'guardian_phone'},
-      {label:'الحزام',key:'belt'},
-      {label:'المجموعة',render:a=>cache.training_groups.find(g=>String(g.id)===String(a.group_id))?.name || a.group_id || '—'},
-      {label:'الحالة',key:'status'},
-      {label:'إجراء',render:a=>`<button class="small" onclick="toggleAthlete('${esc(a.id)}','${a.status==='paused'?'active':'paused'}')">${a.status==='paused'?'إعادة التفعيل':'إيقاف مؤقت'}</button>
-      <button class="small secondary" onclick="editAthlete('${esc(a.id)}')">تعديل</button>
-      <button class="small danger" onclick="removeAthlete('${esc(a.id)}')">حذف</button>`}
-    ],rows);
-    fillAthleteOptions();
-    hideMsg('athletesMsg');
-    updateCounts();
-  } catch(err) { showMsg('athletesMsg',errorText(err),true); throw err; }
+async function loadAthletes(){
+ try{
+  cache.athletes=await selectAll('athletes');
+  const term=$('athleteSearch').value.trim().toLowerCase(),status=$('athleteFilter').value;
+  const rows=cache.athletes.filter(a=>(!status||a.status===status)&&(!term||String(a.full_name||'').toLowerCase().includes(term)||String(a.guardian_phone||'').includes(term)));
+  $('athletesTable').innerHTML=tableHTML([
+   {label:'الاسم',key:'full_name'},{label:'تاريخ الميلاد',render:a=>dateText(a.date_of_birth)},
+   {label:'مكان الميلاد',key:'birth_place'},{label:'اسم الأب',key:'father_name'},{label:'الهاتف',key:'guardian_phone'},
+   {label:'الحزام',key:'belt'},
+   {label:'المجموعة',render:a=>esc(cache.training_groups.find(g=>String(g.id)===String(a.group_id))?.name||a.group_id||'—')},
+   {label:'الحالة',key:'status'},
+   {label:'إجراء',render:a=>`<button class="small" onclick="toggleAthlete('${esc(a.id)}','${a.status==='paused'?'active':'paused'}')">${a.status==='paused'?'إعادة التفعيل':'إيقاف مؤقت'}</button><button class="small secondary" onclick="editAthlete('${esc(a.id)}')">تعديل</button><button class="small danger" onclick="removeAthlete('${esc(a.id)}')">حذف</button>`}
+  ],rows);
+  fillAthleteOptions();hideMsg('athletesMsg');updateCounts();
+ }catch(e){showMsg('athletesMsg',errorText(e),true);throw e}
 }
 $('athleteSearch').addEventListener('input',loadAthletes);
 $('athleteFilter').addEventListener('change',loadAthletes);
-
 $('athleteForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  try {
-    const p=formObject(e.currentTarget);
-    p.practiced_before=boolValue(p.practiced_before);
-    if (p.group_id) p.group_id=Number(p.group_id); else delete p.group_id;
-    await insertOne('athletes',p);
-    e.currentTarget.reset();
-    showMsg('athletesMsg','تمت إضافة الرياضي بنجاح.');
-    await loadAthletes();
-  } catch(err) { showMsg('athletesMsg','تعذرت إضافة الرياضي: '+errorText(err),true); }
+ e.preventDefault();
+ try{
+  const p=formObject(e.currentTarget);p.practiced_before=boolValue(p.practiced_before);
+  if(p.group_id)p.group_id=Number(p.group_id);else delete p.group_id;
+  await insertOne('athletes',p);e.currentTarget.reset();showMsg('athletesMsg','تمت إضافة الرياضي بنجاح.');await loadAthletes();
+ }catch(err){showMsg('athletesMsg','تعذرت إضافة الرياضي: '+errorText(err),true)}
 });
+async function toggleAthlete(id,status){
+ if(!confirm(status==='paused'?'هل تريد إيقاف الرياضي مؤقتًا؟':'هل تريد إعادة تفعيل الرياضي؟'))return;
+ try{await updateOne('athletes',id,{status});await loadAthletes();showMsg('athletesMsg','تم تحديث حالة الرياضي.')}
+ catch(e){showMsg('athletesMsg',errorText(e),true)}
+}
+async function editAthlete(id){
+ const a=cache.athletes.find(x=>String(x.id)===String(id));if(!a)return;
+ const full_name=prompt('الاسم الكامل:',a.full_name||'');if(full_name===null)return;
+ const father_name=prompt('اسم الأب:',a.father_name||'');if(father_name===null)return;
+ const guardian_phone=prompt('هاتف الولي:',a.guardian_phone||'');if(guardian_phone===null)return;
+ try{await updateOne('athletes',id,{full_name,father_name,guardian_phone});await loadAthletes();showMsg('athletesMsg','تم تعديل بيانات الرياضي.')}
+ catch(e){showMsg('athletesMsg',errorText(e),true)}
+}
+async function removeAthlete(id){
+ if(!confirm('تنبيه: الحذف نهائي وقد تمنع العلاقات المرتبطة حذف الرياضي. هل تريد المتابعة؟'))return;
+ try{await deleteOne('athletes',id);await loadAthletes();showMsg('athletesMsg','تم حذف الرياضي.')}
+ catch(e){showMsg('athletesMsg','تعذر الحذف. قد توجد سجلات مرتبطة بالرياضي. لم يتم حذف السجلات المرتبطة تلقائيًا. التفاصيل: '+errorText(e),true)}
+}
+window.toggleAthlete=toggleAthlete;window.editAthlete=editAthlete;window.removeAthlete=removeAthlete;
 
-async function toggleAthlete(id,status) {
-  const word=status==='paused'?'إيقاف الرياضي مؤقتًا':'إعادة تفعيل الرياضي';
-  if(!confirm(`هل تريد ${word}؟`)) return;
-  try {
-    await updateOne('athletes',id,{status});
-    await loadAthletes();
-    showMsg('athletesMsg','تم تحديث حالة الرياضي.');
-  } catch(err) { showMsg('athletesMsg',errorText(err),true); }
-}
-async function editAthlete(id) {
-  const a=cache.athletes.find(x=>String(x.id)===String(id));
-  if(!a) return;
-  const full_name=prompt('الاسم الكامل:',a.full_name||'');
-  if(full_name===null) return;
-  const father_name=prompt('اسم الأب:',a.father_name||'');
-  if(father_name===null) return;
-  const guardian_phone=prompt('هاتف الولي:',a.guardian_phone||'');
-  if(guardian_phone===null) return;
-  try {
-    await updateOne('athletes',id,{full_name,father_name,guardian_phone});
-    await loadAthletes();
-    showMsg('athletesMsg','تم تعديل بيانات الرياضي.');
-  } catch(err) { showMsg('athletesMsg',errorText(err),true); }
-}
-async function removeAthlete(id) {
-  if(!confirm('تنبيه: الحذف نهائي وقد تمنع العلاقات المرتبطة حذف الرياضي. هل تريد المتابعة؟')) return;
-  try {
-    await deleteOne('athletes',id);
-    await loadAthletes();
-    showMsg('athletesMsg','تم حذف الرياضي.');
-  } catch(err) { showMsg('athletesMsg','تعذر الحذف. قد توجد اشتراكات أو سجلات تأمين مرتبطة به. لا تحذف أي بيانات مرتبطة تلقائيًا. التفاصيل: '+errorText(err),true); }
-}
-window.toggleAthlete=toggleAthlete;
-window.editAthlete=editAthlete;
-window.removeAthlete=removeAthlete;
-
-async function loadInsurance() {
-  try {
-    cache.insurance=await selectAll('insurance','insurance_year');
-    $('insuranceTable').innerHTML=tableHTML([
-      {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name || 'الرياضي #'+r.athlete_id)},
-      {label:'تاريخ الميلاد',render:r=>dateText(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.date_of_birth)},
-      {label:'مكان الميلاد',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.birth_place||'—')},
-      {label:'اسم الأب',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.father_name||'—')},
-      {label:'السنة',key:'insurance_year'},
-      {label:'الحالة',key:'status'},
-      {label:'ملاحظات',key:'notes'},
-      {label:'الإجراء',render:r=>`<button class="small" onclick="changeInsuranceStatus('${esc(r.id)}','${String(r.status).toLowerCase()==='paid'?'Pending':'Paid'}')">${String(r.status).toLowerCase()==='paid'?'تحديد غير مدفوع':'تحديد مدفوع'}</button>
-      <button class="small danger" onclick="deleteInsurance('${esc(r.id)}')">حذف السجل</button>`}
-    ],cache.insurance);
-    hideMsg('insuranceMsg');
-    updateCounts();
-  } catch(err) { showMsg('insuranceMsg',errorText(err),true); throw err; }
+async function loadInsurance(){
+ try{
+  cache.insurance=await selectAll('insurance','insurance_year');
+  $('insuranceTable').innerHTML=tableHTML([
+   {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name||'الرياضي #'+r.athlete_id)},
+   {label:'تاريخ الميلاد',render:r=>dateText(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.date_of_birth)},
+   {label:'مكان الميلاد',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.birth_place||'—')},
+   {label:'اسم الأب',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.father_name||'—')},
+   {label:'السنة',key:'insurance_year'},{label:'الحالة',key:'status'},{label:'ملاحظات',key:'notes'},
+   {label:'الإجراء',render:r=>`<button class="small" onclick="changeInsuranceStatus('${esc(r.id)}','${String(r.status).toLowerCase()==='paid'?'Pending':'Paid'}')">${String(r.status).toLowerCase()==='paid'?'تحديد غير مدفوع':'تحديد مدفوع'}</button><button class="small danger" onclick="deleteInsurance('${esc(r.id)}')">حذف السجل</button>`}
+  ],cache.insurance);hideMsg('insuranceMsg');updateCounts();
+ }catch(e){showMsg('insuranceMsg',errorText(e),true);throw e}
 }
 $('insuranceForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  try {
-    const p=formObject(e.currentTarget);
-    p.athlete_id=Number(p.athlete_id);
-    p.insurance_year=Number(p.insurance_year);
-    await insertOne('insurance',p);
-    e.currentTarget.reset();
-    showMsg('insuranceMsg','تم حفظ سجل التأمين.');
-    await loadInsurance();
-  } catch(err) { showMsg('insuranceMsg','تعذر حفظ التأمين: '+errorText(err),true); }
+ e.preventDefault();
+ try{const p=formObject(e.currentTarget);p.athlete_id=Number(p.athlete_id);p.insurance_year=Number(p.insurance_year);await insertOne('insurance',p);e.currentTarget.reset();showMsg('insuranceMsg','تم حفظ سجل التأمين.');await loadInsurance()}
+ catch(err){showMsg('insuranceMsg','تعذر حفظ التأمين: '+errorText(err),true)}
 });
-async function changeInsuranceStatus(id,status) {
-  try {
-    await updateOne('insurance',id,{status});
-    await loadInsurance();
-    showMsg('insuranceMsg','تم تحديث حالة التأمين.');
-  } catch(err) { showMsg('insuranceMsg',errorText(err),true); }
+async function changeInsuranceStatus(id,status){
+ try{await updateOne('insurance',id,{status});await loadInsurance();showMsg('insuranceMsg','تم تحديث حالة التأمين.')}
+ catch(e){showMsg('insuranceMsg',errorText(e),true)}
 }
-async function deleteInsurance(id) {
-  if(!confirm('هل تريد حذف سجل التأمين هذا فقط؟ لن يتم حذف الرياضي.')) return;
-  try { await deleteOne('insurance',id); await loadInsurance(); }
-  catch(err) { showMsg('insuranceMsg',errorText(err),true); }
+async function deleteInsurance(id){
+ if(!confirm('هل تريد حذف سجل التأمين هذا فقط؟ لن يتم حذف الرياضي.'))return;
+ try{await deleteOne('insurance',id);await loadInsurance();showMsg('insuranceMsg','تم حذف سجل التأمين.')}
+ catch(e){showMsg('insuranceMsg',errorText(e),true)}
 }
-window.changeInsuranceStatus=changeInsuranceStatus;
-window.deleteInsurance=deleteInsurance;
+window.changeInsuranceStatus=changeInsuranceStatus;window.deleteInsurance=deleteInsurance;
 
-async function loadSubscriptions() {
-  try {
-    cache.subscriptions=await selectAll('subscriptions');
-    const month=$('subscriptionFilter').value;
-    const rows=cache.subscriptions.filter(r=>!month||r.subscription_month===month);
-    const paidRows=rows.filter(r=>r.paid===true || String(r.paid)==='true');
-    const total=paidRows.reduce((sum,r)=>sum+Number(r.amount||0),0);
-    showMsg('subscriptionSummary',`الشهر: ${month||'كل الأشهر'} | السجلات: ${rows.length} | المدفوع: ${paidRows.length} | مجموع المبالغ المسجلة كمدفوعة: ${total.toFixed(2)}`);
-    $('subscriptionsTable').innerHTML=tableHTML([
-      {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name || 'الرياضي #'+r.athlete_id)},
-      {label:'الشهر',key:'subscription_month'},
-      {label:'المبلغ',key:'amount'},
-      {label:'مدفوع؟',render:r=>(r.paid===true||String(r.paid)==='true')?'نعم':'لا'},
-      {label:'تاريخ الدفع',render:r=>dateText(r.paid_at)},
-      {label:'الإجراء',render:r=>`<button class="small" onclick="toggleSubscription('${esc(r.id)}',${!(r.paid===true||String(r.paid)==='true')})">${(r.paid===true||String(r.paid)==='true')?'تحديد غير مدفوع':'تحديد مدفوع'}</button>
-      <button class="small danger" onclick="deleteSubscription('${esc(r.id)}')">حذف السجل</button>`}
-    ],rows);
-    hideMsg('subscriptionsMsg');
-    updateCounts();
-  } catch(err) { showMsg('subscriptionsMsg',errorText(err),true); throw err; }
+/* الاشتراكات: subscription_month من نوع DATE و season_year من نوع INTEGER */
+function populateSubscriptionYears(){
+ const s=$('subscriptionYearFilter'),old=s.value;
+ const years=[...new Set(cache.subscriptions.map(subscriptionYear).filter(Boolean))].sort((a,b)=>b-a);
+ s.innerHTML='<option value="">كل السنوات</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
+ if(old&&years.includes(Number(old)))s.value=old;
+}
+async function loadSubscriptions(){
+ try{
+  cache.subscriptions=await selectAll('subscriptions');
+  populateSubscriptionYears();
+  const month=$('subscriptionFilter').value,year=$('subscriptionYearFilter').value;
+  const rows=cache.subscriptions.filter(r=>(!month||monthCode(r.subscription_month)===month)&&(!year||subscriptionYear(r)===Number(year)));
+  const paidRows=rows.filter(r=>r.paid===true||String(r.paid)==='true');
+  const total=paidRows.reduce((sum,r)=>sum+Number(r.amount||0),0);
+  const unpaid=rows.length-paidRows.length;
+  showMsg('subscriptionSummary',`السنة: ${year||'كل السنوات'} | الشهر: ${month?monthNames[month]:'كل الأشهر'} | عدد السجلات: ${rows.length} | المدفوع: ${paidRows.length} | غير المدفوع: ${unpaid} | مجموع المبالغ المدفوعة: ${total.toFixed(2)}`);
+  $('subscriptionsTable').innerHTML=tableHTML([
+   {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name||'الرياضي #'+r.athlete_id)},
+   {label:'السنة',render:r=>subscriptionYear(r)??'—'},
+   {label:'الشهر',render:r=>esc(monthLabel(r.subscription_month))},
+   {label:'تاريخ الشهر في قاعدة البيانات',render:r=>dateText(r.subscription_month)},
+   {label:'المبلغ',key:'amount'},
+   {label:'مدفوع؟',render:r=>(r.paid===true||String(r.paid)==='true')?'نعم':'لا'},
+   {label:'تاريخ الدفع',render:r=>dateText(r.paid_at)},
+   {label:'الإجراء',render:r=>`<button class="small" onclick="toggleSubscription('${esc(r.id)}',${!(r.paid===true||String(r.paid)==='true')})">${(r.paid===true||String(r.paid)==='true')?'تحديد غير مدفوع':'تحديد مدفوع'}</button><button class="small danger" onclick="deleteSubscription('${esc(r.id)}')">حذف السجل</button>`}
+  ],rows);
+  hideMsg('subscriptionsMsg');updateCounts();
+ }catch(e){showMsg('subscriptionsMsg',errorText(e),true);throw e}
 }
 $('subscriptionFilter').addEventListener('change',loadSubscriptions);
+$('subscriptionYearFilter').addEventListener('change',loadSubscriptions);
 $('subscriptionForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  try {
-    const p=formObject(e.currentTarget);
-    p.athlete_id=Number(p.athlete_id);
-    p.amount=Number(p.amount||0);
-    p.paid=boolValue(p.paid);
-    if(p.paid && !p.paid_at) p.paid_at=new Date().toISOString().slice(0,10);
-    await insertOne('subscriptions',p);
-    e.currentTarget.reset();
-    showMsg('subscriptionsMsg','تم حفظ الاشتراك.');
-    await loadSubscriptions();
-  } catch(err) { showMsg('subscriptionsMsg','تعذر حفظ الاشتراك: '+errorText(err),true); }
+ e.preventDefault();
+ try{
+  const p=formObject(e.currentTarget);
+  p.athlete_id=Number(p.athlete_id);
+  p.amount=Number(p.amount||0);
+  p.paid=boolValue(p.paid);
+  p.season_year=Number(p.season_year);
+  const month=String(p.subscription_month).padStart(2,'0');
+  if(!monthOrder.includes(month))throw new Error('يرجى اختيار شهر صحيح.');
+  /* نخزن اليوم الأول من الشهر لأن العمود subscription_month من نوع DATE */
+  p.subscription_month=`${p.season_year}-${month}-01`;
+  if(p.paid&&!p.paid_at)p.paid_at=new Date().toISOString().slice(0,10);
+  if(!p.paid)delete p.paid_at;
+  await insertOne('subscriptions',p);
+  e.currentTarget.reset();
+  $('subscriptionYear').value=new Date().getFullYear();
+  showMsg('subscriptionsMsg','تم حفظ الاشتراك والسنة بنجاح.');
+  await loadSubscriptions();
+ }catch(err){showMsg('subscriptionsMsg','تعذر حفظ الاشتراك: '+errorText(err),true)}
 });
-async function toggleSubscription(id,paid) {
-  try {
-    const payload={paid};
-    if(paid) payload.paid_at=new Date().toISOString().slice(0,10);
-    await updateOne('subscriptions',id,payload);
-    await loadSubscriptions();
-    showMsg('subscriptionsMsg','تم تحديث حالة الدفع.');
-  } catch(err) { showMsg('subscriptionsMsg',errorText(err),true); }
+async function toggleSubscription(id,paid){
+ try{
+  const payload={paid};
+  if(paid)payload.paid_at=new Date().toISOString().slice(0,10);
+  else payload.paid_at=null;
+  await updateOne('subscriptions',id,payload);await loadSubscriptions();showMsg('subscriptionsMsg','تم تحديث حالة الدفع.')
+ }catch(e){showMsg('subscriptionsMsg',errorText(e),true)}
 }
-async function deleteSubscription(id) {
-  if(!confirm('هل تريد حذف سجل الاشتراك هذا فقط؟ لن يتم حذف الرياضي.')) return;
-  try { await deleteOne('subscriptions',id); await loadSubscriptions(); }
-  catch(err) { showMsg('subscriptionsMsg',errorText(err),true); }
+async function deleteSubscription(id){
+ if(!confirm('هل تريد حذف سجل الاشتراك هذا فقط؟ لن يتم حذف الرياضي.'))return;
+ try{await deleteOne('subscriptions',id);await loadSubscriptions();showMsg('subscriptionsMsg','تم حذف سجل الاشتراك.')}
+ catch(e){showMsg('subscriptionsMsg',errorText(e),true)}
 }
-window.toggleSubscription=toggleSubscription;
-window.deleteSubscription=deleteSubscription;
+window.toggleSubscription=toggleSubscription;window.deleteSubscription=deleteSubscription;
 
-async function loadExams() {
-  try {
-    cache.exams=await selectAll('exams','exam_date');
-    $('examsTable').innerHTML=tableHTML([
-      {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name || 'الرياضي #'+r.athlete_id)},
-      {label:'تاريخ الامتحان',render:r=>dateText(r.exam_date)},
-      {label:'الحزام السابق',key:'belt_before'},
-      {label:'الحزام الجديد',key:'belt_after'},
-      {label:'النتيجة',key:'result'},
-      {label:'ملاحظات',key:'notes'},
-      {label:'الإجراء',render:r=>`<button class="small danger" onclick="deleteExam('${esc(r.id)}')">حذف السجل</button>`}
-    ],cache.exams);
-    hideMsg('examsMsg');
-  } catch(err) { showMsg('examsMsg',errorText(err),true); throw err; }
+async function loadExams(){
+ try{
+  cache.exams=await selectAll('exams','exam_date');
+  $('examsTable').innerHTML=tableHTML([
+   {label:'الرياضي',render:r=>esc(cache.athletes.find(a=>String(a.id)===String(r.athlete_id))?.full_name||'الرياضي #'+r.athlete_id)},
+   {label:'تاريخ الامتحان',render:r=>dateText(r.exam_date)},{label:'الحزام السابق',key:'belt_before'},
+   {label:'الحزام الجديد',key:'belt_after'},{label:'النتيجة',key:'result'},{label:'ملاحظات',key:'notes'},
+   {label:'الإجراء',render:r=>`<button class="small danger" onclick="deleteExam('${esc(r.id)}')">حذف السجل</button>`}
+  ],cache.exams);hideMsg('examsMsg');
+ }catch(e){showMsg('examsMsg',errorText(e),true);throw e}
 }
 $('examForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  try {
-    const p=formObject(e.currentTarget);
-    p.athlete_id=Number(p.athlete_id);
-    await insertOne('exams',p);
-    e.currentTarget.reset();
-    showMsg('examsMsg','تم حفظ نتيجة الامتحان.');
-    await loadExams();
-  } catch(err) { showMsg('examsMsg','تعذر حفظ الامتحان: '+errorText(err),true); }
+ e.preventDefault();
+ try{const p=formObject(e.currentTarget);p.athlete_id=Number(p.athlete_id);await insertOne('exams',p);e.currentTarget.reset();showMsg('examsMsg','تم حفظ نتيجة الامتحان.');await loadExams()}
+ catch(err){showMsg('examsMsg','تعذر حفظ الامتحان: '+errorText(err),true)}
 });
-async function deleteExam(id) {
-  if(!confirm('هل تريد حذف سجل الامتحان؟')) return;
-  try { await deleteOne('exams',id); await loadExams(); }
-  catch(err) { showMsg('examsMsg',errorText(err),true); }
+async function deleteExam(id){
+ if(!confirm('هل تريد حذف سجل الامتحان؟'))return;
+ try{await deleteOne('exams',id);await loadExams();showMsg('examsMsg','تم حذف السجل.')}
+ catch(e){showMsg('examsMsg',errorText(e),true)}
 }
 window.deleteExam=deleteExam;
 
-async function loadGroups() {
-  try {
-    cache.training_groups=await selectAll('training_groups');
-    $('groupsTable').innerHTML=tableHTML([
-      {label:'اسم المجموعة',key:'name'},
-      {label:'أقل عمر',key:'min_age'},
-      {label:'أكبر عمر',key:'max_age'},
-      {label:'الإجراء',render:g=>`<button class="small secondary" onclick="editGroup('${esc(g.id)}')">تعديل</button>
-      <button class="small danger" onclick="deleteGroup('${esc(g.id)}')">حذف</button>`}
-    ],cache.training_groups);
-    fillAthleteOptions();
-    hideMsg('groupsMsg');
-  } catch(err) { showMsg('groupsMsg',errorText(err),true); throw err; }
+async function loadGroups(){
+ try{
+  cache.training_groups=await selectAll('training_groups');
+  $('groupsTable').innerHTML=tableHTML([
+   {label:'اسم المجموعة',key:'name'},{label:'أقل عمر',key:'min_age'},{label:'أكبر عمر',key:'max_age'},
+   {label:'الإجراء',render:g=>`<button class="small secondary" onclick="editGroup('${esc(g.id)}')">تعديل</button><button class="small danger" onclick="deleteGroup('${esc(g.id)}')">حذف</button>`}
+  ],cache.training_groups);fillAthleteOptions();hideMsg('groupsMsg');
+ }catch(e){showMsg('groupsMsg',errorText(e),true);throw e}
 }
 $('groupForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  try {
-    const p=formObject(e.currentTarget);
-    if(p.min_age!==undefined) p.min_age=Number(p.min_age);
-    if(p.max_age!==undefined) p.max_age=Number(p.max_age);
-    await insertOne('training_groups',p);
-    e.currentTarget.reset();
-    showMsg('groupsMsg','تمت إضافة المجموعة.');
-    await loadGroups();
-  } catch(err) { showMsg('groupsMsg','تعذرت إضافة المجموعة: '+errorText(err),true); }
+ e.preventDefault();
+ try{
+  const p=formObject(e.currentTarget);
+  if(p.min_age!==undefined)p.min_age=Number(p.min_age);
+  if(p.max_age!==undefined)p.max_age=Number(p.max_age);
+  await insertOne('training_groups',p);e.currentTarget.reset();showMsg('groupsMsg','تمت إضافة المجموعة.');await loadGroups()
+ }catch(err){showMsg('groupsMsg','تعذرت إضافة المجموعة: '+errorText(err),true)}
 });
-async function editGroup(id) {
-  const g=cache.training_groups.find(x=>String(x.id)===String(id));
-  if(!g) return;
-  const name=prompt('اسم المجموعة:',g.name||'');
-  if(name===null) return;
-  const min=prompt('أقل عمر:',g.min_age??'');
-  if(min===null) return;
-  const max=prompt('أكبر عمر:',g.max_age??'');
-  if(max===null) return;
-  try {
-    await updateOne('training_groups',id,{
-      name,
-      min_age:min===''?null:Number(min),
-      max_age:max===''?null:Number(max)
-    });
-    await loadGroups();
-    showMsg('groupsMsg','تم تعديل المجموعة.');
-  } catch(err) { showMsg('groupsMsg',errorText(err),true); }
+async function editGroup(id){
+ const g=cache.training_groups.find(x=>String(x.id)===String(id));if(!g)return;
+ const name=prompt('اسم المجموعة:',g.name||'');if(name===null)return;
+ const min=prompt('أقل عمر:',g.min_age??'');if(min===null)return;
+ const max=prompt('أكبر عمر:',g.max_age??'');if(max===null)return;
+ try{
+  await updateOne('training_groups',id,{name,min_age:min===''?null:Number(min),max_age:max===''?null:Number(max)});
+  await loadGroups();showMsg('groupsMsg','تم تعديل المجموعة.')
+ }catch(e){showMsg('groupsMsg',errorText(e),true)}
 }
-async function deleteGroup(id) {
-  if(!confirm('هل تريد حذف مجموعة التدريب؟ إذا كان رياضيون مرتبطون بها فقد تمنع قاعدة البيانات الحذف.')) return;
-  try { await deleteOne('training_groups',id); await loadGroups(); }
-  catch(err) { showMsg('groupsMsg','تعذر حذف المجموعة: '+errorText(err),true); }
+async function deleteGroup(id){
+ if(!confirm('هل تريد حذف مجموعة التدريب؟ إذا كان رياضيون مرتبطون بها فقد تمنع قاعدة البيانات الحذف.'))return;
+ try{await deleteOne('training_groups',id);await loadGroups();showMsg('groupsMsg','تم حذف المجموعة.')}
+ catch(e){showMsg('groupsMsg','تعذر حذف المجموعة: '+errorText(e),true)}
 }
-window.editGroup=editGroup;
-window.deleteGroup=deleteGroup;
+window.editGroup=editGroup;window.deleteGroup=deleteGroup;
 
 const exportColumns={
  registrations:['id','full_name','date_of_birth','birth_place','gender','residence','guardian_name','guardian_phone','practiced_before','belt','requested_group_id','status','created_at','guardian_place'],
  athletes:['id','full_name','date_of_birth','birth_place','gender','residence','guardian_name','guardian_phone','practiced_before','belt','group_id','status','created_at','father_name'],
  insurance:['id','athlete_id','insurance_year','status','notes','created_at'],
- subscriptions:['id','athlete_id','subscription_month','amount','paid','paid_at','created_at'],
+ subscriptions:['id','athlete_id','subscription_month','season_year','amount','paid','paid_at','created_at'],
  exams:['id','athlete_id','exam_date','belt_before','belt_after','result','notes','created_at'],
  training_groups:['id','name','min_age','max_age','created_at']
 };
-function exportTable(name) {
-  const rows=cache[name]||[];
-  if(!rows.length) { alert('لا توجد بيانات لتصديرها.'); return; }
-  const cols=exportColumns[name]||Object.keys(rows[0]);
-  const csv=[cols.join(','),...rows.map(r=>cols.map(c=>{
-    const v=String(r[c]??'').replace(/"/g,'""');
-    return '"'+v+'"';
-  }).join(','))].join('\r\n');
-  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=name+'.csv';a.click();
-  URL.revokeObjectURL(url);
+function exportTable(name){
+ let rows=cache[name]||[];
+ if(name==='subscriptions'){
+  const month=$('subscriptionFilter').value,year=$('subscriptionYearFilter').value;
+  rows=rows.filter(r=>(!month||monthCode(r.subscription_month)===month)&&(!year||subscriptionYear(r)===Number(year)));
+ }
+ if(!rows.length){alert('لا توجد بيانات لتصديرها.');return}
+ const cols=exportColumns[name]||Object.keys(rows[0]);
+ const csv=[cols.join(','),...rows.map(r=>cols.map(c=>{
+  let value=r[c];
+  if(name==='subscriptions'&&c==='season_year')value=subscriptionYear(r);
+  value=String(value??'').replace(/"/g,'""');
+  return '"'+value+'"';
+ }).join(','))].join('\r\n');
+ const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=name+'.csv';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 window.exportTable=exportTable;
 
 document.querySelectorAll('[data-tab]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===btn));
-    document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+btn.dataset.tab));
-  });
+ btn.addEventListener('click',()=>{
+  document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===btn));
+  document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+btn.dataset.tab));
+ });
 });
+
+/* قيم افتراضية للنموذج فقط؛ لا تعدّل أي بيانات موجودة */
+$('subscriptionYear').value=new Date().getFullYear();
 </script>
 </body>
 </html>
