@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -10,49 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--green:#174d3a;--green2:#246b4e;--beige:#f4efdf;--paper:#fffdf7;--ink:#24342c;--muted:#68776e;--red:#b83232;--border:#dce4d9}
-*{box-sizing:border-box}
-body{margin:0;background:var(--beige);color:var(--ink);font-family:'Cairo',sans-serif}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-header{background:var(--green);color:white;padding:18px 16px}
-.header-inner{max-width:1250px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-header h1{font-size:21px;margin:0}
-header p{margin:4px 0 0;font-size:13px;opacity:.85}
-main{max-width:1250px;margin:22px auto;padding:0 14px 40px}
-.panel{background:var(--paper);border:1px solid var(--border);border-radius:15px;padding:18px;margin-bottom:18px;box-shadow:0 4px 18px #173c2510}
-h2{font-size:19px;margin:0 0 15px;color:var(--green)}
-h3{font-size:16px;margin:0 0 12px}
-.hidden{display:none!important}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
-label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
-input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cbd7cc;border-radius:9px;background:white;color:var(--ink);min-width:0}
-textarea{min-height:75px;resize:vertical}
-button,.btn{border:0;border-radius:9px;padding:10px 14px;background:var(--green);color:white;font-weight:700}
-button:hover{filter:brightness(1.08)}
-button.secondary{background:#e6ece4;color:var(--green)}
-button.danger{background:var(--red)}
-button.small{padding:6px 9px;font-size:12px;margin:2px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.tabs button{background:#e5eadd;color:var(--green);border:1px solid var(--border)}
-.tabs button.active{background:var(--green);color:white}
-.status{padding:12px;border-radius:9px;background:#edf2e9;margin:12px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
-.status.error{background:#fff0ee;color:#8b2424;border:1px solid #edc4bd}
-.status.ok{background:#e8f5e9;color:#205d34}
-.table-wrap{overflow-x:auto;width:100%}
-table{width:100%;border-collapse:collapse;min-width:650px;font-size:13px}
-th,td{padding:10px;border-bottom:1px solid var(--border);text-align:right;vertical-align:top}
-th{background:#edf1e7;color:var(--green);white-space:nowrap}
-td{overflow-wrap:anywhere}
-.muted{color:var(--muted);font-size:13px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.metric{background:#edf1e7;padding:15px;border-radius:12px}
-.metric strong{font-size:24px;display:block;color:var(--green)}
-.metric span{font-size:12px}
-footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
-#loginPanel{max-width:460px;margin:35px auto}
-hr{border:0;border-top:1px solid var(--border);margin:20px 0}
+:root{--navy:#123b70;--blue:#2584e8;--blue2:#eaf4ff;--red:#ef4b55;--redbg:#fff0f1;--green:#169b62;--greenbg:#eafaf1;--gold:#a86a00;--goldbg:#fff5df;--purple:#7654d6;--purplebg:#f2edff;--ink:#20344d;--muted:#718198;--line:#e2ebf5;--bg:#f4f8fd;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Tahoma,sans-serif}button,input,select,textarea{font:inherit}button{border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:#fff;cursor:pointer;font-weight:700;transition:.15s}button:hover{filter:brightness(.96);transform:translateY(-1px)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d6e1ef;border-radius:10px;background:#fff;color:var(--ink);outline:none;min-width:0}input:focus,select:focus,textarea:focus{border-color:#69aaf0;box-shadow:0 0 0 3px #2584e81a}label{font-size:13px;color:var(--muted);display:block;margin:5px 0;font-weight:700}textarea{min-height:75px;resize:vertical}header{background:linear-gradient(115deg,#fff,#eef6ff);border-bottom:1px solid var(--line);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:0;z-index:5;box-shadow:0 4px 18px #244a7510}header .header-inner{width:100%;max-width:1600px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:14px}.header-inner h1{font-size:23px;margin:0;color:var(--navy);letter-spacing:.3px}.header-inner p{margin:6px 0 0;color:#45658b;font-weight:700}.header-inner button{background:var(--red)}main{max-width:1600px;margin:0 auto;padding:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 18px #244a7508}h2{font-size:19px;margin:0 0 15px;color:var(--navy)}h3{font-size:16px;margin:0 0 12px}.hidden{display:none!important}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.secondary{background:#eef5ff!important;color:var(--navy)!important;border:1px solid #d9e8fa!important}.danger{background:var(--red)!important;color:white!important}.small{padding:6px 9px;font-size:12px;margin:2px}.tabs{display:flex;flex-direction:column;gap:5px;margin:0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;height:max-content;position:sticky;top:112px}.tabs button{display:flex;align-items:center;text-align:right;background:transparent;color:#49627e;border:1px solid transparent;border-radius:10px;padding:12px;font-weight:700}.tabs button:hover{background:#f4f8ff;transform:none}.tabs button.active{background:var(--blue2);color:var(--navy);border-color:#d9e8fa}.layout{max-width:1600px;margin:auto;display:grid;grid-template-columns:235px minmax(0,1fr);gap:16px;align-items:start}.content{min-width:0}.status{padding:12px;border-radius:10px;background:#eef5ff;margin:12px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;border:1px solid #d9e8fa}.status.error{background:var(--redbg);color:#8b2424;border-color:#f3c9cd}.status.ok{background:var(--greenbg);color:#17643e;border-color:#c8efd9}.table-wrap{overflow-x:auto;width:100%;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:650px;font-size:13px}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}th{background:#f4f8ff;color:var(--navy);white-space:nowrap}td{overflow-wrap:anywhere}.muted{color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}.metric{background:#f8fbff;border:1px solid var(--line);padding:15px;border-radius:12px}.metric strong{font-size:24px;display:block;color:var(--navy)}.metric span{font-size:12px;color:var(--muted)}footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}#loginPanel{max-width:450px;margin:8vh auto;padding:24px}#loginPanel h2{margin-top:0}hr{border:0;border-top:1px solid var(--line);margin:20px 0}summary{color:var(--navy)}
+@media(max-width:900px){header{position:static;padding:14px}.header-inner h1{font-size:18px}.layout{grid-template-columns:1fr;padding:0}.tabs{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:8px}.tabs button{font-size:12px;padding:10px 7px}main{padding:9px}.panel{padding:12px}.header-inner p{font-size:12px}}@media(max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric strong{font-size:21px}.actions button{flex:1}.header-inner h1{font-size:16px}}
 </style>
 </head>
 <body>
@@ -65,7 +24,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <button id="logoutBtn" class="secondary hidden" onclick="logout()">تسجيل الخروج</button>
  </div>
 </header>
-
+ 
 <main>
 <section id="loginPanel" class="panel">
  <h2>تسجيل دخول المسؤول</h2>
@@ -82,18 +41,29 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
  </form>
  <div id="loginMsg" class="status hidden"></div>
 </section>
-
+ 
 <section id="dashboard" class="hidden">
  <div id="globalMsg" class="status hidden"></div>
  <div class="panel">
+  <h2>ملخص النادي</h2>
   <div class="cards">
    <div class="metric"><strong id="countAthletes">—</strong><span>الرياضيون</span></div>
    <div class="metric"><strong id="countRegistrations">—</strong><span>طلبات التسجيل</span></div>
    <div class="metric"><strong id="countInsurance">—</strong><span>سجلات التأمين</span></div>
-   <div class="metric"><strong id="countSubscriptions">—</strong><span>الاشتراكات</span></div>
+   <div class="metric"><strong id="countSubscriptions">—</strong><span>الاشتراكات الشهرية</span></div>
   </div>
+  <hr>
+  <h3>المؤشرات المالية للاشتراكات</h3>
+  <div class="cards">
+   <div class="metric"><strong id="paidSubscriptionIncome">—</strong><span>إجمالي الاشتراكات المدفوعة (دج)</span></div>
+   <div class="metric"><strong id="paidSubscriptionCount">—</strong><span>عدد الاشتراكات المدفوعة</span></div>
+   <div class="metric"><strong id="unpaidSubscriptionCount">—</strong><span>عدد الاشتراكات غير المدفوعة</span></div>
+   <div class="metric"><strong id="paidInsuranceCount">—</strong><span>سجلات التأمين المدفوعة</span></div>
+  </div>
+  <p class="muted">تُحسب المداخيل من سجلات الاشتراكات الشهرية الموجودة فقط. لا تُقدّر قيمة مالية للتأمين لعدم وجود عمود مبلغ في جدول AST الحالي.</p>
  </div>
-
+ 
+ <div class="layout">
  <nav class="tabs" aria-label="خيارات لوحة الإدارة">
   <button class="active" data-tab="registrations">طلبات التسجيل</button>
   <button data-tab="athletes">الرياضيون</button>
@@ -102,10 +72,11 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <button data-tab="exams">الامتحانات</button>
   <button data-tab="groups">مجموعات التدريب</button>
  </nav>
-
+ <div class="content">
+ 
  <section id="tab-registrations" class="panel tab">
   <h2>طلبات التسجيل</h2>
-  <p class="muted">يتم تحديث حالة الطلب عند القبول أو الرفض. إضافة الرياضي تلقائيًا تعتمد على إعدادات قاعدة البيانات.</p>
+  <p class="muted">عند قبول الطلب، يُنشأ سجل الرياضي تلقائيًا مع محاولة منع التكرار. تُضاف سجلات التأمين والاشتراكات يدويًا وفق الدفع الفعلي، دون إنشاء مبالغ أو دفعات افتراضية.</p>
   <div class="grid">
    <div><label>تصفية حسب الحالة</label>
     <select id="registrationFilter">
@@ -118,7 +89,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <div id="registrationsMsg" class="status hidden"></div>
   <div id="registrationsTable" class="table-wrap"></div>
  </section>
-
+ 
  <section id="tab-athletes" class="panel tab hidden">
   <h2>إدارة الرياضيين</h2>
   <details open>
@@ -150,7 +121,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <div id="athletesMsg" class="status hidden"></div>
   <div id="athletesTable" class="table-wrap"></div>
  </section>
-
+ 
  <section id="tab-insurance" class="panel tab hidden">
   <h2>التأمين الرياضي</h2>
   <form id="insuranceForm">
@@ -167,7 +138,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <div id="insuranceMsg" class="status hidden"></div>
   <div id="insuranceTable" class="table-wrap"></div>
  </section>
-
+ 
  <section id="tab-subscriptions" class="panel tab hidden">
   <h2>الاشتراكات الشهرية</h2>
   <p class="muted">اختر السنة والشهر لكل اشتراك. تُحفظ قيمة الشهر كتاريخ صالح في قاعدة البيانات، وتُحفظ السنة في season_year.</p>
@@ -196,7 +167,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
    </div>
    <div class="actions"><button type="submit">حفظ الاشتراك</button><button type="reset" class="secondary">مسح الحقول</button></div>
   </form>
-
+ 
   <hr>
   <h3>تحليل الاشتراكات حسب الشهر والسنة</h3>
   <div class="grid">
@@ -217,7 +188,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <div id="subscriptionsMsg" class="status hidden"></div>
   <div id="subscriptionsTable" class="table-wrap"></div>
  </section>
-
+ 
  <section id="tab-exams" class="panel tab hidden">
   <h2>الامتحانات والأحزمة</h2>
   <form id="examForm">
@@ -235,7 +206,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <div id="examsMsg" class="status hidden"></div>
   <div id="examsTable" class="table-wrap"></div>
  </section>
-
+ 
  <section id="tab-groups" class="panel tab hidden">
   <h2>مجموعات التدريب</h2>
   <form id="groupForm">
@@ -250,10 +221,11 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
   <div id="groupsMsg" class="status hidden"></div>
   <div id="groupsTable" class="table-wrap"></div>
  </section>
+ </div></div>
 </section>
 </main>
 <footer>AST Oued Seguen · Administration</footer>
-
+ 
 <script>
 const SUPABASE_URL='https://saeuzlgtbvwxdifhxyrq.supabase.co';
 const SUPABASE_KEY='sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2';
@@ -264,7 +236,7 @@ const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const monthNames={'01':'جانفي — January','02':'فيفري — February','03':'مارس — March','04':'أفريل — April','05':'ماي — May','06':'جوان — June','09':'سبتمبر — September','10':'أكتوبر — October','11':'نوفمبر — November','12':'ديسمبر — December'};
 const monthOrder=['09','10','11','12','01','02','03','04','05','06'];
-
+ 
 function showMsg(id,message,error=false){const el=$(id);if(!el)return;el.textContent=message;el.className='status'+(error?' error':' ok');el.classList.remove('hidden')}
 function hideMsg(id){if($(id))$(id).classList.add('hidden')}
 function errorText(e){return e?.message||e?.details||String(e||'خطأ غير معروف')}
@@ -304,7 +276,7 @@ async function selectAll(table,order='created_at'){
 async function insertOne(table,payload){const {error}=await db.from(table).insert(payload);if(error)throw new Error(table+': '+errorText(error))}
 async function updateOne(table,id,payload){const {error}=await db.from(table).update(payload).eq('id',id);if(error)throw new Error(table+': '+errorText(error))}
 async function deleteOne(table,id){const {error}=await db.from(table).delete().eq('id',id);if(error)throw new Error(table+': '+errorText(error))}
-
+ 
 async function ensureAdmin(user){
  const {data,error}=await db.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();
  if(error)throw new Error('تعذر التحقق من حساب المسؤول في admin_users: '+errorText(error));
@@ -345,8 +317,15 @@ function updateCounts(){
  $('countRegistrations').textContent=cache.registrations.length;
  $('countInsurance').textContent=cache.insurance.length;
  $('countSubscriptions').textContent=cache.subscriptions.length;
+ const paid=cache.subscriptions.filter(r=>r.paid===true||String(r.paid)==='true');
+ const unpaid=cache.subscriptions.length-paid.length;
+ const income=paid.reduce((sum,r)=>sum+Number(r.amount||0),0);
+ $('paidSubscriptionIncome').textContent=income.toLocaleString('fr-FR',{maximumFractionDigits:2});
+ $('paidSubscriptionCount').textContent=paid.length;
+ $('unpaidSubscriptionCount').textContent=unpaid;
+ $('paidInsuranceCount').textContent=cache.insurance.filter(r=>String(r.status||'').toLowerCase()==='paid').length;
 }
-
+ 
 async function loadRegistrations(){
  try{
   cache.registrations=await selectAll('registrations');
@@ -367,14 +346,33 @@ $('registrationSearch').addEventListener('input',loadRegistrations);
 async function decideRegistration(id,status){
  const action=status==='accepted'?'قبول':'رفض';if(!confirm(`هل تريد ${action} طلب التسجيل؟`))return;
  try{
+  const request=cache.registrations.find(r=>String(r.id)===String(id));
+  if(!request)throw new Error('لم يتم العثور على طلب التسجيل. حدّث قائمة الطلبات وحاول مجددًا.');
+  if(String(request.status||'pending').toLowerCase()===status){showMsg('registrationsMsg',`الطلب حالته بالفعل ${status}.`);return;}
+  if(status==='accepted'){
+   const fullName=String(request.full_name||'').trim();
+   if(!fullName)throw new Error('لا يمكن قبول الطلب لأن الاسم الكامل غير موجود.');
+   const phone=String(request.guardian_phone||'').trim();
+   const existing=cache.athletes.find(a=>String(a.full_name||'').trim().toLowerCase()===fullName.toLowerCase() && (!phone || String(a.guardian_phone||'').trim()===phone));
+   if(!existing){
+    const athlete={full_name:fullName};
+    ['date_of_birth','birth_place','gender','residence','guardian_name','guardian_phone','practiced_before','belt','father_name'].forEach(k=>{
+     if(request[k]!==undefined&&request[k]!==null&&request[k]!=='')athlete[k]=request[k];
+    });
+    if(athlete.practiced_before!==undefined)athlete.practiced_before=boolValue(String(athlete.practiced_before));
+    const requestedGroup=request.requested_group_id;
+    if(requestedGroup!==undefined&&requestedGroup!==null&&requestedGroup!==''&&cache.training_groups.some(g=>String(g.id)===String(requestedGroup)))athlete.group_id=Number(requestedGroup);
+    athlete.status='active';
+    await insertOne('athletes',athlete);
+   }
+  }
   const {error}=await db.from('registrations').update({status}).eq('id',id);if(error)throw error;
-  await loadRegistrations();
-  if(status==='accepted')await loadAthletes();
-  showMsg('registrationsMsg',`تم تحديث حالة الطلب إلى ${status}.`);
- }catch(e){showMsg('registrationsMsg','تعذر تحديث الطلب: '+errorText(e),true)}
+  await Promise.all([loadRegistrations(),loadAthletes()]);
+  showMsg('registrationsMsg',status==='accepted'?'تم قبول الطلب وإنشاء سجل الرياضي تلقائيًا، أو ربطه بسجل موجود لتفادي التكرار. أضف التأمين والاشتراكات من تبويباتها حسب الدفع الفعلي.':`تم تحديث حالة الطلب إلى ${status}.`);
+ }catch(e){showMsg('registrationsMsg','تعذر إكمال العملية: '+errorText(e),true)}
 }
 window.decideRegistration=decideRegistration;
-
+ 
 async function loadAthletes(){
  try{
   cache.athletes=await selectAll('athletes');
@@ -420,7 +418,7 @@ async function removeAthlete(id){
  catch(e){showMsg('athletesMsg','تعذر الحذف. قد توجد سجلات مرتبطة بالرياضي. لم يتم حذف السجلات المرتبطة تلقائيًا. التفاصيل: '+errorText(e),true)}
 }
 window.toggleAthlete=toggleAthlete;window.editAthlete=editAthlete;window.removeAthlete=removeAthlete;
-
+ 
 async function loadInsurance(){
  try{
   cache.insurance=await selectAll('insurance','insurance_year');
@@ -449,7 +447,7 @@ async function deleteInsurance(id){
  catch(e){showMsg('insuranceMsg',errorText(e),true)}
 }
 window.changeInsuranceStatus=changeInsuranceStatus;window.deleteInsurance=deleteInsurance;
-
+ 
 /* الاشتراكات: subscription_month من نوع DATE و season_year من نوع INTEGER */
 function populateSubscriptionYears(){
  const s=$('subscriptionYearFilter'),old=s.value;
@@ -517,7 +515,7 @@ async function deleteSubscription(id){
  catch(e){showMsg('subscriptionsMsg',errorText(e),true)}
 }
 window.toggleSubscription=toggleSubscription;window.deleteSubscription=deleteSubscription;
-
+ 
 async function loadExams(){
  try{
   cache.exams=await selectAll('exams','exam_date');
@@ -540,10 +538,17 @@ async function deleteExam(id){
  catch(e){showMsg('examsMsg',errorText(e),true)}
 }
 window.deleteExam=deleteExam;
-
+ 
 async function loadGroups(){
  try{
   cache.training_groups=await selectAll('training_groups');
+  // Seed the requested three groups only when the table is empty. Existing groups/data are never overwritten.
+  if(cache.training_groups.length===0){
+   const defaults=[{name:'المجموعة الأولى',min_age:null,max_age:null},{name:'المجموعة الثانية',min_age:null,max_age:null},{name:'المجموعة الثالثة',min_age:null,max_age:null}];
+   const {error}=await db.from('training_groups').insert(defaults);
+   if(error)throw new Error('تعذر إنشاء المجموعات الافتراضية: '+errorText(error));
+   cache.training_groups=await selectAll('training_groups');
+  }
   $('groupsTable').innerHTML=tableHTML([
    {label:'اسم المجموعة',key:'name'},{label:'أقل عمر',key:'min_age'},{label:'أكبر عمر',key:'max_age'},
    {label:'الإجراء',render:g=>`<button class="small secondary" onclick="editGroup('${esc(g.id)}')">تعديل</button><button class="small danger" onclick="deleteGroup('${esc(g.id)}')">حذف</button>`}
@@ -556,6 +561,8 @@ $('groupForm').addEventListener('submit',async e=>{
   const p=formObject(e.currentTarget);
   if(p.min_age!==undefined)p.min_age=Number(p.min_age);
   if(p.max_age!==undefined)p.max_age=Number(p.max_age);
+  if(p.min_age!==undefined&&p.min_age<0||p.max_age!==undefined&&p.max_age<0)throw new Error('العمر لا يمكن أن يكون سالبًا.');
+  if(p.min_age!==undefined&&p.max_age!==undefined&&p.min_age>p.max_age)throw new Error('أقل عمر يجب ألا يتجاوز أكبر عمر.');
   await insertOne('training_groups',p);e.currentTarget.reset();showMsg('groupsMsg','تمت إضافة المجموعة.');await loadGroups()
  }catch(err){showMsg('groupsMsg','تعذرت إضافة المجموعة: '+errorText(err),true)}
 });
@@ -565,6 +572,8 @@ async function editGroup(id){
  const min=prompt('أقل عمر:',g.min_age??'');if(min===null)return;
  const max=prompt('أكبر عمر:',g.max_age??'');if(max===null)return;
  try{
+  if(min!==''&&Number(min)<0||max!==''&&Number(max)<0)throw new Error('العمر لا يمكن أن يكون سالبًا.');
+  if(min!==''&&max!==''&&Number(min)>Number(max))throw new Error('أقل عمر يجب ألا يتجاوز أكبر عمر.');
   await updateOne('training_groups',id,{name,min_age:min===''?null:Number(min),max_age:max===''?null:Number(max)});
   await loadGroups();showMsg('groupsMsg','تم تعديل المجموعة.')
  }catch(e){showMsg('groupsMsg',errorText(e),true)}
@@ -575,7 +584,7 @@ async function deleteGroup(id){
  catch(e){showMsg('groupsMsg','تعذر حذف المجموعة: '+errorText(e),true)}
 }
 window.editGroup=editGroup;window.deleteGroup=deleteGroup;
-
+ 
 const exportColumns={
  registrations:['id','full_name','date_of_birth','birth_place','gender','residence','guardian_name','guardian_phone','practiced_before','belt','requested_group_id','status','created_at','guardian_place'],
  athletes:['id','full_name','date_of_birth','birth_place','gender','residence','guardian_name','guardian_phone','practiced_before','belt','group_id','status','created_at','father_name'],
@@ -604,14 +613,14 @@ function exportTable(name){
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 window.exportTable=exportTable;
-
+ 
 document.querySelectorAll('[data-tab]').forEach(btn=>{
  btn.addEventListener('click',()=>{
   document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===btn));
   document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+btn.dataset.tab));
  });
 });
-
+ 
 /* قيم افتراضية للنموذج فقط؛ لا تعدّل أي بيانات موجودة */
 $('subscriptionYear').value=new Date().getFullYear();
 </script>
