@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#174d3a">
-<title>AST Oued Seguen | Admin Dashboard</title>
+<title>AST Oued Seguen | لوحة إدارة النادي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -542,7 +542,7 @@ window.deleteExam=deleteExam;
 async function loadGroups(){
  try{
   cache.training_groups=await selectAll('training_groups');
-  // Seed the requested three groups only when the table is empty. Existing groups/data are never overwritten.
+  // Seed the three editable starter groups only when the table is empty. Existing groups/data are never overwritten.
   if(cache.training_groups.length===0){
    const defaults=[{name:'المجموعة الأولى',min_age:null,max_age:null},{name:'المجموعة الثانية',min_age:null,max_age:null},{name:'المجموعة الثالثة',min_age:null,max_age:null}];
    const {error}=await db.from('training_groups').insert(defaults);
