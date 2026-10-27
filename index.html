@@ -400,8 +400,9 @@ footer small{color:#b9cbc3}
         message = "رفضت صلاحيات قاعدة البيانات الطلب. تحقق من سياسة RLS.";
       } else if (error?.code === "42703" || /column .* does not exist/i.test(message)) {
         message = "يوجد اختلاف بين حقول الاستمارة وأعمدة جدول registrations: " + message;
-      } else if (/invalid input syntax for type boolean/i.test(message)) {
-        message = "نوع practiced_before لا يتوافق مع الإعداد الحالي؛ الكود يرسل نعم أو لا كنص.";
+      } } else if (/invalid input syntax for type boolean/i.test(message)) {
+  message = "خطأ في البيانات المرسلة إلى قاعدة البيانات: " + message;
+}
       } else if (/invalid input syntax for type bigint/i.test(message)) {
         message = "معرّف المجموعة غير صالح. يجب إرسال 1 أو 2 أو 3.";
       }
