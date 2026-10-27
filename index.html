@@ -375,7 +375,7 @@ footer small{color:#b9cbc3}
       residence: String(values.get("residence") || "").trim(),
       guardian_name: String(values.get("guardian_name") || "").trim(),
       guardian_place: String(values.get("guardian_place") || "").trim() || null,
-      practiced_before: practicedValue,
+      practiced_before: practicedValue === "نعم",
       belt: String(values.get("belt") || "").trim() || null,
       guardian_phone: String(values.get("guardian_phone") || "").trim(),
       requested_group_id: groupId,
