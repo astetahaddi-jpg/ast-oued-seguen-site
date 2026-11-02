@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#174d3f">
+<title>فضاء الأولياء | AST OUED SEGUEN</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --g:#174d3f;
+  --g2:#236b56;
+  --bg:#f7f5ee;
+  --line:#e2e9e4;
+  --muted:#718078;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:#20332d;
+  font-family:Cairo,sans-serif;
+}
+
+.top {
+  background:linear-gradient(120deg,#123c32,#236b56);
+  color:white;
+  padding:22px 16px 54px;
+}
+
+.topin {
+  max-width:920px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.brand {
+  font-weight:800;
+}
+
+.brand small {
+  display:block;
+  font-size:12px;
+  font-weight:500;
+  opacity:.8;
+}
+
+.home {
+  border:1px solid #ffffff66;
+  border-radius:12px;
+  padding:8px 13px;
+  font-size:13px;
+  color:white;
+  text-decoration:none;
+}
+
+.wrap {
+  width:min(920px,calc(100% - 28px));
+  margin:-32px auto 40px;
+  position:relative;
+}
+
+.panel {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:clamp(18px,4vw,30px);
+  box-shadow:0 12px 35px #183d3010;
+}
+
+h1 {
+  font-size:25px;
+  margin:0 0 5px;
+  color:var(--g);
+}
+
+.intro {
+  color:var(--muted);
+  margin:0 0 22px;
+  font-size:14px;
+}
+
+.login {
+  max-width:460px;
+  margin:auto;
+  text-align:center;
+  padding:14px 0 8px;
+}
+
+.lock {
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:#e8f1ec;
+  display:grid;
+  place-items:center;
+  font-size:27px;
+  margin:0 auto 15px;
+}
+
+label {
+  display:block;
+  text-align:right;
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:8px;
+}
+
+input {
+  width:100%;
+  border:1px solid #d5e0d9;
+  border-radius:13px;
+  padding:15px;
+  text-align:center;
+  font:700 25px Cairo,sans-serif;
+  letter-spacing:8px;
+  text-transform:uppercase;
+  color:var(--g);
+  outline:none;
+}
+
+input:focus {
+  border-color:var(--g2);
+  box-shadow:0 0 0 3px #236b5618;
+}
+
+.hint {
+  font-size:12px;
+  color:var(--muted);
+  margin:8px 0 16px;
+}
+
+button {
+  font-family:inherit;
+  cursor:pointer;
+  border:0;
+  border-radius:12px;
+  padding:12px 20px;
+  font-weight:700;
+}
+
+.primary {
+  background:var(--g);
+  color:white;
+  width:100%;
+  font-size:15px;
+}
+
+button:disabled {
+  opacity:.6;
+  cursor:wait;
+}
+
+.error {
+  display:none;
+  margin:14px 0 0;
+  padding:11px;
+  border-radius:10px;
+  background:#fff0ef;
+  color:#b42318;
+  font-size:13px;
+}
+
+.hidden {
+  display:none!important;
+}
+
+.head {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.name {
+  font-size:23px;
+  font-weight:800;
+  margin:0;
+  color:var(--g);
+}
+
+.status {
+  padding:5px 12px;
+  border-radius:30px;
+  background:#e8f1ec;
+  color:var(--g);
+  font-size:12px;
+  font-weight:700;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:25px;
+}
+
+.info {
+  background:#f8faf8;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px;
+}
+
+.info span {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.info strong {
+  font-size:14px;
+}
+
+h2 {
+  font-size:18px;
+  color:var(--g);
+  margin:0 0 14px;
+}
+
+.tablewrap {
+  overflow-x:auto;
+  border:1px solid var(--line);
+  border-radius:13px;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:490px;
+}
+
+th,td {
+  padding:12px 14px;
+  text-align:right;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+
+th {
+  background:#f2f7f3;
+  color:var(--g);
+}
+
+tr:last-child td {
+  border:0;
+}
+
+.paid,.unpaid {
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.paid {
+  background:#e8f6ed;
+  color:#187443;
+}
+
+.unpaid {
+  background:#fff2df;
+  color:#986014;
+}
+
+.empty {
+  padding:22px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.actions {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:20px;
+}
+
+.logout {
+  background:#f0f3f1;
+  color:var(--g);
+  padding:10px 16px;
+}
+
+.foot {
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  margin:20px 0;
+}
+
+@media(max-width:620px) {
+  .grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .brand {
+    font-size:15px;
+  }
+
+  h1 {
+    font-size:22px;
+  }
+}
+
+@media(max-width:380px) {
+  .grid {
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+  <div class="topin">
+    <div class="brand">
+      AST OUED SEGUEN
+      <small>نادي التحدي وادي سقان للجودو</small>
+    </div>
+
+    <a class="home" href="index.html">
+      العودة إلى الموقع
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- واجهة إدخال رمز الدخول -->
+  <section class="panel" id="loginPanel">
+
+    <div class="login">
+
+      <div class="lock">🔐</div>
+
+      <h1>فضاء الأولياء</h1>
+
+      <p class="intro">
+        تابعوا معلومات الرياضي واشتراكاته الشهرية بسهولة.
+      </p>
+
+      <form id="loginForm">
+
+        <label for="accessCode">
+          رمز الدخول الخاص بالرياضي
+        </label>
+
+        <input
+          id="accessCode"
+          minlength="4"
+          maxlength="4"
+          pattern="[A-Za-z0-9]{4}"
+          autocomplete="off"
+          placeholder="••••"
+          required
+        >
+
+        <p class="hint">
+          أدخل الرمز المكوّن من 4 أحرف أو أرقام الذي سلّمه لكم النادي.
+        </p>
+
+        <button class="primary" id="loginButton">
+          عرض بيانات الرياضي
+        </button>
+
+        <div class="error" id="loginError" role="alert">
+          تعذّر العثور على بيانات بهذا الرمز. تحقق منه وحاول مجددًا.
+        </div>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- واجهة عرض معلومات الرياضي -->
+  <section class="panel hidden" id="dataPanel">
+
+    <div class="head">
+
+      <div>
+        <h1 class="name" id="athleteName">—</h1>
+        <p class="intro" style="margin:4px 0 0">
+          ملف الرياضي
+        </p>
+      </div>
+
+      <span class="status" id="athleteStatus">—</span>
+
+    </div>
+
+
+    <!-- معلومات الرياضي -->
+    <div class="grid">
+
+      <div class="info">
+        <span>تاريخ الميلاد</span>
+        <strong id="birthDate">—</strong>
+      </div>
+
+      <div class="info">
+        <span>مجموعة التدريب</span>
+        <strong id="groupName">—</strong>
+      </div>
+
+      <div class="info">
+        <span>الحزام</span>
+        <strong id="belt">—</strong>
+      </div>
+
+    </div>
+
+
+    <!-- الاشتراكات -->
+    <h2>الاشتراكات الشهرية</h2>
+
+    <div class="tablewrap" id="subscriptionsWrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>الشهر</th>
+            <th>المبلغ</th>
+            <th>حالة الدفع</th>
+            <th>تاريخ الدفع</th>
+          </tr>
+        </thead>
+
+        <tbody id="subscriptionsBody"></tbody>
+
+      </table>
+
+    </div>
+
+    <div class="empty hidden" id="noSubscriptions">
+      لا توجد اشتراكات مسجلة لهذا الرياضي حاليًا.
+    </div>
+
+
+    <div class="actions">
+
+      <span class="hint" style="margin:0">
+        للاستفسار، يرجى التواصل مع إدارة النادي.
+      </span>
+
+      <button class="logout" id="logoutButton">
+        تسجيل الخروج
+      </button>
+
+    </div>
+
+  </section>
+
+  <div class="foot">
+    AST OUED SEGUEN · فضاء الأولياء
+  </div>
+
+</main>
+
+
+<script>
+
+// إعدادات الاتصال بـ Supabase
+// لا تضع هنا مفتاح service_role
+
+const SUPABASE_URL =
+"https://saeuzlgtbvwxdifhxyrq.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"sb_publishable_-RRdoL1N212DA3Hbdpa4g_hQaxnTZ2";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+
+const $ = id => document.getElementById(id);
+
+
+// تنسيق التاريخ
+const fmtDate = v => {
+
+  if (!v) return "غير محدد";
+
+  let d = new Date(
+    v + (String(v).length === 10 ? "T00:00:00" : "")
+  );
+
+  return isNaN(d)
+    ? "غير محدد"
+    : new Intl.DateTimeFormat("ar-DZ", {
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+      }).format(d);
+
+};
+
+
+// تنسيق الشهر
+const fmtMonth = v => {
+
+  if (!v) return "غير محدد";
+
+  let d = new Date(v + "T00:00:00");
+
+  return isNaN(d)
+    ? "غير محدد"
+    : new Intl.DateTimeFormat("ar-DZ", {
+        year:"numeric",
+        month:"long"
+      }).format(d);
+
+};
+
+
+// تنسيق المبلغ
+const fmtMoney = v => {
+
+  if (v == null) return "—";
+
+  return new Intl.NumberFormat("ar-DZ", {
+    maximumFractionDigits:2
+  }).format(Number(v)) + " دج";
+
+};
+
+
+// تحويل الرمز إلى أحرف كبيرة
+$("accessCode").addEventListener("input", e => {
+
+  e.target.value = e.target.value
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0,4);
+
+});
+
+
+// تسجيل الدخول باستخدام رمز الرياضي
+$("loginForm").addEventListener("submit", async e => {
+
+  e.preventDefault();
+
+  $("loginError").style.display = "none";
+
+  let code = $("accessCode").value.trim().toUpperCase();
+
+  if (!/^[A-Z0-9]{4}$/.test(code)) {
+
+    $("loginError").style.display = "block";
+    return;
+
+  }
+
+  $("loginButton").disabled = true;
+  $("loginButton").textContent = "جارٍ التحقق...";
+
+  try {
+
+    const { data, error } = await db.rpc(
+      "get_parent_athlete_portal",
+      {
+        p_access_code: code
+      }
+    );
+
+    if (error) throw error;
+
+    if (!data || !data.athlete) {
+      throw new Error("No matching athlete");
+    }
+
+    renderAthlete(data);
+
+    $("loginPanel").classList.add("hidden");
+    $("dataPanel").classList.remove("hidden");
+
+  } catch (err) {
+
+    console.error(err);
+
+    $("loginError").style.display = "block";
+
+  } finally {
+
+    $("loginButton").disabled = false;
+    $("loginButton").textContent = "عرض بيانات الرياضي";
+
+  }
+
+});
+
+
+// عرض بيانات الرياضي والاشتراكات
+function renderAthlete(data) {
+
+  const a = data.athlete || {};
+
+  $("athleteName").textContent =
+    a.full_name || "غير محدد";
+
+  $("athleteStatus").textContent =
+    a.status || "غير محدد";
+
+  $("birthDate").textContent =
+    fmtDate(a.date_of_birth);
+
+  $("groupName").textContent =
+    a.group?.name || "غير محددة";
+
+  $("belt").textContent =
+    a.belt || "غير محدد";
+
+
+  let rows = Array.isArray(data.subscriptions)
+    ? [...data.subscriptions]
+    : [];
+
+  rows.sort((x,y) =>
+    String(x.subscription_month || "")
+      .localeCompare(String(y.subscription_month || ""))
+  );
+
+
+  const body = $("subscriptionsBody");
+
+  body.replaceChildren();
+
+
+  rows.forEach(item => {
+
+    let tr = document.createElement("tr");
+
+    const values = [
+
+      fmtMonth(item.subscription_month),
+
+      fmtMoney(item.amount),
+
+      item.paid ? "مدفوع" : "غير مدفوع",
+
+      item.paid ? fmtDate(item.paid_at) : "—"
+
+    ];
+
+
+    values.forEach((v,i) => {
+
+      let td = document.createElement("td");
+
+      if (i === 2) {
+
+        let b = document.createElement("span");
+
+        b.className = item.paid
+          ? "paid"
+          : "unpaid";
+
+        b.textContent = v;
+
+        td.appendChild(b);
+
+      } else {
+
+        td.textContent = v;
+
+      }
+
+      tr.appendChild(td);
+
+    });
+
+    body.appendChild(tr);
+
+  });
+
+
+  $("subscriptionsWrap").classList.toggle(
+    "hidden",
+    !rows.length
+  );
+
+  $("noSubscriptions").classList.toggle(
+    "hidden",
+    !!rows.length
+  );
+
+}
+
+
+// تسجيل الخروج
+$("logoutButton").addEventListener("click", () => {
+
+  $("dataPanel").classList.add("hidden");
+
+  $("loginPanel").classList.remove("hidden");
+
+  $("loginForm").reset();
+
+  $("loginError").style.display = "none";
+
+  $("subscriptionsBody").replaceChildren();
+
+  $("accessCode").focus();
+
+});
+
+</script>
+
+</body>
+  </html>
