@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -48,6 +49,26 @@ header{position:sticky;top:0;z-index:30;background:rgba(251,247,239,.98);border-
 
 .links{display:flex;align-items:center;justify-content:center;gap:15px;font-size:13px;font-weight:800;flex-wrap:wrap}
 .links a:not(.btn):hover{color:var(--green2)}
+
+.parent-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:7px 13px;
+  border-radius:10px;
+  background:#dff4eb;
+  color:#08745f!important;
+  border:1px solid #b9e5d4;
+  font-weight:900;
+  white-space:nowrap;
+  transition:background .2s,transform .2s;
+}
+.parent-link:hover{
+  background:#c8ecdc;
+  transform:translateY(-1px);
+}
+
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border:0;border-radius:12px;font-weight:900;cursor:pointer;text-align:center;transition:background .2s,transform .2s}
 .btn:hover{transform:translateY(-1px)}
 .primary{background:var(--green);color:white}
@@ -85,7 +106,6 @@ h1{font-size:clamp(28px,4.5vw,52px);line-height:1.45;color:var(--deep);margin:15
   min-width:0
 }
 
-/* صورة فريق الجودو في الواجهة الرئيسية */
 .hero-team-photo{
   display:block;
   width:100%;
@@ -169,6 +189,7 @@ footer small{color:#b9cbc3}
  .links{width:100%;justify-content:center;gap:8px}
  .links a{font-size:12px}
  .links .nav-admin{font-size:13px;padding:8px 12px}
+ .links .parent-link{font-size:12px;padding:6px 10px}
  .nav>.primary{width:100%}
  .hero{padding:35px 0}
  section{padding:40px 0}
@@ -206,6 +227,7 @@ footer small{color:#b9cbc3}
       <a href="#about">عن النادي</a>
       <a href="#schedule">التوقيت</a>
       <a href="#register">التسجيل</a>
+      <a class="parent-link" href="parents.html">👨‍👩‍👧 فضاء الأولياء</a>
       <a class="btn admin-link nav-admin" href="https://astetahaddi-jpg.github.io/ast-oued-seguen-site/admin.html">🔐 دخول الإدارة</a>
     </nav>
 
@@ -232,7 +254,6 @@ footer small{color:#b9cbc3}
       </div>
     </div>
 
-    <!-- صورة الفريق بدل بطاقة الشعار الكبيرة -->
     <div class="hero-card">
       <img
         class="hero-team-photo"
