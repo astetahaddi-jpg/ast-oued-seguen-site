@@ -513,7 +513,9 @@ function renderParentCodes(){
     ${code?`
      <button class="smallbtn success" data-code-copy="${esc(code.access_code)}">نسخ الرمز</button>
      <button class="smallbtn warning" data-code-regenerate="${esc(a.id)}">إعادة التوليد</button>
-    `:'<span class="pill unpaid">يرجى مراجعة الرمز</span>'}
+    `:`
+     <button class="smallbtn success" data-code-regenerate="${esc(a.id)}">إنشاء الرمز</button>
+    `}
    </td>
   </tr>`;
  })
@@ -552,6 +554,7 @@ function editAthlete(id){
 
 async function saveAthlete(e){
  e.preventDefault();
+
  try{
   const id=$('athleteId').value;
   const full=$('athleteFullName').value.trim().replace(/\s+/g,' ');
@@ -576,15 +579,31 @@ async function saveAthlete(e){
   };
 
   let result;
-  if(id)result=await client.from('athletes').update(payload).eq('id',id).select('id');
-  else result=await client.from('athletes').insert({...payload,status:'active'}).select('id');
+  if(id){
+   result=await client.from('athletes').update(payload).eq('id',id).select('id');
+  }else{
+   result=await client.from('athletes').insert({...payload,status:'active'}).select('id');
+  }
 
   if(result.error)throw result.error;
   if(!result.data||!result.data.length)throw new Error('لم يتم حفظ التغيير. تحقق من صلاحيات RLS.');
 
+  const savedId=result.data[0].id;
   clearAthleteForm();
-  msg('athleteMessage',id?'تم تعديل بيانات الرياضي بنجاح.':'تمت إضافة الرياضي بنجاح.');
+
   await loadAll();
+
+  if(id){
+   msg('athleteMessage','تم تعديل بيانات الرياضي بنجاح. رمز التفعيل لم يتغير.');
+  }else{
+   const createdCode=athleteCodes.find(c=>String(c.athlete_id)===String(savedId));
+
+   if(createdCode){
+    msg('athleteMessage','تمت إضافة الرياضي وإنشاء رمز التفعيل تلقائيًا: '+createdCode.access_code);
+   }else{
+    msg('athleteMessage','تمت إضافة الرياضي، لكن لم يظهر رمز التفعيل. تحقق من Trigger في Supabase.',true);
+   }
+  }
  }catch(err){
   msg('athleteMessage','تعذر الحفظ: '+err.message,true);
  }
@@ -809,6 +828,13 @@ async function acceptRegistration(id){
  }
 
  await loadAll();
+
+ const createdCode=athleteCodes.find(c=>String(c.athlete_id)===String(newAthlete.id));
+ if(!createdCode){
+  globalMsg('تم قبول الطلب وإنشاء الرياضي واشتراكاته، لكن لم يظهر رمز التفعيل. تحقق من Trigger في Supabase.',true);
+ }else{
+  globalMsg('تم قبول الطلب وإنشاء الرياضي واشتراكاته ورمز التفعيل تلقائيًا: '+createdCode.access_code);
+ }
 }
 
 async function toggleInsurance(athleteId,season){
@@ -908,7 +934,7 @@ async function onClick(e){
 
  try{
   if(b.dataset.regAccept){
-   if(!confirm('قبول الطلب وإضافة الرياضي وإنشاء اشتراكاته الشهرية؟'))return;
+   if(!confirm('قبول الطلب وإضافة الرياضي وإنشاء اشتراكاته الشهرية ورمز تفعيله؟'))return;
    await acceptRegistration(b.dataset.regAccept);
 
   }else if(b.dataset.regReject){
@@ -987,17 +1013,34 @@ async function onClick(e){
   }else if(b.dataset.codeRegenerate){
    const id=b.dataset.codeRegenerate;
    const athlete=athletes.find(a=>String(a.id)===String(id));
+
+   if(!athlete)throw new Error('لم يتم العثور على الرياضي.');
+
    const oldCode=athleteCodes.find(c=>String(c.athlete_id)===String(id));
 
-   if(!confirm(
-    `هل تريد إعادة توليد رمز ${athleteName(athlete)}؟\n\n`+
-    `سيُلغى الرمز السابق (${oldCode?.access_code||'—'}) فورًا.`
-   ))return;
+   const confirmation=oldCode
+    ?`هل تريد إعادة توليد رمز ${athleteName(athlete)}؟
+
+سيُلغى الرمز السابق (${oldCode.access_code}) فورًا، ولن يتمكن ولي الأمر من استعماله.`
+    :`لا يوجد رمز حالي للرياضي ${athleteName(athlete)}.
+
+هل تريد إنشاء رمز تفعيل جديد؟`;
+
+   if(!confirm(confirmation))return;
 
    b.disabled=true;
-   const newCode=await regenerateAthleteCode(id);
-   await loadAll();
-   globalMsg('تم إنشاء رمز جديد بنجاح: '+newCode);
+   try{
+    const newCode=await regenerateAthleteCode(id);
+    await loadAll();
+
+    globalMsg(
+     `تم إنشاء رمز التفعيل بنجاح: ${newCode}
+
+يجب تسليم الرمز الجديد إلى ولي الأمر. الرمز السابق أصبح غير صالح.`
+    );
+   }finally{
+    b.disabled=false;
+   }
   }
 
  }catch(err){
