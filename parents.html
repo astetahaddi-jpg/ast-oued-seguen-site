@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -18,9 +19,7 @@
   --muted:#718078;
 }
 
-* {
-  box-sizing:border-box;
-}
+* { box-sizing:border-box; }
 
 body {
   margin:0;
@@ -44,9 +43,7 @@ body {
   gap:12px;
 }
 
-.brand {
-  font-weight:800;
-}
+.brand { font-weight:800; }
 
 .brand small {
   display:block;
@@ -169,11 +166,11 @@ button:disabled {
   background:#fff0ef;
   color:#b42318;
   font-size:13px;
+  overflow-wrap:anywhere;
+  text-align:right;
 }
 
-.hidden {
-  display:none!important;
-}
+.hidden { display:none!important; }
 
 .head {
   display:flex;
@@ -221,9 +218,7 @@ button:disabled {
   margin-bottom:4px;
 }
 
-.info strong {
-  font-size:14px;
-}
+.info strong { font-size:14px; }
 
 h2 {
   font-size:18px;
@@ -255,9 +250,7 @@ th {
   color:var(--g);
 }
 
-tr:last-child td {
-  border:0;
-}
+tr:last-child td { border:0; }
 
 .paid,.unpaid {
   display:inline-block;
@@ -306,23 +299,13 @@ tr:last-child td {
 }
 
 @media(max-width:620px) {
-  .grid {
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .brand {
-    font-size:15px;
-  }
-
-  h1 {
-    font-size:22px;
-  }
+  .grid { grid-template-columns:repeat(2,1fr); }
+  .brand { font-size:15px; }
+  h1 { font-size:22px; }
 }
 
 @media(max-width:380px) {
-  .grid {
-    grid-template-columns:1fr;
-  }
+  .grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -344,145 +327,122 @@ tr:last-child td {
 
 <main class="wrap">
 
-  <!-- واجهة إدخال رمز الدخول -->
-  <section class="panel" id="loginPanel">
+<section class="panel" id="loginPanel">
+  <div class="login">
 
-    <div class="login">
+    <div class="lock">🔐</div>
 
-      <div class="lock">🔐</div>
+    <h1>فضاء الأولياء</h1>
 
-      <h1>فضاء الأولياء</h1>
+    <p class="intro">
+      تابعوا معلومات الرياضي واشتراكاته الشهرية بسهولة.
+    </p>
 
-      <p class="intro">
-        تابعوا معلومات الرياضي واشتراكاته الشهرية بسهولة.
+    <form id="loginForm">
+
+      <label for="accessCode">
+        رمز الدخول الخاص بالرياضي
+      </label>
+
+      <input
+        id="accessCode"
+        minlength="4"
+        maxlength="4"
+        pattern="[A-Za-z0-9]{4}"
+        autocomplete="off"
+        autocapitalize="characters"
+        placeholder="••••"
+        required
+      >
+
+      <p class="hint">
+        أدخل الرمز المكوّن من 4 أحرف أو أرقام الذي سلّمه لكم النادي.
       </p>
 
-      <form id="loginForm">
-
-        <label for="accessCode">
-          رمز الدخول الخاص بالرياضي
-        </label>
-
-        <input
-          id="accessCode"
-          minlength="4"
-          maxlength="4"
-          pattern="[A-Za-z0-9]{4}"
-          autocomplete="off"
-          placeholder="••••"
-          required
-        >
-
-        <p class="hint">
-          أدخل الرمز المكوّن من 4 أحرف أو أرقام الذي سلّمه لكم النادي.
-        </p>
-
-        <button class="primary" id="loginButton">
-          عرض بيانات الرياضي
-        </button>
-
-        <div class="error" id="loginError" role="alert">
-          تعذّر العثور على بيانات بهذا الرمز. تحقق منه وحاول مجددًا.
-        </div>
-
-      </form>
-
-    </div>
-
-  </section>
-
-
-  <!-- واجهة عرض معلومات الرياضي -->
-  <section class="panel hidden" id="dataPanel">
-
-    <div class="head">
-
-      <div>
-        <h1 class="name" id="athleteName">—</h1>
-        <p class="intro" style="margin:4px 0 0">
-          ملف الرياضي
-        </p>
-      </div>
-
-      <span class="status" id="athleteStatus">—</span>
-
-    </div>
-
-
-    <!-- معلومات الرياضي -->
-    <div class="grid">
-
-      <div class="info">
-        <span>تاريخ الميلاد</span>
-        <strong id="birthDate">—</strong>
-      </div>
-
-      <div class="info">
-        <span>مجموعة التدريب</span>
-        <strong id="groupName">—</strong>
-      </div>
-
-      <div class="info">
-        <span>الحزام</span>
-        <strong id="belt">—</strong>
-      </div>
-
-    </div>
-
-
-    <!-- الاشتراكات -->
-    <h2>الاشتراكات الشهرية</h2>
-
-    <div class="tablewrap" id="subscriptionsWrap">
-
-      <table>
-
-        <thead>
-          <tr>
-            <th>الشهر</th>
-            <th>المبلغ</th>
-            <th>حالة الدفع</th>
-            <th>تاريخ الدفع</th>
-          </tr>
-        </thead>
-
-        <tbody id="subscriptionsBody"></tbody>
-
-      </table>
-
-    </div>
-
-    <div class="empty hidden" id="noSubscriptions">
-      لا توجد اشتراكات مسجلة لهذا الرياضي حاليًا.
-    </div>
-
-
-    <div class="actions">
-
-      <span class="hint" style="margin:0">
-        للاستفسار، يرجى التواصل مع إدارة النادي.
-      </span>
-
-      <button class="logout" id="logoutButton">
-        تسجيل الخروج
+      <button class="primary" id="loginButton" type="submit">
+        عرض بيانات الرياضي
       </button>
 
+      <div class="error" id="loginError" role="alert"></div>
+
+    </form>
+  </div>
+</section>
+
+
+<section class="panel hidden" id="dataPanel">
+
+  <div class="head">
+    <div>
+      <h1 class="name" id="athleteName">—</h1>
+      <p class="intro" style="margin:4px 0 0">
+        ملف الرياضي
+      </p>
     </div>
 
-  </section>
-
-  <div class="foot">
-    AST OUED SEGUEN · فضاء الأولياء
+    <span class="status" id="athleteStatus">—</span>
   </div>
+
+  <div class="grid">
+
+    <div class="info">
+      <span>تاريخ الميلاد</span>
+      <strong id="birthDate">—</strong>
+    </div>
+
+    <div class="info">
+      <span>مجموعة التدريب</span>
+      <strong id="groupName">—</strong>
+    </div>
+
+    <div class="info">
+      <span>الحزام</span>
+      <strong id="belt">—</strong>
+    </div>
+
+  </div>
+
+  <h2>الاشتراكات الشهرية</h2>
+
+  <div class="tablewrap" id="subscriptionsWrap">
+    <table>
+      <thead>
+        <tr>
+          <th>الشهر</th>
+          <th>المبلغ</th>
+          <th>حالة الدفع</th>
+          <th>تاريخ الدفع</th>
+        </tr>
+      </thead>
+      <tbody id="subscriptionsBody"></tbody>
+    </table>
+  </div>
+
+  <div class="empty hidden" id="noSubscriptions">
+    لا توجد اشتراكات مسجلة لهذا الرياضي حاليًا.
+  </div>
+
+  <div class="actions">
+    <span class="hint" style="margin:0">
+      للاستفسار، يرجى التواصل مع إدارة النادي.
+    </span>
+
+    <button class="logout" id="logoutButton" type="button">
+      تسجيل الخروج
+    </button>
+  </div>
+
+</section>
+
+<div class="foot">
+  AST OUED SEGUEN · فضاء الأولياء
+</div>
 
 </main>
 
-
 <script>
 
-// إعدادات الاتصال بـ Supabase
-// لا تضع هنا مفتاح service_role
-
+// إعدادات Supabase
 const SUPABASE_URL =
 "https://saeuzlgtbvwxdifhxyrq.supabase.co";
 
@@ -494,13 +454,11 @@ const db = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-
 const $ = id => document.getElementById(id);
 
 
 // تنسيق التاريخ
 const fmtDate = v => {
-
   if (!v) return "غير محدد";
 
   let d = new Date(
@@ -514,13 +472,11 @@ const fmtDate = v => {
         month:"long",
         day:"numeric"
       }).format(d);
-
 };
 
 
 // تنسيق الشهر
 const fmtMonth = v => {
-
   if (!v) return "غير محدد";
 
   let d = new Date(v + "T00:00:00");
@@ -531,47 +487,44 @@ const fmtMonth = v => {
         year:"numeric",
         month:"long"
       }).format(d);
-
 };
 
 
 // تنسيق المبلغ
 const fmtMoney = v => {
-
   if (v == null) return "—";
 
   return new Intl.NumberFormat("ar-DZ", {
     maximumFractionDigits:2
   }).format(Number(v)) + " دج";
-
 };
 
 
 // تحويل الرمز إلى أحرف كبيرة
 $("accessCode").addEventListener("input", e => {
-
   e.target.value = e.target.value
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "")
     .slice(0,4);
-
 });
 
 
-// تسجيل الدخول باستخدام رمز الرياضي
+// تسجيل الدخول
 $("loginForm").addEventListener("submit", async e => {
 
   e.preventDefault();
 
-  $("loginError").style.display = "none";
+  const errorBox = $("loginError");
+
+  errorBox.textContent = "";
+  errorBox.style.display = "none";
 
   let code = $("accessCode").value.trim().toUpperCase();
 
   if (!/^[A-Z0-9]{4}$/.test(code)) {
-
-    $("loginError").style.display = "block";
+    errorBox.textContent = "يرجى إدخال رمز صحيح مكوّن من 4 أحرف أو أرقام.";
+    errorBox.style.display = "block";
     return;
-
   }
 
   $("loginButton").disabled = true;
@@ -586,10 +539,18 @@ $("loginForm").addEventListener("submit", async e => {
       }
     );
 
-    if (error) throw error;
+    // عرض تفاصيل خطأ Supabase
+    if (error) {
+      console.error("Supabase RPC Error:", error);
+      throw error;
+    }
+
+    console.log("AST Portal Response:", data);
 
     if (!data || !data.athlete) {
-      throw new Error("No matching athlete");
+      throw new Error(
+        "لم يتم العثور على بيانات مرتبطة بهذا الرمز."
+      );
     }
 
     renderAthlete(data);
@@ -599,9 +560,17 @@ $("loginForm").addEventListener("submit", async e => {
 
   } catch (err) {
 
-    console.error(err);
+    console.error("AST PORTAL ERROR:", err);
 
-    $("loginError").style.display = "block";
+    const details = [
+      err.message || "خطأ غير معروف",
+      err.code ? "Code: " + err.code : "",
+      err.details ? "Details: " + err.details : "",
+      err.hint ? "Hint: " + err.hint : ""
+    ].filter(Boolean).join(" | ");
+
+    errorBox.textContent = details;
+    errorBox.style.display = "block";
 
   } finally {
 
@@ -643,28 +612,20 @@ function renderAthlete(data) {
       .localeCompare(String(y.subscription_month || ""))
   );
 
-
   const body = $("subscriptionsBody");
 
   body.replaceChildren();
-
 
   rows.forEach(item => {
 
     let tr = document.createElement("tr");
 
     const values = [
-
       fmtMonth(item.subscription_month),
-
       fmtMoney(item.amount),
-
       item.paid ? "مدفوع" : "غير مدفوع",
-
       item.paid ? fmtDate(item.paid_at) : "—"
-
     ];
-
 
     values.forEach((v,i) => {
 
@@ -719,9 +680,13 @@ $("logoutButton").addEventListener("click", () => {
 
   $("loginForm").reset();
 
+  $("loginError").textContent = "";
   $("loginError").style.display = "none";
 
   $("subscriptionsBody").replaceChildren();
+
+  $("subscriptionsWrap").classList.remove("hidden");
+  $("noSubscriptions").classList.add("hidden");
 
   $("accessCode").focus();
 
@@ -730,4 +695,4 @@ $("logoutButton").addEventListener("click", () => {
 </script>
 
 </body>
-  </html>
+</html>
