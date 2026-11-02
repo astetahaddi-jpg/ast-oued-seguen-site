@@ -369,7 +369,6 @@ tr:last-child td { border:0; }
   </div>
 </section>
 
-
 <section class="panel hidden" id="dataPanel">
 
   <div class="head">
@@ -442,12 +441,17 @@ tr:last-child td { border:0; }
 
 <script>
 
-// إعدادات Supabase
+// إعدادات الاتصال بـ Supabase
+
 const SUPABASE_URL =
 "https://saeuzlgtbvwxdifhxyrq.supabase.co";
 
 const SUPABASE_ANON_KEY =
-"sb_publishable_-RRdoL1N212DA3Hbdpa4g_hQaxnTZ2";
+"sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2";
+
+if (!window.supabase) {
+  throw new Error("تعذر تحميل مكتبة Supabase.");
+}
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
@@ -509,7 +513,7 @@ $("accessCode").addEventListener("input", e => {
 });
 
 
-// تسجيل الدخول
+// تسجيل الدخول باستخدام رمز الرياضي
 $("loginForm").addEventListener("submit", async e => {
 
   e.preventDefault();
@@ -522,7 +526,8 @@ $("loginForm").addEventListener("submit", async e => {
   let code = $("accessCode").value.trim().toUpperCase();
 
   if (!/^[A-Z0-9]{4}$/.test(code)) {
-    errorBox.textContent = "يرجى إدخال رمز صحيح مكوّن من 4 أحرف أو أرقام.";
+    errorBox.textContent =
+      "يرجى إدخال رمز صحيح مكوّن من 4 أحرف أو أرقام.";
     errorBox.style.display = "block";
     return;
   }
@@ -539,7 +544,6 @@ $("loginForm").addEventListener("submit", async e => {
       }
     );
 
-    // عرض تفاصيل خطأ Supabase
     if (error) {
       console.error("Supabase RPC Error:", error);
       throw error;
@@ -602,7 +606,6 @@ function renderAthlete(data) {
   $("belt").textContent =
     a.belt || "غير محدد";
 
-
   let rows = Array.isArray(data.subscriptions)
     ? [...data.subscriptions]
     : [];
@@ -656,7 +659,6 @@ function renderAthlete(data) {
     body.appendChild(tr);
 
   });
-
 
   $("subscriptionsWrap").classList.toggle(
     "hidden",
