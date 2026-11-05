@@ -1,4 +1,4 @@
-
+HTML
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -252,7 +252,7 @@ th {
 
 tr:last-child td { border:0; }
 
-.paid,.unpaid {
+.paid,.unpaid,.notavailable {
   display:inline-block;
   padding:4px 10px;
   border-radius:30px;
@@ -268,6 +268,20 @@ tr:last-child td { border:0; }
 .unpaid {
   background:#fff2df;
   color:#986014;
+}
+
+.notavailable {
+  background:#f0f2f1;
+  color:#68736d;
+}
+
+.annual-row td {
+  background:#f8faf8;
+  font-weight:700;
+}
+
+.annual-row td:first-child {
+  color:var(--g);
 }
 
 .empty {
@@ -335,7 +349,7 @@ tr:last-child td { border:0; }
     <h1>فضاء الأولياء</h1>
 
     <p class="intro">
-      تابعوا معلومات الرياضي واشتراكاته الشهرية بسهولة.
+      تابعوا معلومات الرياضي واشتراكاته الشهرية والسنوية بسهولة.
     </p>
 
     <form id="loginForm">
@@ -401,13 +415,13 @@ tr:last-child td { border:0; }
 
   </div>
 
-  <h2>الاشتراكات الشهرية</h2>
+  <h2>الاشتراكات الشهرية والسنوية</h2>
 
   <div class="tablewrap" id="subscriptionsWrap">
     <table>
       <thead>
         <tr>
-          <th>الشهر</th>
+          <th>الاشتراك</th>
           <th>المبلغ</th>
           <th>حالة الدفع</th>
           <th>تاريخ الدفع</th>
@@ -459,6 +473,24 @@ const db = window.supabase.createClient(
 );
 
 const $ = id => document.getElementById(id);
+
+
+// تحديد الموسم الرياضي الحالي
+// يبدأ الموسم في سبتمبر وينتهي في جوان
+
+function seasonNow() {
+  const d = new Date();
+
+  return d.getMonth() >= 8
+    ? d.getFullYear()
+    : d.getFullYear() - 1;
+}
+
+
+// تسمية الموسم الرياضي
+function seasonLabel(year) {
+  return `${year}/${Number(year) + 1}`;
+}
 
 
 // تنسيق التاريخ
@@ -528,6 +560,7 @@ $("loginForm").addEventListener("submit", async e => {
   if (!/^[A-Z0-9]{4}$/.test(code)) {
     errorBox.textContent =
       "يرجى إدخال رمز صحيح مكوّن من 4 أحرف أو أرقام.";
+
     errorBox.style.display = "block";
     return;
   }
@@ -586,6 +619,192 @@ $("loginForm").addEventListener("submit", async e => {
 });
 
 
+// إنشاء خلية في الجدول
+function createCell(value) {
+
+  const td = document.createElement("td");
+
+  td.textContent = value ?? "—";
+
+  return td;
+}
+
+
+// إنشاء شارة حالة الدفع
+function createPaymentBadge(isPaid, unavailable = false) {
+
+  const badge = document.createElement("span");
+
+  if (unavailable) {
+
+    badge.className = "notavailable";
+    badge.textContent = "غير متاح";
+
+  } else if (isPaid) {
+
+    badge.className = "paid";
+    badge.textContent = "مدفوع";
+
+  } else {
+
+    badge.className = "unpaid";
+    badge.textContent = "غير مدفوع";
+
+  }
+
+  return badge;
+}
+
+
+// استخراج بيانات الاشتراك السنوي من استجابة RPC
+function getAnnualSubscription(data, currentSeason) {
+
+  // دعم الاسمين حتى لا نضطر إلى تغيير اسم جدول Supabase
+  const hasInsurance = Object.prototype.hasOwnProperty.call(
+    data,
+    "insurance"
+  );
+
+  const hasAnnualSubscription =
+    Object.prototype.hasOwnProperty.call(
+      data,
+      "annual_subscription"
+    );
+
+  if (!hasInsurance && !hasAnnualSubscription) {
+    return {
+      available:false,
+      record:null
+    };
+  }
+
+  let source = hasAnnualSubscription
+    ? data.annual_subscription
+    : data.insurance;
+
+  // إذا كانت البيانات قائمة سجلات
+  if (Array.isArray(source)) {
+
+    const record = source.find(item =>
+      Number(item.insurance_year) === Number(currentSeason)
+    );
+
+    return {
+      available:true,
+      record:record || null
+    };
+  }
+
+  // إذا كانت البيانات سجلًا واحدًا
+  if (source && typeof source === "object") {
+
+    if (
+      source.insurance_year == null ||
+      Number(source.insurance_year) === Number(currentSeason)
+    ) {
+      return {
+        available:true,
+        record:source
+      };
+    }
+
+    return {
+      available:true,
+      record:null
+    };
+  }
+
+  // قيمة فارغة تعني أن الدالة أعادت بيانات الاشتراك
+  // لكنها لم تجد سجلًا لهذا الموسم
+  if (source === null || source === undefined) {
+    return {
+      available:true,
+      record:null
+    };
+  }
+
+  return {
+    available:false,
+    record:null
+  };
+}
+
+
+// إضافة سطر الاشتراك السنوي
+function renderAnnualSubscription(data, body) {
+
+  const currentSeason = seasonNow();
+
+  const annual = getAnnualSubscription(
+    data,
+    currentSeason
+  );
+
+  const tr = document.createElement("tr");
+
+  tr.className = "annual-row";
+
+  // اسم الاشتراك والموسم
+  const nameCell = createCell(
+    `الاشتراك السنوي - ${seasonLabel(currentSeason)}`
+  );
+
+  tr.appendChild(nameCell);
+
+  if (!annual.available) {
+
+    tr.appendChild(createCell("—"));
+
+    const statusCell = document.createElement("td");
+
+    statusCell.appendChild(
+      createPaymentBadge(false, true)
+    );
+
+    tr.appendChild(statusCell);
+
+    tr.appendChild(createCell("—"));
+
+  } else {
+
+    const record = annual.record;
+
+    // المبلغ
+    tr.appendChild(
+      createCell(
+        record ? fmtMoney(record.amount) : "—"
+      )
+    );
+
+    // حالة الدفع
+    const isPaid = !!record && (
+      record.paid === true ||
+      record.status === "paid"
+    );
+
+    const statusCell = document.createElement("td");
+
+    statusCell.appendChild(
+      createPaymentBadge(isPaid)
+    );
+
+    tr.appendChild(statusCell);
+
+    // تاريخ الدفع
+    tr.appendChild(
+      createCell(
+        isPaid
+          ? fmtDate(record.paid_at)
+          : "—"
+      )
+    );
+
+  }
+
+  body.appendChild(tr);
+}
+
+
 // عرض بيانات الرياضي والاشتراكات
 function renderAthlete(data) {
 
@@ -606,6 +825,8 @@ function renderAthlete(data) {
   $("belt").textContent =
     a.belt || "غير محدد";
 
+
+  // الاشتراكات الشهرية
   let rows = Array.isArray(data.subscriptions)
     ? [...data.subscriptions]
     : [];
@@ -619,56 +840,51 @@ function renderAthlete(data) {
 
   body.replaceChildren();
 
+
+  // عرض الاشتراك السنوي أولًا
+  renderAnnualSubscription(data, body);
+
+
+  // عرض الاشتراكات الشهرية
   rows.forEach(item => {
 
     let tr = document.createElement("tr");
 
-    const values = [
-      fmtMonth(item.subscription_month),
-      fmtMoney(item.amount),
-      item.paid ? "مدفوع" : "غير مدفوع",
-      item.paid ? fmtDate(item.paid_at) : "—"
-    ];
+    const nameCell = createCell(
+      fmtMonth(item.subscription_month)
+    );
 
-    values.forEach((v,i) => {
+    const amountCell = createCell(
+      fmtMoney(item.amount)
+    );
 
-      let td = document.createElement("td");
+    const statusCell = document.createElement("td");
 
-      if (i === 2) {
+    statusCell.appendChild(
+      createPaymentBadge(!!item.paid)
+    );
 
-        let b = document.createElement("span");
+    const dateCell = createCell(
+      item.paid
+        ? fmtDate(item.paid_at)
+        : "—"
+    );
 
-        b.className = item.paid
-          ? "paid"
-          : "unpaid";
-
-        b.textContent = v;
-
-        td.appendChild(b);
-
-      } else {
-
-        td.textContent = v;
-
-      }
-
-      tr.appendChild(td);
-
-    });
+    tr.appendChild(nameCell);
+    tr.appendChild(amountCell);
+    tr.appendChild(statusCell);
+    tr.appendChild(dateCell);
 
     body.appendChild(tr);
 
   });
 
-  $("subscriptionsWrap").classList.toggle(
-    "hidden",
-    !rows.length
-  );
 
-  $("noSubscriptions").classList.toggle(
-    "hidden",
-    !!rows.length
-  );
+  // إظهار الجدول حتى لو لم توجد اشتراكات شهرية
+  // لأن سطر الاشتراك السنوي موجود دائمًا
+  $("subscriptionsWrap").classList.remove("hidden");
+
+  $("noSubscriptions").classList.add("hidden");
 
 }
 
