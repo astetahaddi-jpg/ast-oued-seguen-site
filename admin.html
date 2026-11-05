@@ -1,3 +1,4 @@
+HTML
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -74,6 +75,64 @@ tr:last-child td{border-bottom:0}
 .analysis-card span{display:block;color:var(--muted);font-size:12px}
 .analysis-card strong{display:block;font-size:22px;margin-top:5px}
 .access-code{font-size:20px;letter-spacing:4px;direction:ltr;display:inline-block;font-weight:800;color:var(--navy)}
+
+/* نافذة تعديل معلومات الرياضي */
+.edit-modal{
+ position:fixed;
+ inset:0;
+ z-index:1000;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+ background:rgba(12,25,40,.65);
+ backdrop-filter:blur(3px);
+}
+.edit-modal.hidden{display:none!important}
+.edit-modal-box{
+ width:100%;
+ max-width:560px;
+ max-height:90vh;
+ overflow-y:auto;
+ background:#fff;
+ border-radius:18px;
+ padding:22px;
+ box-shadow:0 20px 70px #0004;
+}
+.edit-modal-header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ border-bottom:1px solid var(--line);
+ padding-bottom:12px;
+ margin-bottom:14px;
+}
+.edit-modal-header h2{
+ margin:0;
+ color:var(--navy);
+ font-size:19px;
+}
+.modal-close{
+ background:#f0f3f7;
+ color:#344a63;
+ font-size:20px;
+ padding:3px 11px;
+}
+.edit-modal-actions{
+ display:flex;
+ gap:9px;
+ margin-top:18px;
+}
+.edit-modal-actions button{flex:1}
+.modal-hint{
+ background:var(--bluebg);
+ color:var(--navy);
+ border-radius:9px;
+ padding:10px;
+ font-size:12px;
+ margin:10px 0;
+}
 @media(max-width:850px){
 .layout{grid-template-columns:1fr}
 .sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
@@ -83,6 +142,7 @@ h1{font-size:18px}
 main{padding:0 9px 28px}
 .panel{padding:13px}
 .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.edit-modal-box{padding:16px}
 }
 </style>
 </head>
@@ -311,6 +371,58 @@ main{padding:0 9px 28px}
 <div class="footer">AST OUED SEGUEN · لوحة الإدارة</div>
 </section>
 </main>
+
+<!-- نافذة تعديل بيانات الرياضي من قسم التأمين -->
+<div id="insuranceEditModal" class="edit-modal hidden" role="dialog" aria-modal="true" aria-labelledby="insuranceEditTitle">
+ <div class="edit-modal-box">
+  <div class="edit-modal-header">
+   <h2 id="insuranceEditTitle">تعديل معلومات الرياضي</h2>
+   <button type="button" class="modal-close" id="insuranceEditClose" aria-label="إغلاق">×</button>
+  </div>
+
+  <div class="modal-hint">
+   يمكنك تعديل الاسم واللقب وتاريخ ومكان الميلاد واسم الولي. لن تتغير حالة التأمين أو الاشتراكات.
+  </div>
+
+  <form id="insuranceEditForm">
+   <input type="hidden" id="insuranceEditAthleteId">
+
+   <div class="grid">
+    <div>
+     <label for="insuranceEditFirstName">الاسم</label>
+     <input id="insuranceEditFirstName" type="text" required>
+    </div>
+
+    <div>
+     <label for="insuranceEditLastName">اللقب</label>
+     <input id="insuranceEditLastName" type="text" required>
+    </div>
+
+    <div>
+     <label for="insuranceEditDob">تاريخ الميلاد</label>
+     <input id="insuranceEditDob" type="date">
+    </div>
+
+    <div>
+     <label for="insuranceEditBirthPlace">مكان الميلاد</label>
+     <input id="insuranceEditBirthPlace" type="text">
+    </div>
+
+    <div>
+     <label for="insuranceEditGuardian">اسم الولي</label>
+     <input id="insuranceEditGuardian" type="text">
+    </div>
+   </div>
+
+   <div id="insuranceEditMessage" aria-live="polite"></div>
+
+   <div class="edit-modal-actions">
+    <button type="submit" id="insuranceEditSave">حفظ التعديلات</button>
+    <button type="button" class="secondary" id="insuranceEditCancel">إلغاء</button>
+   </div>
+  </form>
+ </div>
+</div>
 
 <script>
 (() => {
@@ -745,11 +857,6 @@ function insuranceRecord(athleteId,season){
  );
 }
 
-/*
- * التأمين:
- * عرض الرياضيين الذين دفعوا فقط.
- * زر تعديل المعلومات يفتح نموذج تعديل بيانات الرياضي.
- */
 function renderInsurance(){
  const season=Number($('insuranceSeason').value||seasonNow());
  const q=$('insuranceSearch').value.trim().toLowerCase();
@@ -822,64 +929,113 @@ function renderInsurance(){
  );
 }
 
-/*
- * تعديل معلومات الرياضي من قسم التأمين.
- * التعديل يتم في جدول athletes فقط.
- * لا يتم تعديل سجل التأمين أو حذفه.
- */
-async function editInsuranceAthlete(id){
+/* فتح نافذة تعديل معلومات الرياضي */
+function openInsuranceEditModal(id){
  const a=athletes.find(x=>String(x.id)===String(id));
 
- if(!a)throw new Error('لم يتم العثور على الرياضي.');
-
- const fullName=prompt('الاسم الكامل:',a.full_name||'');
- if(fullName===null)return;
-
- const dob=prompt('تاريخ الميلاد (YYYY-MM-DD):',a.date_of_birth||'');
- if(dob===null)return;
-
- const birthPlace=prompt('مكان الميلاد:',a.birth_place||'');
- if(birthPlace===null)return;
-
- const guardian=prompt('اسم الولي:',a.guardian_name||'');
- if(guardian===null)return;
-
- if(!fullName.trim()){
-  throw new Error('الاسم الكامل إجباري.');
+ if(!a){
+  throw new Error('لم يتم العثور على الرياضي.');
  }
 
- if(dob.trim()&&!/^\d{4}-\d{2}-\d{2}$/.test(dob.trim())){
-  throw new Error('صيغة تاريخ الميلاد غير صحيحة. استعمل YYYY-MM-DD.');
+ const parts=String(a.full_name||'').trim().split(/\s+/);
+ const firstName=parts.shift()||'';
+ const lastName=parts.join(' ')||'';
+
+ $('insuranceEditAthleteId').value=a.id;
+ $('insuranceEditFirstName').value=firstName;
+ $('insuranceEditLastName').value=lastName;
+ $('insuranceEditDob').value=a.date_of_birth||'';
+ $('insuranceEditBirthPlace').value=a.birth_place||'';
+ $('insuranceEditGuardian').value=a.guardian_name||'';
+
+ msg('insuranceEditMessage','');
+
+ $('insuranceEditModal').classList.remove('hidden');
+
+ setTimeout(()=>{
+  $('insuranceEditFirstName').focus();
+ },100);
+}
+
+/* إغلاق نافذة التعديل */
+function closeInsuranceEditModal(){
+ $('insuranceEditModal').classList.add('hidden');
+ $('insuranceEditForm').reset();
+ $('insuranceEditAthleteId').value='';
+ msg('insuranceEditMessage','');
+}
+
+/* حفظ الاسم واللقب وبقية المعلومات في جدول athletes */
+async function saveInsuranceAthleteEdit(e){
+ e.preventDefault();
+
+ const saveButton=$('insuranceEditSave');
+ saveButton.disabled=true;
+ saveButton.textContent='جارٍ الحفظ...';
+
+ try{
+  const id=$('insuranceEditAthleteId').value;
+
+  const firstName=$('insuranceEditFirstName').value.trim().replace(/\s+/g,' ');
+  const lastName=$('insuranceEditLastName').value.trim().replace(/\s+/g,' ');
+
+  const dob=$('insuranceEditDob').value;
+  const birthPlace=$('insuranceEditBirthPlace').value.trim();
+  const guardian=$('insuranceEditGuardian').value.trim();
+
+  if(!id)throw new Error('معرّف الرياضي غير موجود.');
+  if(!firstName)throw new Error('يرجى إدخال الاسم.');
+  if(!lastName)throw new Error('يرجى إدخال اللقب.');
+
+  if(dob){
+   const date=new Date(dob+'T00:00:00');
+   if(Number.isNaN(date.getTime())||date.toISOString().slice(0,10)!==dob){
+    throw new Error('تاريخ الميلاد غير صحيح.');
+   }
+   if(date>new Date()){
+    throw new Error('تاريخ الميلاد لا يمكن أن يكون في المستقبل.');
+   }
+  }
+
+  const fullName=`${firstName} ${lastName}`.trim();
+
+  const duplicate=athletes.some(a=>
+   String(a.id)!==String(id)&&
+   normalizeName(a.full_name)===normalizeName(fullName)
+  );
+
+  if(duplicate){
+   throw new Error('يوجد رياضي آخر مسجل بالاسم واللقب نفسيهما.');
+  }
+
+  const {data,error}=await client.from('athletes')
+   .update({
+    full_name:fullName,
+    date_of_birth:dob||null,
+    birth_place:birthPlace||null,
+    guardian_name:guardian||null
+   })
+   .eq('id',id)
+   .select('id');
+
+  if(error)throw error;
+
+  if(!data||!data.length){
+   throw new Error('لم يتم حفظ التعديلات. تحقق من صلاحيات RLS.');
+  }
+
+  closeInsuranceEditModal();
+
+  await loadAll();
+
+  globalMsg('تم تعديل الاسم واللقب وتاريخ ومكان الميلاد واسم الولي بنجاح. لم يتم تغيير سجل التأمين.');
+
+ }catch(err){
+  msg('insuranceEditMessage','تعذر حفظ التعديلات: '+err.message,true);
+ }finally{
+  saveButton.disabled=false;
+  saveButton.textContent='حفظ التعديلات';
  }
-
- const duplicate=athletes.some(x=>
-  String(x.id)!==String(id)&&
-  normalizeName(x.full_name)===normalizeName(fullName)
- );
-
- if(duplicate){
-  throw new Error('يوجد رياضي آخر مسجل بالاسم نفسه.');
- }
-
- const {data,error}=await client.from('athletes')
-  .update({
-   full_name:fullName.trim().replace(/\s+/g,' '),
-   date_of_birth:dob.trim()||null,
-   birth_place:birthPlace.trim()||null,
-   guardian_name:guardian.trim()||null
-  })
-  .eq('id',id)
-  .select('id');
-
- if(error)throw error;
-
- if(!data||!data.length){
-  throw new Error('لم يتم حفظ التعديلات. تحقق من صلاحيات RLS.');
- }
-
- await loadAll();
-
- globalMsg('تم تعديل معلومات الرياضي بنجاح، وسجل التأمين بقي محفوظًا.');
 }
 
 function findSubscription(athleteId,season,month){
@@ -1345,7 +1501,7 @@ async function onClick(e){
    await loadAll();
 
   }else if(b.dataset.insuranceEdit){
-   await editInsuranceAthlete(b.dataset.insuranceEdit);
+   openInsuranceEditModal(b.dataset.insuranceEdit);
 
   }else if(b.dataset.insuranceToggle){
    await toggleInsurance(
@@ -1528,6 +1684,25 @@ function wire(){
 
  $('exportInsuranceExcel').addEventListener('click',exportInsuranceExcel);
  $('exportSubscriptionsExcel').addEventListener('click',exportSubscriptionsExcel);
+
+ /* أحداث نافذة تعديل معلومات الرياضي */
+ $('insuranceEditForm').addEventListener('submit',saveInsuranceAthleteEdit);
+ $('insuranceEditClose').addEventListener('click',closeInsuranceEditModal);
+ $('insuranceEditCancel').addEventListener('click',closeInsuranceEditModal);
+
+ /* إغلاق النافذة عند الضغط على الخلفية */
+ $('insuranceEditModal').addEventListener('click',e=>{
+  if(e.target===$('insuranceEditModal')){
+   closeInsuranceEditModal();
+  }
+ });
+
+ /* إغلاق النافذة بزر Escape */
+ document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('insuranceEditModal').classList.contains('hidden')){
+   closeInsuranceEditModal();
+  }
+ });
 
  document.querySelectorAll('.navbtn').forEach(b=>
   b.addEventListener('click',()=>{
