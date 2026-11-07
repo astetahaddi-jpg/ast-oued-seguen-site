@@ -60,6 +60,7 @@ tr:last-child td{border-bottom:0}
 .pill{display:inline-block;padding:3px 8px;border-radius:20px;background:#eef2f7;font-size:12px}
 .paid{background:var(--greenbg);color:var(--green)}
 .unpaid{background:var(--redbg);color:var(--red)}
+.partial{background:var(--goldbg);color:var(--gold)}
 .hidden{display:none!important}
 .notice{padding:11px 13px;border-radius:10px;background:var(--bluebg);color:var(--navy);margin:10px 0;font-size:13px}
 .error{background:var(--redbg);color:var(--red)}
@@ -103,6 +104,28 @@ tr:last-child td{border-bottom:0}
 .kimono-analysis .analysis-card strong{font-size:21px}
 .kimono-actions{display:flex;gap:4px;flex-wrap:wrap}
 .kimono-status{white-space:nowrap}
+.kimono-payment-preview{
+ padding:12px 14px;
+ border:1px solid var(--line);
+ border-radius:10px;
+ background:#f5f9ff;
+ color:var(--navy);
+ font-weight:700;
+ font-size:14px;
+ margin-top:12px;
+}
+.kimono-payment-preview.partial{
+ background:var(--goldbg);
+ color:var(--gold);
+}
+.kimono-payment-preview.paid{
+ background:var(--greenbg);
+ color:var(--green);
+}
+.kimono-payment-preview.unpaid{
+ background:var(--redbg);
+ color:var(--red);
+}
 #kimonoMessage{margin:8px 0}
 
 @media(max-width:850px){
@@ -342,7 +365,8 @@ main{padding:0 9px 28px}
 <h2>KIMONO — مبيعات ألبسة الجودو</h2>
 
 <div class="notice">
-سجّل عمليات بيع الكيمونو للرياضيين، وتابع المبالغ المدفوعة والمتبقية.
+سجّل عمليات بيع الكيمونو لأي شخص بكتابة اسمه ولقبه مباشرة، حتى إن لم يكن مسجلًا في قائمة الرياضيين.
+يمكنك تسجيل الدفع الكامل أو التسبيق ومتابعة المبلغ المتبقي تلقائيًا.
 </div>
 
 <form id="kimonoForm">
@@ -350,10 +374,8 @@ main{padding:0 9px 28px}
 
 <div class="grid">
 <div>
-<label for="kimonoAthlete">اسم ولقب الرياضي</label>
-<select id="kimonoAthlete" required>
-<option value="">اختر الرياضي</option>
-</select>
+<label for="kimonoAthlete">اسم ولقب الرياضي أو المشتري</label>
+<input id="kimonoAthlete" type="text" placeholder="اكتب الاسم واللقب مباشرة" autocomplete="off" required>
 </div>
 
 <div>
@@ -372,17 +394,18 @@ main{padding:0 9px 28px}
 </div>
 
 <div>
-<label for="kimonoPrice">السعر (دج)</label>
-<input id="kimonoPrice" type="number" min="0" step="0.01" required>
+<label for="kimonoPrice">السعر الإجمالي (دج)</label>
+<input id="kimonoPrice" type="number" min="0" step="0.01" placeholder="السعر الكامل" required>
 </div>
 
 <div>
-<label for="kimonoPaid">حالة الدفع</label>
-<select id="kimonoPaid">
-<option value="false">غير مدفوع</option>
-<option value="true">مدفوع</option>
-</select>
+<label for="kimonoPaidAmount">المبلغ المدفوع أو التسبيق (دج)</label>
+<input id="kimonoPaidAmount" type="number" min="0" step="0.01" value="0" required>
 </div>
+</div>
+
+<div id="kimonoPaymentPreview" class="kimono-payment-preview unpaid">
+المبلغ المتبقي: 0 دج · الحالة: غير مدفوع
 </div>
 
 <div class="toolbar">
@@ -398,7 +421,7 @@ main{padding:0 9px 28px}
 <div id="kimonoAnalysis" class="analysis-grid kimono-analysis"></div>
 
 <div class="toolbar">
-<input id="kimonoSearch" placeholder="بحث باسم الرياضي">
+<input id="kimonoSearch" placeholder="بحث باسم الرياضي أو المشتري">
 <button id="refreshKimono" class="secondary" type="button">تحديث المبيعات</button>
 </div>
 
@@ -627,12 +650,6 @@ function fillSelects(){
 
  $('examAthlete').innerHTML='<option value="">اختر الرياضي</option>'+aopts;
 
- const oldKimono=$('kimonoAthlete').value;
- $('kimonoAthlete').innerHTML='<option value="">اختر الرياضي</option>'+aopts;
- if(oldKimono && athletes.some(a=>String(a.id)===String(oldKimono))){
-  $('kimonoAthlete').value=oldKimono;
- }
-
  ['insuranceSeason','subscriptionSeason','examSeason'].forEach(id=>{
   const oldValue=$(id).value;
   addSeasonOptions(id,oldValue||seasonNow());
@@ -803,17 +820,67 @@ function renderParentCodes(){
    KIMONO — إدارة المبيعات
 ========================= */
 
+function kimonoPaidValue(row){
+ const stored=Number(row.paid_amount||0);
+
+ // توافق مع عمليات البيع القديمة التي كانت تسجل paid فقط.
+ if(stored===0&&row.paid===true){
+  return Number(row.price||0);
+ }
+
+ return stored;
+}
+
+function kimonoPaymentStatus(price,paidAmount){
+ const total=Number(price||0);
+ const paid=Number(paidAmount||0);
+
+ if(total>0&&paid>=total){
+  return {key:'paid',label:'مدفوع بالكامل'};
+ }
+
+ if(paid>0){
+  return {key:'partial',label:'تسبيق'};
+ }
+
+ return {key:'unpaid',label:'غير مدفوع'};
+}
+
+function kimonoStatusPill(status){
+ const info={
+  paid:{label:'مدفوع بالكامل',className:'paid'},
+  partial:{label:'تسبيق',className:'partial'},
+  unpaid:{label:'غير مدفوع',className:'unpaid'}
+ };
+
+ const item=info[status]||info.unpaid;
+
+ return `<span class="pill ${item.className}">${item.label}</span>`;
+}
+
+function updateKimonoPaymentPreview(){
+ const price=Number($('kimonoPrice').value||0);
+ const paid=Number($('kimonoPaidAmount').value||0);
+ const remaining=Math.max(price-paid,0);
+ const status=kimonoPaymentStatus(price,paid);
+
+ const preview=$('kimonoPaymentPreview');
+
+ preview.textContent=
+  `المبلغ المتبقي: ${money(remaining)} · الحالة: ${status.label}`;
+
+ preview.className=
+  `kimono-payment-preview ${status.key}`;
+}
+
 function clearKimonoForm(){
  $('kimonoForm').reset();
  $('kimonoId').value='';
  $('kimonoDate').value=new Date().toISOString().slice(0,10);
- $('kimonoPaid').value='false';
+ $('kimonoPaidAmount').value='0';
  $('kimonoSaveButton').textContent='إضافة عملية بيع';
  $('kimonoCancelEdit').classList.add('hidden');
-}
-
-function kimonoAthlete(id){
- return athletes.find(a=>String(a.id)===String(id));
+ updateKimonoPaymentPreview();
 }
 
 function renderKimono(){
@@ -825,15 +892,24 @@ function renderKimono(){
   (sum,r)=>sum+Number(r.price||0),0
  );
 
- const paidRows=kimonoRows.filter(r=>r.paid===true);
- const unpaidRows=kimonoRows.filter(r=>r.paid!==true);
-
- const paidAmount=paidRows.reduce(
-  (sum,r)=>sum+Number(r.price||0),0
+ const paidAmount=kimonoRows.reduce(
+  (sum,r)=>sum+kimonoPaidValue(r),0
  );
 
- const unpaidAmount=unpaidRows.reduce(
-  (sum,r)=>sum+Number(r.price||0),0
+ const unpaidAmount=kimonoRows.reduce(
+  (sum,r)=>sum+Math.max(Number(r.price||0)-kimonoPaidValue(r),0),0
+ );
+
+ const paidRows=kimonoRows.filter(r=>
+  kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='paid'
+ );
+
+ const partialRows=kimonoRows.filter(r=>
+  kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='partial'
+ );
+
+ const unpaidRows=kimonoRows.filter(r=>
+  kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='unpaid'
  );
 
  $('kimonoAnalysis').innerHTML=`
@@ -850,65 +926,85 @@ function renderKimono(){
   </div>
 
   <div class="analysis-card">
-   <span>المبلغ المدفوع</span>
+   <span>مجموع المبالغ المدفوعة</span>
    <strong>${money(paidAmount)}</strong>
-   <small>${paidRows.length} عملية مدفوعة</small>
+   <small>المبالغ المحصلة فعليًا</small>
   </div>
 
   <div class="analysis-card">
-   <span>المبلغ غير المدفوع</span>
+   <span>مجموع المبالغ المتبقية</span>
    <strong>${money(unpaidAmount)}</strong>
-   <small>${unpaidRows.length} عملية غير مدفوعة</small>
+   <small>المبالغ التي لم تُحصّل بعد</small>
   </div>
 
   <div class="analysis-card">
-   <span>عدد العمليات المدفوعة</span>
+   <span>مدفوع بالكامل</span>
    <strong>${paidRows.length}</strong>
    <small>عملية بيع</small>
   </div>
 
   <div class="analysis-card">
-   <span>عدد العمليات غير المدفوعة</span>
+   <span>دفع تسبيق</span>
+   <strong>${partialRows.length}</strong>
+   <small>عملية بيع</small>
+  </div>
+
+  <div class="analysis-card">
+   <span>غير مدفوع</span>
    <strong>${unpaidRows.length}</strong>
    <small>عملية بيع</small>
   </div>
  `;
 
  const list=kimonoRows.filter(r=>{
-  const a=kimonoAthlete(r.athlete_id);
-  return athleteName(a).toLocaleLowerCase('ar').includes(q);
+  const name=String(r.athlete_name||'').toLocaleLowerCase('ar');
+  const type=String(r.kimono_type||'').toLocaleLowerCase('ar');
+  const size=String(r.size||'').toLocaleLowerCase('ar');
+
+  return name.includes(q)||type.includes(q)||size.includes(q);
  });
 
  $('kimonoTable').innerHTML=table(
-  ['اسم ولقب الرياضي','نوع الكيمونو والقياس','تاريخ البيع','السعر وحالة الدفع'],
+  [
+   'اسم ولقب الرياضي أو المشتري',
+   'نوع الكيمونو والقياس',
+   'تاريخ البيع',
+   'السعر الإجمالي',
+   'المبلغ المدفوع',
+   'المبلغ المتبقي',
+   'حالة الدفع',
+   'الإجراءات'
+  ],
   list.map(r=>{
-   const a=kimonoAthlete(r.athlete_id);
-   const paid=r.paid===true;
+   const total=Number(r.price||0);
+   const paid=kimonoPaidValue(r);
+   const remaining=Math.max(total-paid,0);
+   const status=kimonoPaymentStatus(total,paid);
 
    return `
     <tr>
-     <td>${esc(athleteName(a))}</td>
+     <td><strong>${esc(r.athlete_name||'—')}</strong></td>
 
      <td>
-      <strong>${esc(r.kimono_type)}</strong>
+      <strong>${esc(r.kimono_type||'—')}</strong>
       <br>
-      <span class="pill">القياس: ${esc(r.size)}</span>
+      <span class="pill">القياس: ${esc(r.size||'—')}</span>
      </td>
 
      <td>${esc(r.sale_date||'—')}</td>
 
+     <td><strong>${money(total)}</strong></td>
+
+     <td>${money(paid)}</td>
+
+     <td>${money(remaining)}</td>
+
      <td>
-      <strong>${money(r.price)}</strong>
-      <br>
-      <span class="kimono-status">${statusPill(paid?'paid':'unpaid')}</span>
+      <span class="kimono-status">${kimonoStatusPill(status.key)}</span>
+     </td>
 
+     <td>
       <div class="kimono-actions">
-       <button class="smallbtn ${paid?'warning':'success'}"
-        data-kimono-toggle="${esc(r.id)}"
-        data-kimono-paid="${paid}">
-        ${paid?'إلغاء الدفع':'تسجيل الدفع'}
-       </button>
-
        <button class="smallbtn"
         data-kimono-edit="${esc(r.id)}">
         تعديل
@@ -931,20 +1027,18 @@ function editKimono(id){
 
  if(!r)throw new Error('لم يتم العثور على عملية البيع.');
 
- if(!kimonoAthlete(r.athlete_id)){
-  throw new Error('الرياضي المرتبط بعملية البيع غير موجود.');
- }
-
  $('kimonoId').value=r.id;
- $('kimonoAthlete').value=String(r.athlete_id);
+ $('kimonoAthlete').value=r.athlete_name||'';
  $('kimonoType').value=r.kimono_type||'';
  $('kimonoSize').value=r.size||'';
  $('kimonoDate').value=r.sale_date||'';
  $('kimonoPrice').value=r.price??0;
- $('kimonoPaid').value=String(r.paid===true);
+ $('kimonoPaidAmount').value=kimonoPaidValue(r);
 
  $('kimonoSaveButton').textContent='حفظ تعديل البيع';
  $('kimonoCancelEdit').classList.remove('hidden');
+
+ updateKimonoPaymentPreview();
 
  msg('kimonoMessage','أنت تعدّل عملية بيع الكيمونو.');
 
@@ -962,15 +1056,14 @@ async function saveKimono(e){
 
  try{
   const id=$('kimonoId').value;
-  const athleteId=$('kimonoAthlete').value;
+  const name=$('kimonoAthlete').value.trim().replace(/\s+/g,' ');
   const type=$('kimonoType').value.trim();
   const size=$('kimonoSize').value.trim();
   const date=$('kimonoDate').value;
   const price=Number($('kimonoPrice').value);
-  const paid=$('kimonoPaid').value==='true';
+  const paidAmount=Number($('kimonoPaidAmount').value||0);
 
-  if(!athleteId)throw new Error('يرجى اختيار الرياضي.');
-  if(!kimonoAthlete(athleteId))throw new Error('الرياضي المحدد غير موجود.');
+  if(!name)throw new Error('يرجى كتابة اسم الرياضي أو المشتري.');
   if(!type)throw new Error('يرجى إدخال نوع الكيمونو.');
   if(!size)throw new Error('يرجى إدخال قياس الكيمونو.');
   if(!date)throw new Error('يرجى تحديد تاريخ البيع.');
@@ -981,7 +1074,10 @@ async function saveKimono(e){
    throw new Error('تاريخ البيع غير صالح.');
   }
 
-  if(parsedDate>new Date()){
+  const today=new Date();
+  today.setHours(23,59,59,999);
+
+  if(parsedDate>today){
    throw new Error('تاريخ البيع لا يمكن أن يكون في المستقبل.');
   }
 
@@ -989,14 +1085,26 @@ async function saveKimono(e){
    throw new Error('يرجى إدخال سعر صحيح وغير سالب.');
   }
 
+  if(!Number.isFinite(paidAmount)||paidAmount<0){
+   throw new Error('يرجى إدخال مبلغ مدفوع صحيح وغير سالب.');
+  }
+
+  if(paidAmount>price){
+   throw new Error('المبلغ المدفوع لا يمكن أن يكون أكبر من السعر الإجمالي.');
+  }
+
+  const isFullyPaid=price>0&&paidAmount>=price;
+
   const payload={
-   athlete_id:Number(athleteId),
+   athlete_id:null,
+   athlete_name:name,
    kimono_type:type,
    size:size,
    sale_date:date,
    price:price,
-   paid:paid,
-   paid_at:paid?new Date().toISOString():null
+   paid_amount:paidAmount,
+   paid:isFullyPaid,
+   paid_at:isFullyPaid?new Date().toISOString():null
   };
 
   let result;
@@ -1034,42 +1142,13 @@ async function saveKimono(e){
  }
 }
 
-async function toggleKimonoPayment(id,currentPaid){
- const row=kimonoRows.find(x=>String(x.id)===String(id));
-
- if(!row)throw new Error('لم يتم العثور على عملية البيع.');
-
- const next=!currentPaid;
-
- const {data,error}=await client.from('kimono_sales')
-  .update({
-   paid:next,
-   paid_at:next?new Date().toISOString():null
-  })
-  .eq('id',id)
-  .select('id');
-
- if(error)throw error;
-
- if(!data||!data.length){
-  throw new Error('لم يتم تحديث حالة الدفع. تحقق من صلاحيات RLS.');
- }
-
- await loadAll();
-
- msg(
-  'kimonoMessage',
-  next?'تم تسجيل دفع قيمة الكيمونو.':'تم إرجاع حالة الدفع إلى غير مدفوع.'
- );
-}
-
 async function deleteKimonoSale(id){
  const row=kimonoRows.find(x=>String(x.id)===String(id));
 
  if(!row)throw new Error('لم يتم العثور على عملية البيع.');
 
  if(!confirm(
-  `هل تريد حذف عملية بيع الكيمونو الخاصة بالرياضي ${athleteName(kimonoAthlete(row.athlete_id))}؟`
+  `هل تريد حذف عملية بيع الكيمونو الخاصة بـ ${row.athlete_name||'هذا المشتري'}؟`
  ))return;
 
  const {data,error}=await client.from('kimono_sales')
@@ -1822,12 +1901,6 @@ async function onClick(e){
   }else if(b.dataset.kimonoDelete){
    await deleteKimonoSale(b.dataset.kimonoDelete);
 
-  }else if(b.dataset.kimonoToggle){
-   await toggleKimonoPayment(
-    b.dataset.kimonoToggle,
-    b.dataset.kimonoPaid==='true'
-   );
-
   }else if(b.dataset.regAccept){
    if(!confirm('قبول الطلب وإضافة الرياضي وإنشاء اشتراكاته الشهرية ورمز تفعيله؟'))return;
    await acceptRegistration(b.dataset.regAccept);
@@ -2068,10 +2141,14 @@ function wire(){
   setTimeout(()=>{
    if(!$('kimonoId').value){
     $('kimonoDate').value=new Date().toISOString().slice(0,10);
-    $('kimonoPaid').value='false';
+    $('kimonoPaidAmount').value='0';
+    updateKimonoPaymentPreview();
    }
   },0);
  });
+
+ $('kimonoPrice').addEventListener('input',updateKimonoPaymentPreview);
+ $('kimonoPaidAmount').addEventListener('input',updateKimonoPaymentPreview);
 
  $('kimonoSearch').addEventListener('input',renderKimono);
  $('refreshKimono').addEventListener('click',loadAll);
@@ -2118,6 +2195,8 @@ async function init(){
  );
 
  $('kimonoDate').value=new Date().toISOString().slice(0,10);
+ $('kimonoPaidAmount').value='0';
+ updateKimonoPaymentPreview();
 
  wire();
 
