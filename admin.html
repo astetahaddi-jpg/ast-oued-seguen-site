@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -75,24 +74,10 @@ tr:last-child td{border-bottom:0}
 .analysis-card span{display:block;color:var(--muted);font-size:12px}
 .analysis-card strong{display:block;font-size:22px;margin-top:5px}
 .access-code{font-size:20px;letter-spacing:4px;direction:ltr;display:inline-block;font-weight:800;color:var(--navy)}
-
-.edit-modal{
- position:fixed;inset:0;z-index:1000;
- display:flex;align-items:center;justify-content:center;
- padding:15px;background:rgba(12,25,40,.65);
- backdrop-filter:blur(3px);
-}
+.edit-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:15px;background:rgba(12,25,40,.65);backdrop-filter:blur(3px)}
 .edit-modal.hidden{display:none!important}
-.edit-modal-box{
- width:100%;max-width:560px;max-height:90vh;
- overflow-y:auto;background:#fff;border-radius:18px;
- padding:22px;box-shadow:0 20px 70px #0004;
-}
-.edit-modal-header{
- display:flex;justify-content:space-between;align-items:center;
- gap:10px;border-bottom:1px solid var(--line);
- padding-bottom:12px;margin-bottom:14px;
-}
+.edit-modal-box{width:100%;max-width:560px;max-height:90vh;overflow-y:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 70px #0004}
+.edit-modal-header{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
 .edit-modal-header h2{margin:0;color:var(--navy);font-size:19px}
 .modal-close{background:#f0f3f7;color:#344a63;font-size:20px;padding:3px 11px}
 .edit-modal-actions{display:flex;gap:9px;margin-top:18px}
@@ -103,11 +88,7 @@ tr:last-child td{border-bottom:0}
 .kimono-analysis .analysis-card strong{font-size:21px}
 .kimono-actions{display:flex;gap:4px;flex-wrap:wrap}
 .kimono-status{white-space:nowrap}
-.kimono-payment-preview{
- padding:12px 14px;border:1px solid var(--line);
- border-radius:10px;background:#f5f9ff;color:var(--navy);
- font-weight:700;font-size:14px;margin-top:12px;
-}
+.kimono-payment-preview{padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#f5f9ff;color:var(--navy);font-weight:700;font-size:14px;margin-top:12px}
 .kimono-payment-preview.partial{background:var(--goldbg);color:var(--gold)}
 .kimono-payment-preview.paid{background:var(--greenbg);color:var(--green)}
 .kimono-payment-preview.unpaid{background:var(--redbg);color:var(--red)}
@@ -119,6 +100,9 @@ tr:last-child td{border-bottom:0}
 .kimono-section{border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;background:#fbfdff}
 .kimono-section h3{font-size:15px;margin:0 0 10px;color:var(--navy)}
 .kimono-filter{max-width:220px}
+.kimono-legacy{background:#f1f3f6;color:#596579}
+.kimono-stock-choice{font-size:12px;color:var(--muted);margin-top:5px}
+.kimono-breakdown-title{font-size:14px;font-weight:800;color:var(--navy);margin:18px 0 8px}
 @media(max-width:850px){
  .layout{grid-template-columns:1fr}
  .sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
@@ -308,54 +292,25 @@ tr:last-child td{border-bottom:0}
 <h2>KIMONO — مبيعات ومخزون ألبسة الجودو</h2>
 <div class="notice">
 تُسجّل المبيعات الجديدة من المخزون المتوفر فقط. لا يمكن بيع صنف غير موجود أو بكمية غير كافية.
-المبيعات القديمة ستبقى محفوظة وظاهرة دون ربط تلقائي بالمخزون.
+المبيعات القديمة تبقى محفوظة كما هي، ولا يتم ربطها تلقائيًا بالمخزون.
 </div>
-
 <div id="kimonoSetupMessage" class="notice hidden"></div>
 
 <h2 class="kimono-subtitle">تسجيل عملية بيع</h2>
 <form id="kimonoForm">
 <input type="hidden" id="kimonoId">
 <div class="grid">
+<div><label for="kimonoAthlete">اسم ولقب المشتري</label><input id="kimonoAthlete" type="text" placeholder="اكتب الاسم واللقب" required></div>
+<div><label for="kimonoColor">اللون</label><select id="kimonoColor" required><option value="white">أبيض</option><option value="blue">أزرق</option></select></div>
+<div><label for="kimonoQuality">النوعية</label><select id="kimonoQuality" required><option value="regular">عادي</option><option value="professional">احترافي</option></select></div>
+<div><label for="kimonoSize">القياس</label><input id="kimonoSize" type="text" placeholder="أي قياس أو وصف" required></div>
+<div><label for="kimonoDate">تاريخ البيع</label><input id="kimonoDate" type="date" required></div>
+<div><label for="kimonoPrice">السعر الإجمالي (دج)</label><input id="kimonoPrice" type="number" min="1" step="1" required></div>
+<div><label for="kimonoPaidAmount">المبلغ المدفوع أو التسبيق (دج)</label><input id="kimonoPaidAmount" type="number" min="0" step="1" value="0" required></div>
 <div>
-<label for="kimonoAthlete">اسم ولقب المشتري</label>
-<input id="kimonoAthlete" type="text" placeholder="اكتب الاسم واللقب" required>
-</div>
-<div>
-<label for="kimonoColor">اللون</label>
-<select id="kimonoColor" required>
-<option value="white">أبيض</option>
-<option value="blue">أزرق</option>
-</select>
-</div>
-<div>
-<label for="kimonoQuality">النوعية</label>
-<select id="kimonoQuality" required>
-<option value="regular">عادي</option>
-<option value="professional">احترافي</option>
-</select>
-</div>
-<div>
-<label for="kimonoSize">القياس</label>
-<input id="kimonoSize" type="text" placeholder="أي قياس أو وصف" required>
-</div>
-<div>
-<label for="kimonoDate">تاريخ البيع</label>
-<input id="kimonoDate" type="date" required>
-</div>
-<div>
-<label for="kimonoPrice">السعر الإجمالي (دج)</label>
-<input id="kimonoPrice" type="number" min="0" step="1" required>
-</div>
-<div>
-<label for="kimonoPaidAmount">المبلغ المدفوع أو التسبيق (دج)</label>
-<input id="kimonoPaidAmount" type="number" min="0" step="1" value="0" required>
-</div>
-<div>
-<label for="kimonoStockSelect">الصنف المتوفر في المخزون</label>
-<select id="kimonoStockSelect" required>
-<option value="">اختر الصنف والقياس</option>
-</select>
+<label for="kimonoStockSelect">الصنف والقياس من المخزون</label>
+<select id="kimonoStockSelect" required><option value="">اختر الصنف والقياس</option></select>
+<div class="kimono-stock-choice">اختيار الصنف من هذه القائمة هو الذي يحدد اللون والنوعية والقياس الفعلي للبيع.</div>
 </div>
 </div>
 <div id="kimonoStockPreview" class="notice">اختر الصنف لعرض الكمية المتوفرة.</div>
@@ -392,7 +347,7 @@ tr:last-child td{border-bottom:0}
 <button id="refreshKimono" class="secondary" type="button">تحديث البيانات</button>
 </div>
 <div id="kimonoAnalysis" class="analysis-grid kimono-analysis"></div>
-<div id="kimonoBreakdown" class="analysis-grid"></div>
+<div id="kimonoBreakdown"></div>
 
 <h2 class="kimono-subtitle">المخزون الحالي</h2>
 <div class="notice">التسوية اليدوية تعني إدخال الكمية الفعلية الموجودة بعد الجرد، وليس مقدار الزيادة أو النقص.</div>
@@ -410,9 +365,7 @@ tr:last-child td{border-bottom:0}
 <div id="kimonoMovementsTable" class="tablewrap"></div>
 
 <h2 class="kimono-subtitle">سجل المبيعات</h2>
-<div class="toolbar">
-<input id="kimonoSearch" placeholder="بحث باسم المشتري أو اللون أو النوعية أو القياس">
-</div>
+<div class="toolbar"><input id="kimonoSearch" placeholder="بحث باسم المشتري أو اللون أو النوعية أو القياس"></div>
 <div id="kimonoTable" class="tablewrap"></div>
 </section>
 </div>
@@ -447,7 +400,6 @@ tr:last-child td{border-bottom:0}
 </form>
 </div>
 </div>
-
 <script>
 (() => {
 'use strict';
@@ -481,6 +433,7 @@ let subscriptionRows=[],examRows=[],examFeeRows=[],athleteCodes=[];
 let kimonoRows=[],kimonoStock=[],kimonoMovements=[];
 let kimonoStockAvailable=false;
 let busy=false;
+let kimonoEditingLegacy=false;
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({
 '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -488,6 +441,10 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({
 
 const money=n=>`${Number(n||0).toLocaleString('fr-FR')} دج`;
 
+function localDateString(){
+ const d=new Date();
+ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 function seasonNow(){
  const d=new Date();
  return d.getMonth()>=8?d.getFullYear():d.getFullYear()-1;
@@ -503,13 +460,11 @@ function seasonFromDate(dateValue){
  if(Number.isNaN(d.getTime()))return seasonNow();
  return d.getMonth()>=8?d.getFullYear():d.getFullYear()-1;
 }
-
 function assertSeasonEditable(season){
  const selected=Number(season);
  if(!Number.isInteger(selected))throw new Error('الموسم الرياضي المحدد غير صالح.');
  if(selected>seasonNow())throw new Error(`لا يمكن إنشاء أو تعديل سجلات موسم ${seasonLabel(selected)} قبل حلول شهر سبتمبر ${selected}.`);
 }
-
 const ageFromDob=dob=>{
  if(!dob)return '—';
  const d=new Date(dob+'T00:00:00');
@@ -591,8 +546,7 @@ async function loadAll(){
   ]);
   [groups,athletes,registrations,insuranceRows,subscriptionRows,examRows,examFeeRows,athleteCodes,kimonoRows]=results;
 
-  // تحميل المخزون والحركات مستقل عن الجداول الأساسية.
-  // غياب جداول المخزون لا يمنع تشغيل بقية لوحة الإدارة.
+  // المخزون والحركات تحميلهما مستقل حتى لا يؤثرا في بقية لوحة الإدارة.
   await loadKimonoInventory();
   renderAll();
   globalMsg('تم تحميل البيانات بنجاح.');
@@ -605,14 +559,14 @@ async function loadKimonoInventory(){
  try{
   const [stock,movements]=await Promise.all([
    db(client.from('kimono_stock').select('*').order('color').order('quality').order('size')),
-   db(client.from('kimono_stock_movements').select('*').order('created_at',{ascending:false}).limit(200))
+   db(client.from('kimono_stock_movements').select('*').order('created_at',{ascending:false}).limit(300))
   ]);
   kimonoStock=stock;kimonoMovements=movements;kimonoStockAvailable=true;
-  msg('kimonoSetupMessage','');
   $('kimonoSetupMessage').classList.add('hidden');
+  msg('kimonoSetupMessage','');
  }catch(e){
   kimonoStock=[];kimonoMovements=[];kimonoStockAvailable=false;
-  msg('kimonoSetupMessage','قسم المخزون غير جاهز بعد في Supabase. المبيعات القديمة محفوظة ويمكن عرضها، لكن البيع الجديد والتوريد والتسوية لن تعمل قبل إنشاء جداول ودوال المخزون. التفاصيل: '+e.message,true);
+  msg('kimonoSetupMessage','قسم المخزون غير جاهز بعد في Supabase. ستبقى المبيعات القديمة محفوظة وقابلة للعرض، لكن البيع الجديد والتوريد والتسوية يتطلب إنشاء جداول المخزون ودواله. التفاصيل: '+e.message,true);
   $('kimonoSetupMessage').classList.remove('hidden');
  }
 }
@@ -675,25 +629,20 @@ function renderParentCodes(){
  }));
 }
 
-/* -------------------------
-   KIMONO: أدوات عامة
-------------------------- */
+/* =========================================================
+   KIMONO — الأدوات العامة والأسعار والمدفوعات
+========================================================= */
 const kimonoColorLabel=v=>v==='white'?'أبيض':v==='blue'?'أزرق':v||'—';
 const kimonoQualityLabel=v=>v==='regular'?'عادي':v==='professional'?'احترافي':v||'—';
 const kimonoTypeFromValues=(color,quality)=>`${kimonoColorLabel(color)} ${kimonoQualityLabel(quality)}`;
 const kimonoStockKey=s=>`${s.color}_${s.quality}_${String(s.size).trim().toLowerCase()}`;
 
-function kimonoDefaultPrice(){
- const key=$('kimonoColor').value+'_'+$('kimonoQuality').value;
- return KIMONO_PRICES[key]||0;
-}
-function updateKimonoSuggestedPrice(){
- if(!$('kimonoId').value)$('kimonoPrice').value=kimonoDefaultPrice();
- renderKimonoStockPreview();
- updateKimonoPaymentPreview();
+function kimonoDefaultPrice(color=$('kimonoColor').value,quality=$('kimonoQuality').value){
+ return KIMONO_PRICES[`${color}_${quality}`]||0;
 }
 function kimonoPaidValue(row){
  const stored=Number(row.paid_amount||0);
+ // توافق مع السجلات القديمة التي كانت تعتمد paid=true مع paid_amount=0.
  if(stored===0&&row.paid===true)return Number(row.price||0);
  return stored;
 }
@@ -714,42 +663,81 @@ function updateKimonoPaymentPreview(){
  $('kimonoPaymentPreview').textContent=`المبلغ المتبقي: ${money(remaining)} · الحالة: ${status.label}`;
  $('kimonoPaymentPreview').className=`kimono-payment-preview ${status.key}`;
 }
+function kimonoLegacyType(row){
+ const type=String(row.kimono_type||'').toLowerCase();
+ let color=row.color||'';
+ let quality=row.quality||'';
+ if(!color)color=type.includes('أزرق')||type.includes('blue')?'blue':type.includes('أبيض')||type.includes('white')?'white':'';
+ if(!quality)quality=type.includes('احترافي')||type.includes('professional')?'professional':type.includes('عادي')||type.includes('regular')?'regular':'';
+ return {color,quality};
+}
+function kimonoRowType(row){
+ const values=kimonoLegacyType(row);
+ if(values.color&&values.quality)return kimonoTypeFromValues(values.color,values.quality);
+ return row.kimono_type||'صنف قديم';
+}
 function renderKimonoStockPreview(){
  const id=$('kimonoStockSelect').value;
  const stock=kimonoStock.find(s=>String(s.id)===String(id));
- if(!stock){$('kimonoStockPreview').textContent='اختر الصنف لعرض الكمية المتوفرة.';return;}
- $('kimonoStockPreview').textContent=`المتوفر حاليًا: ${Number(stock.quantity||0)} قطعة · ${kimonoTypeFromValues(stock.color,stock.quality)} · القياس ${stock.size}`;
+ if(!stock){
+  $('kimonoStockPreview').textContent='اختر الصنف لعرض الكمية المتوفرة.';
+  return;
+ }
+ const oldId=$('kimonoId').value;
+ const oldRow=oldId?kimonoRows.find(r=>String(r.id)===String(oldId)):null;
+ const effectiveQty=Number(stock.quantity||0)+(oldRow&&String(oldRow.stock_id)===String(stock.id)?1:0);
+ $('kimonoStockPreview').textContent=`المتوفر حاليًا: ${Number(stock.quantity||0)} قطعة${effectiveQty!==Number(stock.quantity||0)?' (تُعاد قطعة البيع الحالية عند حفظ التعديل)':''} · ${kimonoTypeFromValues(stock.color,stock.quality)} · القياس ${stock.size}`;
 }
-function fillKimonoStockSelect(selectedId=''){
+function fillKimonoStockSelect(selectedId='',includeEmptyCurrent=false){
  const select=$('kimonoStockSelect');
- const available=kimonoStock.filter(s=>Number(s.quantity)>0);
+ const options=kimonoStock.filter(s=>Number(s.quantity)>0);
+ if(includeEmptyCurrent&&selectedId){
+  const current=kimonoStock.find(s=>String(s.id)===String(selectedId));
+  if(current&&!options.some(s=>String(s.id)===String(current.id)))options.push(current);
+ }
  select.innerHTML='<option value="">اختر الصنف والقياس</option>'+
- available.map(s=>`<option value="${esc(s.id)}">${esc(kimonoTypeFromValues(s.color,s.quality))} — ${esc(s.size)} — المتوفر ${Number(s.quantity)}</option>`).join('');
+ options.map(s=>`<option value="${esc(s.id)}">${esc(kimonoTypeFromValues(s.color,s.quality))} — ${esc(s.size)} — المتوفر ${Number(s.quantity)}</option>`).join('');
  if(selectedId)select.value=String(selectedId);
  renderKimonoStockPreview();
 }
+function syncKimonoFieldsFromStock(updatePrice=true){
+ const stock=kimonoStock.find(s=>String(s.id)===String($('kimonoStockSelect').value));
+ if(!stock)return;
+ $('kimonoColor').value=stock.color;
+ $('kimonoQuality').value=stock.quality;
+ $('kimonoSize').value=stock.size;
+ if(updatePrice&&!$('kimonoId').value)$('kimonoPrice').value=kimonoDefaultPrice(stock.color,stock.quality);
+ renderKimonoStockPreview();
+ updateKimonoPaymentPreview();
+}
+function updateKimonoSuggestedPrice(){
+ if(!$('kimonoId').value)$('kimonoPrice').value=kimonoDefaultPrice();
+ updateKimonoPaymentPreview();
+}
 function clearKimonoForm(){
- $('kimonoForm').reset();$('kimonoId').value='';
- $('kimonoDate').value=new Date().toISOString().slice(0,10);
+ $('kimonoForm').reset();
+ $('kimonoId').value='';kimonoEditingLegacy=false;
+ $('kimonoDate').value=localDateString();
  $('kimonoPaidAmount').value='0';
  $('kimonoSaveButton').textContent='إضافة عملية بيع';
  $('kimonoCancelEdit').classList.add('hidden');
  $('kimonoStockSelect').disabled=false;
  $('kimonoColor').disabled=false;$('kimonoQuality').disabled=false;$('kimonoSize').readOnly=false;
  $('kimonoPrice').value=kimonoDefaultPrice();
- fillKimonoStockSelect();updateKimonoPaymentPreview();
+ fillKimonoStockSelect();
+ updateKimonoPaymentPreview();
+ msg('kimonoMessage','');
 }
 
-/* -------------------------
-   KIMONO: تحليل المبيعات
-------------------------- */
+/* =========================================================
+   KIMONO — تحليل المبيعات
+========================================================= */
 function kimonoDateMatches(date,period){
  if(!date||period==='all')return true;
- const d=String(date).slice(0,10),now=new Date();
- const today=now.toISOString().slice(0,10);
- if(period==='day')return d===today;
- if(period==='month')return d.slice(0,7)===today.slice(0,7);
- if(period==='year')return d.slice(0,4)===today.slice(0,4);
+ const d=String(date).slice(0,10),now=localDateString();
+ if(period==='day')return d===now;
+ if(period==='month')return d.slice(0,7)===now.slice(0,7);
+ if(period==='year')return d.slice(0,4)===now.slice(0,4);
  return true;
 }
 function renderKimono(){
@@ -765,6 +753,7 @@ function renderKimono(){
 
  $('kimonoAnalysis').innerHTML=`
  <div class="analysis-card"><span>عدد عمليات البيع</span><strong>${periodRows.length}</strong></div>
+ <div class="analysis-card"><span>عدد القطع المباعة</span><strong>${periodRows.length}</strong></div>
  <div class="analysis-card"><span>إجمالي قيمة المبيعات</span><strong>${money(totalSales)}</strong></div>
  <div class="analysis-card"><span>المبالغ المحصلة</span><strong>${money(collected)}</strong></div>
  <div class="analysis-card"><span>المبالغ المتبقية</span><strong>${money(remaining)}</strong></div>
@@ -772,18 +761,50 @@ function renderKimono(){
  <div class="analysis-card"><span>تسبيق</span><strong>${partialRows}</strong></div>
  <div class="analysis-card"><span>غير مدفوع</span><strong>${unpaidRows}</strong></div>`;
 
- const breakdown={};
+ // توزيع المبيعات حسب اللون والنوعية والقياس.
+ const byItem={};
  periodRows.forEach(r=>{
-  const key=`${r.color||'—'}_${r.quality||'—'}`;
-  breakdown[key]=(breakdown[key]||0)+1;
+  const values=kimonoLegacyType(r);
+  const color=values.color||'غير محدد';
+  const quality=values.quality||'غير محدد';
+  const size=String(r.size||'غير محدد').trim();
+  const key=`${color}|${quality}|${size}`;
+  if(!byItem[key])byItem[key]={color,quality,size,count:0,total:0};
+  byItem[key].count++;
+  byItem[key].total+=Number(r.price||0);
  });
- $('kimonoBreakdown').innerHTML=Object.entries(breakdown).map(([key,count])=>{
-  const [color,quality]=key.split('_');
-  return `<div class="analysis-card"><span>${kimonoTypeFromValues(color,quality)}</span><strong>${count}</strong><small>عملية بيع</small></div>`;
- }).join('')||'<div class="empty">لا توجد مبيعات في الفترة المحددة.</div>';
+ const itemRows=Object.values(byItem).sort((a,b)=>b.count-a.count);
+ const itemHtml=itemRows.length?`
+ <div class="kimono-breakdown-title">المبيعات حسب اللون والنوعية والقياس</div>
+ ${table(['الصنف','القياس','عدد القطع','قيمة المبيعات'],itemRows.map(x=>`<tr>
+ <td>${esc(x.color==='غير محدد'||x.quality==='غير محدد'?'بيانات قديمة غير مكتملة':kimonoTypeFromValues(x.color,x.quality))}</td>
+ <td>${esc(x.size)}</td><td>${x.count}</td><td>${money(x.total)}</td></tr>`))}
+ `:'<div class="empty">لا توجد مبيعات في الفترة المحددة.</div>';
+
+ const top=itemRows[0],bottom=itemRows.length?itemRows[itemRows.length-1]:null;
+ const rankingHtml=`
+ <div class="kimono-breakdown-title">الأكثر والأقل مبيعًا</div>
+ <div class="analysis-grid">
+ <div class="analysis-card"><span>الأكثر مبيعًا</span><strong>${top?esc(`${kimonoTypeFromValues(top.color,top.quality)} / ${top.size}`):'—'}</strong><small>${top?`${top.count} قطعة`:'لا توجد بيانات'}</small></div>
+ <div class="analysis-card"><span>الأقل مبيعًا ضمن الأصناف المباعة</span><strong>${bottom?esc(`${kimonoTypeFromValues(bottom.color,bottom.quality)} / ${bottom.size}`):'—'}</strong><small>${bottom?`${bottom.count} قطعة`:'لا توجد بيانات'}</small></div>
+ </div>`;
+
+ const byDate={};
+ periodRows.forEach(r=>{
+  const d=String(r.sale_date||'غير محدد').slice(0,10);
+  const key=period==='year'?d.slice(0,7):d;
+  byDate[key]=(byDate[key]||0)+1;
+ });
+ const dateRows=Object.entries(byDate).sort((a,b)=>a[0].localeCompare(b[0]));
+ const dateHtml=dateRows.length?`
+ <div class="kimono-breakdown-title">${period==='year'?'المبيعات حسب الشهر':period==='month'?'المبيعات حسب اليوم':'توزيع المبيعات حسب التاريخ'}</div>
+ ${table(['الفترة','عدد القطع'],dateRows.map(([date,count])=>`<tr><td>${esc(date)}</td><td>${count}</td></tr>`))}
+ `:'';
+
+ $('kimonoBreakdown').innerHTML=itemHtml+rankingHtml+dateHtml;
 
  const list=kimonoRows.filter(r=>{
-  const text=[r.athlete_name,r.kimono_type,r.size,kimonoColorLabel(r.color),kimonoQualityLabel(r.quality)].join(' ').toLocaleLowerCase('ar');
+  const text=[r.athlete_name,kimonoRowType(r),r.size,kimonoColorLabel(r.color),kimonoQualityLabel(r.quality)].join(' ').toLocaleLowerCase('ar');
   return text.includes(q);
  });
  $('kimonoTable').innerHTML=table(
@@ -794,13 +815,13 @@ function renderKimono(){
   const legacy=!r.stock_id;
   return `<tr>
    <td>${esc(r.athlete_name||'—')}</td>
-   <td>${esc(r.kimono_type||kimonoTypeFromValues(r.color,r.quality))}</td>
+   <td>${esc(kimonoRowType(r))}</td>
    <td>${esc(r.size||'—')}</td><td>${esc(r.sale_date||'—')}</td>
    <td>${money(total)}</td><td>${money(paid)}</td><td>${money(left)}</td>
-   <td>${kimonoStatusPill(status.key)} ${legacy?'<span class="pill">بيع قديم</span>':''}</td>
-   <td>${legacy
-    ?'<span class="pill">سجل محفوظ</span>'
-    :`<button class="smallbtn" data-kimono-edit="${esc(r.id)}">تعديل</button><button class="smallbtn danger" data-kimono-delete="${esc(r.id)}">حذف</button>`}
+   <td>${kimonoStatusPill(status.key)} ${legacy?'<span class="pill kimono-legacy">عملية قديمة غير مرتبطة بالمخزون</span>':''}</td>
+   <td>
+    <button class="smallbtn" data-kimono-edit="${esc(r.id)}">تعديل</button>
+    <button class="smallbtn danger" data-kimono-delete="${esc(r.id)}">حذف</button>
    </td>
   </tr>`;
  })
@@ -808,12 +829,13 @@ function renderKimono(){
 
  renderKimonoStock();
  renderKimonoMovements();
- fillKimonoStockSelect($('kimonoStockSelect').value);
+ const selected=$('kimonoStockSelect').value;
+ fillKimonoStockSelect(selected,!!$('kimonoId').value);
 }
 
-/* -------------------------
-   KIMONO: المخزون والحركات
-------------------------- */
+/* =========================================================
+   KIMONO — المخزون وسجل الحركات
+========================================================= */
 function stockStatus(s){
  const qty=Number(s.quantity||0),min=Number(s.min_quantity||0);
  if(qty<=0)return {label:'نافد',cls:'stock-empty'};
@@ -831,7 +853,7 @@ function renderKimonoStock(){
    <td>${Number(s.min_quantity||0)}</td><td><span class="pill ${status.cls}">${status.label}</span></td>
    <td>
     <button class="smallbtn success" data-stock-restock="${esc(s.id)}">توريد</button>
-    <button class="smallbtn warning" data-stock-adjust="${esc(s.id)}">تسوية</button>
+    <button class="smallbtn warning" data-stock-adjust="${esc(s.id)}">تسوية جرد</button>
    </td>
   </tr>`;
  })
@@ -842,7 +864,7 @@ function renderKimonoMovements(){
  const rows=kimonoMovements.filter(m=>filter==='all'||m.movement_type===filter);
  const stockName=id=>{
   const s=kimonoStock.find(x=>String(x.id)===String(id));
-  return s?`${kimonoTypeFromValues(s.color,s.quality)} / ${s.size}`:'صنف غير موجود';
+  return s?`${kimonoTypeFromValues(s.color,s.quality)} / ${s.size}`:'صنف غير موجود حاليًا';
  };
  $('kimonoMovementsTable').innerHTML=table(
  ['التاريخ','الصنف','نوع الحركة','الكمية قبل','التغير','الكمية بعد','ملاحظات'],
@@ -857,6 +879,8 @@ function renderKimonoMovements(){
  })
  );
 }
+
+/* إضافة صنف جديد */
 async function saveKimonoStock(e){
  e.preventDefault();
  const btn=e.submitter;
@@ -870,8 +894,9 @@ async function saveKimonoStock(e){
   if(!size)throw new Error('أدخل القياس.');
   if(!Number.isInteger(quantity)||quantity<0)throw new Error('الكمية يجب أن تكون عددًا صحيحًا غير سالب.');
   if(!Number.isInteger(minimum)||minimum<0)throw new Error('حد التنبيه يجب أن يكون عددًا صحيحًا غير سالب.');
-  const {data,error}=await client.rpc('admin_kimono_add_stock',{
-   p_color:color,p_quality:quality,p_size:size,p_quantity:quantity,p_min_quantity:minimum,p_notes:'إضافة صنف جديد'
+  const {error}=await client.rpc('admin_kimono_add_stock',{
+   p_color:color,p_quality:quality,p_size:size,
+   p_quantity:quantity,p_min_quantity:minimum,p_notes:'إضافة صنف جديد'
   });
   if(error)throw error;
   await loadKimonoInventory();
@@ -882,6 +907,8 @@ async function saveKimonoStock(e){
  }catch(err){msg('kimonoStockMessage','تعذرت إضافة الصنف: '+err.message,true);}
  finally{if(btn)btn.disabled=false;}
 }
+
+/* توريد كمية إضافية */
 async function stockRestock(id){
  const s=kimonoStock.find(x=>String(x.id)===String(id));
  if(!s)throw new Error('الصنف غير موجود.');
@@ -895,10 +922,12 @@ async function stockRestock(id){
  await loadKimonoInventory();renderKimono();
  globalMsg('تمت إضافة الكمية إلى المخزون.');
 }
+
+/* تسوية الكمية حسب الجرد الفعلي */
 async function stockAdjust(id){
  const s=kimonoStock.find(x=>String(x.id)===String(id));
  if(!s)throw new Error('الصنف غير موجود.');
- const answer=prompt(`الكمية الفعلية بعد الجرد للصنف ${kimonoTypeFromValues(s.color,s.quality)} قياس ${s.size}؟\nالكمية المسجلة حاليًا: ${s.quantity}`,String(s.quantity));
+ const answer=prompt(`أدخل الكمية الفعلية بعد الجرد للصنف ${kimonoTypeFromValues(s.color,s.quality)} قياس ${s.size}.\nالكمية المسجلة حاليًا: ${s.quantity}`,String(s.quantity));
  if(answer===null)return;
  const qty=Number(answer);
  if(!Number.isInteger(qty)||qty<0)throw new Error('أدخل كمية فعلية صحيحة غير سالبة.');
@@ -909,31 +938,49 @@ async function stockAdjust(id){
  globalMsg('تمت تسوية المخزون حسب الكمية الفعلية.');
 }
 
-/* -------------------------
-   KIMONO: البيع والتعديل والحذف
-------------------------- */
+/* =========================================================
+   KIMONO — تعديل البيع وحفظه وحذفه
+========================================================= */
 function editKimono(id){
  const r=kimonoRows.find(x=>String(x.id)===String(id));
  if(!r)throw new Error('لم يتم العثور على عملية البيع.');
- if(!r.stock_id)throw new Error('هذه عملية بيع قديمة غير مرتبطة بالمخزون. أبقيناها محفوظة دون تعديل حتى لا تتغير سجلاتك السابقة.');
+ if(!kimonoStockAvailable)throw new Error('المخزون غير جاهز. لا يمكن تعديل البيع قبل إعداد جداول المخزون.');
+
  $('kimonoId').value=r.id;
+ kimonoEditingLegacy=!r.stock_id;
  $('kimonoAthlete').value=r.athlete_name||'';
- $('kimonoColor').value=r.color||'white';
- $('kimonoQuality').value=r.quality||'regular';
- $('kimonoSize').value=r.size||'';
- $('kimonoDate').value=r.sale_date||'';
+ $('kimonoDate').value=r.sale_date||localDateString();
  $('kimonoPrice').value=r.price??0;
  $('kimonoPaidAmount').value=kimonoPaidValue(r);
- $('kimonoStockSelect').disabled=true;
- $('kimonoStockSelect').innerHTML=`<option value="${esc(r.stock_id)}">الصنف المرتبط بهذه العملية</option>`;
- $('kimonoStockSelect').value=String(r.stock_id);
- $('kimonoColor').disabled=true;$('kimonoQuality').disabled=true;$('kimonoSize').readOnly=true;
+
+ // في البيع القديم لا نربطه تلقائيًا. يجب اختيار صنف مخزون صراحة.
+ if(r.stock_id){
+  const stock=kimonoStock.find(s=>String(s.id)===String(r.stock_id));
+  if(!stock)throw new Error('الصنف المرتبط بهذه العملية غير موجود في المخزون. لا يمكن تعديل العملية قبل مراجعة المخزون.');
+  $('kimonoColor').value=stock.color;
+  $('kimonoQuality').value=stock.quality;
+  $('kimonoSize').value=stock.size;
+  fillKimonoStockSelect(r.stock_id,true);
+ }else{
+  const inferred=kimonoLegacyType(r);
+  $('kimonoColor').value=inferred.color||'white';
+  $('kimonoQuality').value=inferred.quality||'regular';
+  $('kimonoSize').value=r.size||'';
+  fillKimonoStockSelect('');
+  msg('kimonoMessage','هذه عملية قديمة غير مرتبطة بالمخزون. لن يتم تغيير سجلها إلا بعد اختيار صنف موجود من المخزون. عند الحفظ سيُربط البيع بالصنف الذي تختاره.');
+ }
+
+ $('kimonoStockSelect').disabled=false;
+ $('kimonoColor').disabled=true;
+ $('kimonoQuality').disabled=true;
+ $('kimonoSize').readOnly=true;
  $('kimonoSaveButton').textContent='حفظ تعديل البيع';
  $('kimonoCancelEdit').classList.remove('hidden');
  renderKimonoStockPreview();updateKimonoPaymentPreview();
- msg('kimonoMessage','عند حفظ التعديل ستتم إعادة الصنف السابق للمخزون وخصم الصنف الجديد بطريقة ذرية.');
+ if(r.stock_id)msg('kimonoMessage','يمكنك تغيير الصنف من القائمة. عند الحفظ ستُعاد القطعة القديمة ويُخصم الصنف الجديد داخل عملية قاعدة بيانات واحدة.');
  $('kimonoForm').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
 async function saveKimono(e){
  e.preventDefault();
  const btn=$('kimonoSaveButton');btn.disabled=true;
@@ -945,14 +992,21 @@ async function saveKimono(e){
   const price=Number($('kimonoPrice').value);
   const paid=Number($('kimonoPaidAmount').value||0);
   const stockId=$('kimonoStockSelect').value;
+
   if(!name)throw new Error('أدخل اسم المشتري.');
   if(!date)throw new Error('حدد تاريخ البيع.');
-  if(!stockId)throw new Error('اختر صنفًا متوفرًا من المخزون.');
-  if(!Number.isFinite(price)||price<=0)throw new Error('أدخل سعرًا صحيحًا أكبر من صفر.');
-  if(!Number.isFinite(paid)||paid<0||paid>price)throw new Error('المبلغ المدفوع يجب أن يكون بين صفر والسعر الإجمالي.');
+  if(!stockId)throw new Error(id&&kimonoEditingLegacy?'اختر صنفًا من المخزون لربط عملية البيع القديمة به.':'اختر صنفًا متوفرًا من المخزون.');
+  if(!Number.isInteger(price)||price<=0)throw new Error('أدخل سعرًا صحيحًا أكبر من صفر.');
+  if(!Number.isInteger(paid)||paid<0||paid>price)throw new Error('المبلغ المدفوع يجب أن يكون عددًا صحيحًا بين صفر والسعر الإجمالي.');
+
   const chosen=kimonoStock.find(s=>String(s.id)===String(stockId));
   if(!chosen)throw new Error('الصنف المختار غير موجود في المخزون.');
-  if(!id&&Number(chosen.quantity)<1)throw new Error('هذا الصنف نافد من المخزون.');
+
+  // تحقق واجهة أولي فقط؛ القرار النهائي والتحقق من التوفر داخل RPC ذري.
+  const oldRow=id?kimonoRows.find(r=>String(r.id)===String(id)):null;
+  const returnedOldUnit=oldRow&&oldRow.stock_id&&String(oldRow.stock_id)===String(stockId)?1:0;
+  if(Number(chosen.quantity)+returnedOldUnit<1)throw new Error('الكمية غير كافية لهذا الصنف.');
+
   const {error}=await client.rpc('admin_kimono_save_sale',{
    p_sale_id:id||null,
    p_stock_id:stockId,
@@ -962,25 +1016,30 @@ async function saveKimono(e){
    p_paid_amount:paid
   });
   if(error)throw error;
+
   clearKimonoForm();
   await loadAll();
   msg('kimonoMessage',id?'تم تعديل البيع وتحديث المخزون.':'تم تسجيل البيع وخصم قطعة من المخزون.');
  }catch(err){msg('kimonoMessage','تعذر حفظ البيع: '+err.message,true);}
  finally{btn.disabled=false;}
 }
+
 async function deleteKimonoSale(id){
  const row=kimonoRows.find(x=>String(x.id)===String(id));
  if(!row)throw new Error('لم يتم العثور على عملية البيع.');
- if(!row.stock_id)throw new Error('هذه عملية قديمة غير مرتبطة بالمخزون، لذلك لا يمكن حذفها من هذه الواجهة.');
- if(!confirm(`حذف عملية بيع ${row.athlete_name||''}؟ ستُعاد القطعة إلى المخزون.`))return;
+ const isLegacy=!row.stock_id;
+ const confirmText=isLegacy
+  ?`حذف سجل البيع القديم للمشتري ${row.athlete_name||''}؟ هذا السجل غير مرتبط بالمخزون، ولن تتغير أي كمية.`
+  :`حذف عملية بيع ${row.athlete_name||''}؟ ستُعاد القطعة إلى المخزون.`;
+ if(!confirm(confirmText))return;
+
  const {error}=await client.rpc('admin_kimono_delete_sale',{p_sale_id:id});
  if(error)throw error;
  if(String($('kimonoId').value)===String(id))clearKimonoForm();
  await loadAll();
- msg('kimonoMessage','تم حذف عملية البيع وإرجاع القطعة إلى المخزون.');
+ msg('kimonoMessage',isLegacy?'تم حذف سجل البيع القديم دون تغيير المخزون.':'تم حذف عملية البيع وإرجاع القطعة إلى المخزون.');
 }
-
-/* -------------------------
+ /* -------------------------
    إدارة الرياضيين
 ------------------------- */
 function clearAthleteForm(){
@@ -1031,6 +1090,9 @@ async function saveAthlete(e){
  }catch(err){msg('athleteMessage','تعذر الحفظ: '+err.message,true);}
 }
 
+/* -------------------------
+   التأمين
+------------------------- */
 function insuranceRecord(athleteId,season){
  return insuranceRows.find(r=>String(r.athlete_id)===String(athleteId)&&Number(r.insurance_year)===Number(season));
 }
@@ -1095,6 +1157,9 @@ async function saveInsuranceAthleteEdit(e){
  finally{saveButton.disabled=false;saveButton.textContent='حفظ التعديلات';}
 }
 
+/* -------------------------
+   الاشتراكات الشهرية
+------------------------- */
 function findSubscription(athleteId,season,month){
  const year=seasonMonthYear(season,month),date=`${year}-${String(month).padStart(2,'0')}-01`;
  return subscriptionRows.find(x=>String(x.athlete_id)===String(athleteId)&&String(x.subscription_month||'').slice(0,10)===date&&Number(x.season_year)===Number(season));
@@ -1154,6 +1219,9 @@ function exportInsuranceExcel(){
  XLSX.writeFile(wb,`AST_Insurance_${seasonLabel(season).replace('/','-')}.xlsx`);
 }
 
+/* -------------------------
+   الاختبارات والمجموعات
+------------------------- */
 function renderExams(){
  const season=Number($('examSeason').value||seasonNow()),rows=examRows.filter(r=>seasonFromDate(r.exam_date)===season);
  $('examSummary').textContent=`الموسم ${seasonLabel(season)} · عدد نتائج الاختبارات: ${rows.length}`;
@@ -1175,6 +1243,10 @@ function showGroupAthletes(id){
  box.innerHTML=`<h3>${esc(g?.name||'المجموعة')}</h3>`+table(['الاسم الكامل','تاريخ الميلاد','العمر'],list.map(a=>`<tr><td>${esc(athleteName(a))}</td><td>${esc(a.date_of_birth||'—')}</td><td>${esc(ageFromDob(a.date_of_birth))}</td></tr>`));
  $('groupsTable').after(box);
 }
+
+/* -------------------------
+   أدوات قاعدة البيانات والطلبات
+------------------------- */
 async function deleteAndVerify(tableName,id){
  const {data,error}=await client.from(tableName).delete().eq('id',id).select('id');
  if(error)throw error;if(!data||data.length!==1)throw new Error('لم يؤكد Supabase حذف السجل. تحقق من سياسة DELETE في RLS.');
@@ -1314,6 +1386,9 @@ async function onExamSubmit(e){
  }catch(err){msg('examMessage','تعذر تسجيل الاختبار: '+err.message,true);}
 }
 
+/* -------------------------
+   ربط الأحداث
+------------------------- */
 function wire(){
  $('loginForm').addEventListener('submit',onLogin);
  $('logoutBtn').addEventListener('click',async()=>{await client.auth.signOut();setLoggedIn(null);});
@@ -1334,16 +1409,20 @@ function wire(){
  $('kimonoCancelEdit').addEventListener('click',()=>{clearKimonoForm();msg('kimonoMessage','تم إلغاء التعديل.');});
  $('kimonoForm').addEventListener('reset',()=>setTimeout(()=>{
   if(!$('kimonoId').value){
-   $('kimonoDate').value=new Date().toISOString().slice(0,10);
-   $('kimonoPaidAmount').value='0';$('kimonoPrice').value=kimonoDefaultPrice();
+   $('kimonoDate').value=localDateString();
+   $('kimonoPaidAmount').value='0';
+   $('kimonoPrice').value=kimonoDefaultPrice();
    updateKimonoPaymentPreview();
   }
  },0));
+
  $('kimonoColor').addEventListener('change',updateKimonoSuggestedPrice);
  $('kimonoQuality').addEventListener('change',updateKimonoSuggestedPrice);
  $('kimonoPrice').addEventListener('input',updateKimonoPaymentPreview);
  $('kimonoPaidAmount').addEventListener('input',updateKimonoPaymentPreview);
- $('kimonoStockSelect').addEventListener('change',renderKimonoStockPreview);
+ $('kimonoStockSelect').addEventListener('change',()=>{
+  syncKimonoFieldsFromStock(!Boolean($('kimonoId').value));
+ });
  $('kimonoSearch').addEventListener('input',renderKimono);
  $('kimonoPeriod').addEventListener('change',renderKimono);
  $('kimonoMovementFilter').addEventListener('change',renderKimonoMovements);
@@ -1372,11 +1451,12 @@ function wire(){
 
 async function init(){
  ['insuranceSeason','subscriptionSeason','examSeason'].forEach(id=>addSeasonOptions(id));
- $('kimonoDate').value=new Date().toISOString().slice(0,10);
+ $('kimonoDate').value=localDateString();
  $('kimonoPaidAmount').value='0';
  $('kimonoPrice').value=kimonoDefaultPrice();
  updateKimonoPaymentPreview();
  wire();
+
  const {data:{session}}=await client.auth.getSession();
  if(session){
   try{await requireAdmin(session.user);setLoggedIn(session.user);await loadAll();}
