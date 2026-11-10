@@ -1,4 +1,4 @@
-HTML
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -76,7 +76,6 @@ tr:last-child td{border-bottom:0}
 .analysis-card strong{display:block;font-size:22px;margin-top:5px}
 .access-code{font-size:20px;letter-spacing:4px;direction:ltr;display:inline-block;font-weight:800;color:var(--navy)}
 
-/* نافذة تعديل معلومات الرياضي */
 .edit-modal{
  position:fixed;inset:0;z-index:1000;
  display:flex;align-items:center;justify-content:center;
@@ -105,45 +104,36 @@ tr:last-child td{border-bottom:0}
 .kimono-actions{display:flex;gap:4px;flex-wrap:wrap}
 .kimono-status{white-space:nowrap}
 .kimono-payment-preview{
- padding:12px 14px;
- border:1px solid var(--line);
- border-radius:10px;
- background:#f5f9ff;
- color:var(--navy);
- font-weight:700;
- font-size:14px;
- margin-top:12px;
+ padding:12px 14px;border:1px solid var(--line);
+ border-radius:10px;background:#f5f9ff;color:var(--navy);
+ font-weight:700;font-size:14px;margin-top:12px;
 }
-.kimono-payment-preview.partial{
- background:var(--goldbg);
- color:var(--gold);
-}
-.kimono-payment-preview.paid{
- background:var(--greenbg);
- color:var(--green);
-}
-.kimono-payment-preview.unpaid{
- background:var(--redbg);
- color:var(--red);
-}
+.kimono-payment-preview.partial{background:var(--goldbg);color:var(--gold)}
+.kimono-payment-preview.paid{background:var(--greenbg);color:var(--green)}
+.kimono-payment-preview.unpaid{background:var(--redbg);color:var(--red)}
 #kimonoMessage{margin:8px 0}
-
+.stock-low{background:var(--goldbg);color:var(--gold)}
+.stock-empty{background:var(--redbg);color:var(--red)}
+.stock-ok{background:var(--greenbg);color:var(--green)}
+.kimono-subtitle{font-size:16px!important;margin:24px 0 10px!important;padding-top:16px;border-top:1px solid var(--line)}
+.kimono-section{border:1px solid var(--line);border-radius:12px;padding:14px;margin:14px 0;background:#fbfdff}
+.kimono-section h3{font-size:15px;margin:0 0 10px;color:var(--navy)}
+.kimono-filter{max-width:220px}
 @media(max-width:850px){
-.layout{grid-template-columns:1fr}
-.sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
-.navbtn{font-size:12px;padding:9px}
-.header-inner{align-items:flex-start}
-h1{font-size:18px}
-main{padding:0 9px 28px}
-.panel{padding:13px}
-.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-.edit-modal-box{padding:16px}
+ .layout{grid-template-columns:1fr}
+ .sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
+ .navbtn{font-size:12px;padding:9px}
+ .header-inner{align-items:flex-start}
+ h1{font-size:18px}
+ main{padding:0 9px 28px}
+ .panel{padding:13px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .edit-modal-box{padding:16px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
 <div class="header-inner">
 <div>
@@ -158,7 +148,6 @@ main{padding:0 9px 28px}
 </header>
 
 <main>
-
 <section id="loginView" class="login">
 <div class="panel">
 <h2>الدخول إلى لوحة الإدارة</h2>
@@ -175,7 +164,6 @@ main{padding:0 9px 28px}
 </section>
 
 <section id="appView" class="hidden">
-
 <div class="stats">
 <div class="stat"><span>طلبات التسجيل</span><strong id="statRegistrations">—</strong></div>
 <div class="stat"><span>الرياضيون</span><strong id="statAthletes">—</strong></div>
@@ -184,7 +172,6 @@ main{padding:0 9px 28px}
 </div>
 
 <div class="layout">
-
 <aside class="sidebar">
 <button class="navbtn active" data-tab="registrations">طلبات التسجيل</button>
 <button class="navbtn" data-tab="athletes">الرياضيون</button>
@@ -197,7 +184,6 @@ main{padding:0 9px 28px}
 </aside>
 
 <div>
-
 <section id="tab-registrations" class="tab panel">
 <h2>طلبات التسجيل</h2>
 <div class="toolbar">
@@ -215,43 +201,28 @@ main{padding:0 9px 28px}
 
 <section id="tab-athletes" class="tab panel hidden">
 <h2>إدارة الرياضيين</h2>
-
 <form id="athleteForm">
 <input id="athleteId" type="hidden">
-
 <div class="grid">
 <div><label>الاسم الكامل</label><input id="athleteFullName" required></div>
 <div><label>تاريخ الميلاد</label><input id="athleteDob" type="date"></div>
 <div><label>مكان الميلاد</label><input id="athleteBirthPlace"></div>
-<div><label>الجنس</label>
-<select id="athleteGender">
-<option value="">غير محدد</option>
-<option value="ذكر">ذكر</option>
-<option value="أنثى">أنثى</option>
-</select></div>
+<div><label>الجنس</label><select id="athleteGender"><option value="">غير محدد</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select></div>
 <div><label>الإقامة</label><input id="athleteResidence"></div>
 <div><label>اسم الولي</label><input id="athleteGuardian"></div>
 <div><label>هاتف الولي</label><input id="athletePhone" type="tel"></div>
 <div><label>اسم الأب</label><input id="athleteFather"></div>
-<div><label>سبق له التدريب؟</label>
-<select id="athletePracticed">
-<option value="">غير محدد</option>
-<option value="true">نعم</option>
-<option value="false">لا</option>
-</select></div>
+<div><label>سبق له التدريب؟</label><select id="athletePracticed"><option value="">غير محدد</option><option value="true">نعم</option><option value="false">لا</option></select></div>
 <div><label>الحزام</label><input id="athleteBelt" placeholder="أبيض، أصفر..."></div>
 <div><label>المجموعة التدريبية</label><select id="athleteGroup"></select></div>
 </div>
-
 <div class="toolbar">
 <button id="athleteSaveButton" type="submit">إضافة رياضي</button>
 <button id="athleteCancelEdit" type="button" class="secondary hidden">إلغاء التعديل</button>
 <button type="reset" class="secondary">مسح الحقول</button>
 </div>
 </form>
-
 <div id="athleteMessage" aria-live="polite"></div>
-
 <div class="toolbar">
 <input id="athleteSearch" placeholder="بحث عن رياضي">
 <button id="refreshAthletes" class="secondary">تحديث</button>
@@ -261,72 +232,51 @@ main{padding:0 9px 28px}
 
 <section id="tab-insurance" class="tab panel hidden">
 <h2>متابعة التأمين وتحليل التحصيل</h2>
-
-<div class="notice">
-قيمة التأمين السنوي 1000 دج لكل رياضي.
-يعرض هذا القسم الرياضيين الذين دفعوا حقوق التأمين فقط في الموسم المحدد.
-</div>
-
+<div class="notice">قيمة التأمين السنوي 1000 دج لكل رياضي. يعرض هذا القسم الرياضيين الذين دفعوا حقوق التأمين فقط في الموسم المحدد.</div>
 <div class="toolbar">
 <select id="insuranceSeason"></select>
 <input id="insuranceSearch" placeholder="بحث بالاسم أو اللقب">
 <button id="exportInsuranceExcel" class="success" type="button">تصدير Excel</button>
 <button id="refreshInsurance" class="secondary" type="button">تحديث</button>
 </div>
-
 <div id="insuranceAnalysis" class="analysis-grid"></div>
 <div id="insuranceTable" class="tablewrap"></div>
 </section>
 
 <section id="tab-subscriptions" class="tab panel hidden">
 <h2>الاشتراكات الشهرية</h2>
-
-<div class="notice">
-الأشهر التسعة من أكتوبر إلى جوان، ثم التأمين، فالامتحان الأول والثاني.
-</div>
-
+<div class="notice">الأشهر التسعة من أكتوبر إلى جوان، ثم التأمين، فالامتحان الأول والثاني.</div>
 <div class="grid">
 <div><label>الموسم الرياضي</label><select id="subscriptionSeason"></select></div>
 <div><label>مبلغ الاشتراك الشهري (دج)</label><input id="monthlyAmount" type="number" value="1000" disabled></div>
 </div>
-
 <div class="toolbar">
 <input id="subscriptionSearch" placeholder="بحث عن رياضي">
 <button id="exportSubscriptionsExcel" class="success" type="button">تصدير Excel للاشتراكات</button>
 <button id="refreshSubscriptions" class="secondary">تحديث</button>
 </div>
-
 <div id="subscriptionSummary" class="notice"></div>
 <div id="subscriptionsTable" class="tablewrap"></div>
 </section>
 
 <section id="tab-exams" class="tab panel hidden">
 <h2>الاختبارات والنتائج</h2>
-
 <form id="examForm">
 <div class="grid">
 <div><label>الرياضي</label><select id="examAthlete" required></select></div>
 <div><label>تاريخ الاختبار</label><input id="examDate" type="date"></div>
 <div><label>الحزام السابق</label><input id="examBeltBefore"></div>
 <div><label>الحزام الجديد</label><input id="examBeltAfter"></div>
-<div><label>النتيجة</label>
-<select id="examResult">
-<option value="ناجح">ناجح</option>
-<option value="راسب">راسب</option>
-<option value="مؤجل">مؤجل</option>
-</select></div>
+<div><label>النتيجة</label><select id="examResult"><option value="ناجح">ناجح</option><option value="راسب">راسب</option><option value="مؤجل">مؤجل</option></select></div>
 <div><label>ملاحظات</label><input id="examNotes"></div>
 </div>
 <div class="toolbar"><button type="submit">إضافة نتيجة الاختبار</button></div>
 </form>
-
 <div id="examMessage" aria-live="polite"></div>
-
 <div class="toolbar">
 <select id="examSeason"></select>
 <button id="refreshExams" class="secondary">تحديث</button>
 </div>
-
 <div id="examSummary" class="notice"></div>
 <div id="examsTable" class="tablewrap"></div>
 </section>
@@ -339,95 +289,132 @@ main{padding:0 9px 28px}
 
 <section id="tab-parentCodes" class="tab panel hidden">
 <h2>حسابات الأولياء ورموز الرياضيين</h2>
-
-<div class="notice">
-لكل رياضي رمز تفعيل خاص به. سلّم الرمز إلى ولي الأمر مباشرة.
-إعادة التوليد تلغي الرمز السابق فورًا.
-</div>
-
+<div class="notice">لكل رياضي رمز تفعيل خاص به. سلّم الرمز إلى ولي الأمر مباشرة. إعادة التوليد تلغي الرمز السابق فورًا.</div>
 <div class="stats">
 <div class="stat"><span>عدد الرياضيين</span><strong id="codeAthleteCount">—</strong></div>
 <div class="stat"><span>الرموز المنشأة</span><strong id="codeCount">—</strong></div>
 <div class="stat"><span>الرموز غير المنشأة</span><strong id="missingCodeCount">—</strong></div>
 </div>
-
 <div class="toolbar">
 <input id="codeSearch" placeholder="ابحث باسم الرياضي أو الولي أو الهاتف">
 <button id="refreshCodes" class="secondary" type="button">تحديث</button>
 </div>
-
 <div id="codesMessage" aria-live="polite"></div>
 <div id="codesTable" class="tablewrap"></div>
 </section>
 
 <!-- KIMONO -->
 <section id="tab-kimono" class="tab panel hidden">
-<h2>KIMONO — مبيعات ألبسة الجودو</h2>
-
+<h2>KIMONO — مبيعات ومخزون ألبسة الجودو</h2>
 <div class="notice">
-سجّل عمليات بيع الكيمونو لأي شخص بكتابة اسمه ولقبه مباشرة، حتى إن لم يكن مسجلًا في قائمة الرياضيين.
-يمكنك تسجيل الدفع الكامل أو التسبيق ومتابعة المبلغ المتبقي تلقائيًا.
+تُسجّل المبيعات الجديدة من المخزون المتوفر فقط. لا يمكن بيع صنف غير موجود أو بكمية غير كافية.
+المبيعات القديمة ستبقى محفوظة وظاهرة دون ربط تلقائي بالمخزون.
 </div>
 
+<div id="kimonoSetupMessage" class="notice hidden"></div>
+
+<h2 class="kimono-subtitle">تسجيل عملية بيع</h2>
 <form id="kimonoForm">
 <input type="hidden" id="kimonoId">
-
 <div class="grid">
 <div>
-<label for="kimonoAthlete">اسم ولقب الرياضي أو المشتري</label>
-<input id="kimonoAthlete" type="text" placeholder="اكتب الاسم واللقب مباشرة" autocomplete="off" required>
+<label for="kimonoAthlete">اسم ولقب المشتري</label>
+<input id="kimonoAthlete" type="text" placeholder="اكتب الاسم واللقب" required>
 </div>
-
 <div>
-<label for="kimonoType">نوع الكيمونو</label>
-<input id="kimonoType" type="text" placeholder="مثال: عادي، احترافي..." required>
+<label for="kimonoColor">اللون</label>
+<select id="kimonoColor" required>
+<option value="white">أبيض</option>
+<option value="blue">أزرق</option>
+</select>
 </div>
-
+<div>
+<label for="kimonoQuality">النوعية</label>
+<select id="kimonoQuality" required>
+<option value="regular">عادي</option>
+<option value="professional">احترافي</option>
+</select>
+</div>
 <div>
 <label for="kimonoSize">القياس</label>
-<input id="kimonoSize" type="text" placeholder="مثال: 120، 130، 140..." required>
+<input id="kimonoSize" type="text" placeholder="أي قياس أو وصف" required>
 </div>
-
 <div>
 <label for="kimonoDate">تاريخ البيع</label>
 <input id="kimonoDate" type="date" required>
 </div>
-
 <div>
 <label for="kimonoPrice">السعر الإجمالي (دج)</label>
-<input id="kimonoPrice" type="number" min="0" step="0.01" placeholder="السعر الكامل" required>
+<input id="kimonoPrice" type="number" min="0" step="1" required>
 </div>
-
 <div>
 <label for="kimonoPaidAmount">المبلغ المدفوع أو التسبيق (دج)</label>
-<input id="kimonoPaidAmount" type="number" min="0" step="0.01" value="0" required>
+<input id="kimonoPaidAmount" type="number" min="0" step="1" value="0" required>
+</div>
+<div>
+<label for="kimonoStockSelect">الصنف المتوفر في المخزون</label>
+<select id="kimonoStockSelect" required>
+<option value="">اختر الصنف والقياس</option>
+</select>
 </div>
 </div>
-
-<div id="kimonoPaymentPreview" class="kimono-payment-preview unpaid">
-المبلغ المتبقي: 0 دج · الحالة: غير مدفوع
-</div>
-
+<div id="kimonoStockPreview" class="notice">اختر الصنف لعرض الكمية المتوفرة.</div>
+<div id="kimonoPaymentPreview" class="kimono-payment-preview unpaid">المبلغ المتبقي: 0 دج · الحالة: غير مدفوع</div>
 <div class="toolbar">
 <button type="submit" id="kimonoSaveButton">إضافة عملية بيع</button>
 <button type="button" class="secondary hidden" id="kimonoCancelEdit">إلغاء التعديل</button>
 <button type="reset" class="secondary">مسح الحقول</button>
 </div>
 </form>
-
 <div id="kimonoMessage" aria-live="polite"></div>
 
-<h2 style="margin-top:24px">تحليل مبيعات الكيمونو</h2>
-<div id="kimonoAnalysis" class="analysis-grid kimono-analysis"></div>
-
-<div class="toolbar">
-<input id="kimonoSearch" placeholder="بحث باسم الرياضي أو المشتري">
-<button id="refreshKimono" class="secondary" type="button">تحديث المبيعات</button>
+<h2 class="kimono-subtitle">إضافة صنف جديد إلى المخزون</h2>
+<form id="kimonoNewStockForm" class="kimono-section">
+<div class="grid">
+<div><label>اللون</label><select id="newStockColor"><option value="white">أبيض</option><option value="blue">أزرق</option></select></div>
+<div><label>النوعية</label><select id="newStockQuality"><option value="regular">عادي</option><option value="professional">احترافي</option></select></div>
+<div><label>القياس</label><input id="newStockSize" required placeholder="مثال: 120 أو 150 أو XL"></div>
+<div><label>الكمية الأولية</label><input id="newStockQuantity" type="number" min="0" step="1" value="0" required></div>
+<div><label>حد التنبيه الأدنى</label><input id="newStockMinimum" type="number" min="0" step="1" value="2" required></div>
 </div>
+<div class="toolbar"><button type="submit" class="success">إضافة الصنف للمخزون</button></div>
+</form>
+<div id="kimonoStockMessage" aria-live="polite"></div>
 
+<h2 class="kimono-subtitle">تحليل المبيعات</h2>
+<div class="toolbar">
+<select id="kimonoPeriod">
+<option value="all">كل الفترات</option>
+<option value="day">اليوم</option>
+<option value="month">هذا الشهر</option>
+<option value="year">هذه السنة</option>
+</select>
+<button id="refreshKimono" class="secondary" type="button">تحديث البيانات</button>
+</div>
+<div id="kimonoAnalysis" class="analysis-grid kimono-analysis"></div>
+<div id="kimonoBreakdown" class="analysis-grid"></div>
+
+<h2 class="kimono-subtitle">المخزون الحالي</h2>
+<div class="notice">التسوية اليدوية تعني إدخال الكمية الفعلية الموجودة بعد الجرد، وليس مقدار الزيادة أو النقص.</div>
+<div id="kimonoStockTable" class="tablewrap"></div>
+
+<h2 class="kimono-subtitle">سجل حركات المخزون</h2>
+<div class="toolbar">
+<select id="kimonoMovementFilter">
+<option value="all">كل الحركات</option>
+<option value="in">توريد</option>
+<option value="out">بيع</option>
+<option value="adjustment">تسوية</option>
+</select>
+</div>
+<div id="kimonoMovementsTable" class="tablewrap"></div>
+
+<h2 class="kimono-subtitle">سجل المبيعات</h2>
+<div class="toolbar">
+<input id="kimonoSearch" placeholder="بحث باسم المشتري أو اللون أو النوعية أو القياس">
+</div>
 <div id="kimonoTable" class="tablewrap"></div>
 </section>
-
 </div>
 </div>
 
@@ -436,56 +423,29 @@ main{padding:0 9px 28px}
 </section>
 </main>
 
-<!-- نافذة تعديل بيانات الرياضي من قسم التأمين -->
 <div id="insuranceEditModal" class="edit-modal hidden" role="dialog" aria-modal="true" aria-labelledby="insuranceEditTitle">
- <div class="edit-modal-box">
-  <div class="edit-modal-header">
-   <h2 id="insuranceEditTitle">تعديل معلومات الرياضي</h2>
-   <button type="button" class="modal-close" id="insuranceEditClose" aria-label="إغلاق">×</button>
-  </div>
-
-  <div class="modal-hint">
-   يمكنك تعديل الاسم واللقب وتاريخ ومكان الميلاد واسم الولي. لن تتغير حالة التأمين أو الاشتراكات.
-  </div>
-
-  <form id="insuranceEditForm">
-   <input type="hidden" id="insuranceEditAthleteId">
-
-   <div class="grid">
-    <div>
-     <label for="insuranceEditFirstName">الاسم</label>
-     <input id="insuranceEditFirstName" type="text" required>
-    </div>
-
-    <div>
-     <label for="insuranceEditLastName">اللقب</label>
-     <input id="insuranceEditLastName" type="text" required>
-    </div>
-
-    <div>
-     <label for="insuranceEditDob">تاريخ الميلاد</label>
-     <input id="insuranceEditDob" type="date">
-    </div>
-
-    <div>
-     <label for="insuranceEditBirthPlace">مكان الميلاد</label>
-     <input id="insuranceEditBirthPlace" type="text">
-    </div>
-
-    <div>
-     <label for="insuranceEditGuardian">اسم الولي</label>
-     <input id="insuranceEditGuardian" type="text">
-    </div>
-   </div>
-
-   <div id="insuranceEditMessage" aria-live="polite"></div>
-
-   <div class="edit-modal-actions">
-    <button type="submit" id="insuranceEditSave">حفظ التعديلات</button>
-    <button type="button" class="secondary" id="insuranceEditCancel">إلغاء</button>
-   </div>
-  </form>
- </div>
+<div class="edit-modal-box">
+<div class="edit-modal-header">
+<h2 id="insuranceEditTitle">تعديل معلومات الرياضي</h2>
+<button type="button" class="modal-close" id="insuranceEditClose" aria-label="إغلاق">×</button>
+</div>
+<div class="modal-hint">يمكنك تعديل الاسم واللقب وتاريخ ومكان الميلاد واسم الولي. لن تتغير حالة التأمين أو الاشتراكات.</div>
+<form id="insuranceEditForm">
+<input type="hidden" id="insuranceEditAthleteId">
+<div class="grid">
+<div><label for="insuranceEditFirstName">الاسم</label><input id="insuranceEditFirstName" type="text" required></div>
+<div><label for="insuranceEditLastName">اللقب</label><input id="insuranceEditLastName" type="text" required></div>
+<div><label for="insuranceEditDob">تاريخ الميلاد</label><input id="insuranceEditDob" type="date"></div>
+<div><label for="insuranceEditBirthPlace">مكان الميلاد</label><input id="insuranceEditBirthPlace" type="text"></div>
+<div><label for="insuranceEditGuardian">اسم الولي</label><input id="insuranceEditGuardian" type="text"></div>
+</div>
+<div id="insuranceEditMessage" aria-live="polite"></div>
+<div class="edit-modal-actions">
+<button type="submit" id="insuranceEditSave">حفظ التعديلات</button>
+<button type="button" class="secondary" id="insuranceEditCancel">إلغاء</button>
+</div>
+</form>
+</div>
 </div>
 
 <script>
@@ -497,19 +457,20 @@ const SUPABASE_ANON_KEY='sb_publishable_-RRdoL1N2128DA3Hbdpa4g_hQaxnTZ2';
 const ADMIN_UID='3775b47c-78c5-4064-963b-e0d615c9495a';
 
 const MONTHS=[
-{n:10,s:'أكتوبر'},
-{n:11,s:'نوفمبر'},
-{n:12,s:'ديسمبر'},
-{n:1,s:'جانفي'},
-{n:2,s:'فيفري'},
-{n:3,s:'مارس'},
-{n:4,s:'أفريل'},
-{n:5,s:'ماي'},
-{n:6,s:'جوان'}
+{n:10,s:'أكتوبر'},{n:11,s:'نوفمبر'},{n:12,s:'ديسمبر'},
+{n:1,s:'جانفي'},{n:2,s:'فيفري'},{n:3,s:'مارس'},
+{n:4,s:'أفريل'},{n:5,s:'ماي'},{n:6,s:'جوان'}
 ];
 
 const MONTHLY_FEE=1000;
 const INSURANCE_FEE=1000;
+
+const KIMONO_PRICES={
+'white_regular':2500,
+'blue_regular':3000,
+'white_professional':4500,
+'blue_professional':5500
+};
 
 const $=id=>document.getElementById(id);
 const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
@@ -517,7 +478,8 @@ const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let currentUser=null;
 let athletes=[],groups=[],registrations=[],insuranceRows=[];
 let subscriptionRows=[],examRows=[],examFeeRows=[],athleteCodes=[];
-let kimonoRows=[];
+let kimonoRows=[],kimonoStock=[],kimonoMovements=[];
+let kimonoStockAvailable=false;
 let busy=false;
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({
@@ -530,16 +492,10 @@ function seasonNow(){
  const d=new Date();
  return d.getMonth()>=8?d.getFullYear():d.getFullYear()-1;
 }
-
 const seasonLabel=y=>`${y}/${Number(y)+1}`;
-
-const normalizeName=v=>
- String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('ar');
-
+const normalizeName=v=>String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('ar');
 const athleteName=a=>a?.full_name||'—';
-
-const seasonMonthYear=(season,month)=>
- month>=10?Number(season):Number(season)+1;
+const seasonMonthYear=(season,month)=>month>=10?Number(season):Number(season)+1;
 
 function seasonFromDate(dateValue){
  if(!dateValue)return seasonNow();
@@ -550,14 +506,8 @@ function seasonFromDate(dateValue){
 
 function assertSeasonEditable(season){
  const selected=Number(season);
- if(!Number.isInteger(selected)){
-  throw new Error('الموسم الرياضي المحدد غير صالح.');
- }
- if(selected>seasonNow()){
-  throw new Error(
-   `لا يمكن إنشاء أو تعديل سجلات موسم ${seasonLabel(selected)} قبل حلول شهر سبتمبر ${selected}.`
-  );
- }
+ if(!Number.isInteger(selected))throw new Error('الموسم الرياضي المحدد غير صالح.');
+ if(selected>seasonNow())throw new Error(`لا يمكن إنشاء أو تعديل سجلات موسم ${seasonLabel(selected)} قبل حلول شهر سبتمبر ${selected}.`);
 }
 
 const ageFromDob=dob=>{
@@ -566,46 +516,33 @@ const ageFromDob=dob=>{
  if(Number.isNaN(d.getTime()))return '—';
  const n=new Date();
  let a=n.getFullYear()-d.getFullYear();
- if(n.getMonth()<d.getMonth()||
-   (n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;
+ if(n.getMonth()<d.getMonth()||(n.getMonth()===d.getMonth()&&n.getDate()<d.getDate()))a--;
  return a>=0?String(a):'—';
 };
 
 function msg(id,text,error=false){
- const el=$(id);
- if(!el)return;
+ const el=$(id);if(!el)return;
  el.textContent=text||'';
  el.className=text?(error?'notice error':'notice'):'';
 }
-
 function globalMsg(text,error=false){
  msg('globalMessage',text,error);
  if(text)window.scrollTo({top:0,behavior:'smooth'});
 }
-
 function statusPill(status){
  const s=String(status||'pending').toLowerCase();
- const cls=s==='paid'||s==='accepted'?'paid':
-  s==='rejected'||s==='unpaid'?'unpaid':'';
- const labels={
-  pending:'قيد الانتظار',accepted:'مقبول',rejected:'مرفوض',
-  paid:'مدفوع',unpaid:'غير مدفوع'
- };
+ const cls=s==='paid'||s==='accepted'?'paid':s==='rejected'||s==='unpaid'?'unpaid':'';
+ const labels={pending:'قيد الانتظار',accepted:'مقبول',rejected:'مرفوض',paid:'مدفوع',unpaid:'غير مدفوع'};
  return `<span class="pill ${cls}">${labels[s]||esc(status||'غير محدد')}</span>`;
 }
-
 async function db(query){
  const {data,error}=await query;
  if(error)throw error;
  return data||[];
 }
-
 async function requireAdmin(user){
- if(!user||user.id!==ADMIN_UID){
-  throw new Error('هذا الحساب غير مخوّل لإدارة النادي. تحقق من ADMIN_UID.');
- }
+ if(!user||user.id!==ADMIN_UID)throw new Error('هذا الحساب غير مخوّل لإدارة النادي. تحقق من ADMIN_UID.');
 }
-
 function setLoggedIn(user){
  currentUser=user;
  $('loginView').classList.toggle('hidden',!!user);
@@ -613,57 +550,34 @@ function setLoggedIn(user){
  $('logoutBtn').classList.toggle('hidden',!user);
  $('userLabel').textContent=user?(user.email||'مسؤول'):'غير متصل';
 }
-
 function addSeasonOptions(id,selected=seasonNow()){
- const s=$(id);
- s.innerHTML='';
+ const s=$(id);s.innerHTML='';
  for(let y=seasonNow()+1;y>=seasonNow()-4;y--){
-  const o=document.createElement('option');
-  o.value=String(y);
-  o.textContent=seasonLabel(y);
-  if(y===Number(selected))o.selected=true;
-  s.appendChild(o);
+  const o=document.createElement('option');o.value=String(y);o.textContent=seasonLabel(y);
+  if(y===Number(selected))o.selected=true;s.appendChild(o);
  }
 }
-
 function table(headers,rows){
  if(!rows.length)return '<div class="empty">لا توجد بيانات للعرض.</div>';
- return `
- <table>
- <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
- <tbody>${rows.join('')}</tbody>
- </table>`;
+ return `<table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>`;
 }
-
 function fillSelects(){
- const opts=groups.map(g=>
-  `<option value="${esc(g.id)}">${esc(g.name||('المجموعة '+g.id))}</option>`
- ).join('');
-
+ const opts=groups.map(g=>`<option value="${esc(g.id)}">${esc(g.name||('المجموعة '+g.id))}</option>`).join('');
  const old=$('athleteGroup').value;
  $('athleteGroup').innerHTML='<option value="">بدون مجموعة</option>'+opts;
  if(old)$('athleteGroup').value=old;
-
- const aopts=athletes.map(a=>
-  `<option value="${esc(a.id)}">${esc(athleteName(a))}</option>`
- ).join('');
-
+ const aopts=athletes.map(a=>`<option value="${esc(a.id)}">${esc(athleteName(a))}</option>`).join('');
  $('examAthlete').innerHTML='<option value="">اختر الرياضي</option>'+aopts;
-
  ['insuranceSeason','subscriptionSeason','examSeason'].forEach(id=>{
-  const oldValue=$(id).value;
-  addSeasonOptions(id,oldValue||seasonNow());
+  const oldValue=$(id).value;addSeasonOptions(id,oldValue||seasonNow());
  });
 }
 
 async function loadAll(){
  if(busy)return;
- busy=true;
- globalMsg('جارٍ تحميل البيانات...');
-
+ busy=true;globalMsg('جارٍ تحميل البيانات...');
  try{
   await requireAdmin(currentUser);
-
   const results=await Promise.all([
    db(client.from('training_groups').select('*').order('id')),
    db(client.from('athletes').select('*').order('id',{ascending:false})),
@@ -672,1559 +586,806 @@ async function loadAll(){
    db(client.from('subscriptions').select('*').order('id',{ascending:false})),
    db(client.from('exams').select('*').order('id',{ascending:false})),
    db(client.from('exam_fees').select('*').order('id',{ascending:false})),
-   db(client.from('athlete_access_codes')
-    .select('athlete_id,access_code,created_at,updated_at')
-    .order('athlete_id')),
+   db(client.from('athlete_access_codes').select('athlete_id,access_code,created_at,updated_at').order('athlete_id')),
    db(client.from('kimono_sales').select('*').order('sale_date',{ascending:false}).order('id',{ascending:false}))
   ]);
+  [groups,athletes,registrations,insuranceRows,subscriptionRows,examRows,examFeeRows,athleteCodes,kimonoRows]=results;
 
-  [groups,athletes,registrations,insuranceRows,
-   subscriptionRows,examRows,examFeeRows,athleteCodes,kimonoRows]=results;
-
+  // تحميل المخزون والحركات مستقل عن الجداول الأساسية.
+  // غياب جداول المخزون لا يمنع تشغيل بقية لوحة الإدارة.
+  await loadKimonoInventory();
   renderAll();
   globalMsg('تم تحميل البيانات بنجاح.');
-
  }catch(e){
   globalMsg('تعذر تحميل البيانات: '+e.message,true);
- }finally{
-  busy=false;
+ }finally{busy=false;}
+}
+
+async function loadKimonoInventory(){
+ try{
+  const [stock,movements]=await Promise.all([
+   db(client.from('kimono_stock').select('*').order('color').order('quality').order('size')),
+   db(client.from('kimono_stock_movements').select('*').order('created_at',{ascending:false}).limit(200))
+  ]);
+  kimonoStock=stock;kimonoMovements=movements;kimonoStockAvailable=true;
+  msg('kimonoSetupMessage','');
+  $('kimonoSetupMessage').classList.add('hidden');
+ }catch(e){
+  kimonoStock=[];kimonoMovements=[];kimonoStockAvailable=false;
+  msg('kimonoSetupMessage','قسم المخزون غير جاهز بعد في Supabase. المبيعات القديمة محفوظة ويمكن عرضها، لكن البيع الجديد والتوريد والتسوية لن تعمل قبل إنشاء جداول ودوال المخزون. التفاصيل: '+e.message,true);
+  $('kimonoSetupMessage').classList.remove('hidden');
  }
 }
 
 function renderAll(){
- renderStats();
- fillSelects();
- renderRegistrations();
- renderAthletes();
- renderInsurance();
- renderSubscriptions();
- renderExams();
- renderGroups();
- renderParentCodes();
- renderKimono();
+ renderStats();fillSelects();renderRegistrations();renderAthletes();
+ renderInsurance();renderSubscriptions();renderExams();renderGroups();
+ renderParentCodes();renderKimono();
 }
-
 function renderStats(){
- $('statRegistrations').textContent=
-  registrations.filter(r=>(r.status||'pending').toLowerCase()==='pending').length;
+ $('statRegistrations').textContent=registrations.filter(r=>(r.status||'pending').toLowerCase()==='pending').length;
  $('statAthletes').textContent=athletes.length;
- $('statInsurance').textContent=
-  insuranceRows.filter(r=>String(r.status).toLowerCase()==='paid').length;
+ $('statInsurance').textContent=insuranceRows.filter(r=>String(r.status).toLowerCase()==='paid').length;
  $('statSubscriptions').textContent=subscriptionRows.length;
 }
-
 function renderRegistrations(){
- const q=$('registrationSearch').value.trim().toLowerCase();
- const f=$('registrationFilter').value;
-
+ const q=$('registrationSearch').value.trim().toLowerCase(),f=$('registrationFilter').value;
  const list=registrations.filter(r=>{
   const status=(r.status||'pending').toLowerCase();
-  const text=[
-   r.full_name,r.guardian_name,r.guardian_phone,r.father_name
-  ].join(' ').toLowerCase();
+  const text=[r.full_name,r.guardian_name,r.guardian_phone,r.father_name].join(' ').toLowerCase();
   return (!q||text.includes(q))&&(f==='all'||status===f);
  });
-
  $('registrationsTable').innerHTML=table(
  ['الاسم','تاريخ الميلاد','الجنس','الولي / الهاتف','الحزام','الحالة','تاريخ الطلب','الإجراء'],
- list.map(r=>`
- <tr>
- <td>${esc(r.full_name)}</td>
- <td>${esc(r.date_of_birth||'—')}</td>
- <td>${esc(r.gender||'—')}</td>
+ list.map(r=>`<tr>
+ <td>${esc(r.full_name)}</td><td>${esc(r.date_of_birth||'—')}</td><td>${esc(r.gender||'—')}</td>
  <td>${esc(r.guardian_name||r.father_name||'—')}<br>${esc(r.guardian_phone||'')}</td>
- <td>${esc(r.belt||'—')}</td>
- <td>${statusPill(r.status)}</td>
- <td>${esc((r.created_at||'').slice(0,10)||'—')}</td>
- <td>
- ${(r.status||'pending').toLowerCase()==='pending'
- ?`
- <button class="smallbtn success" data-reg-accept="${esc(r.id)}">قبول</button>
- <button class="smallbtn danger" data-reg-reject="${esc(r.id)}">رفض وحذف</button>`
- :`
- <button class="smallbtn secondary" data-reg-pending="${esc(r.id)}">إرجاع للانتظار</button>`}
- </td>
- </tr>
- `)
+ <td>${esc(r.belt||'—')}</td><td>${statusPill(r.status)}</td><td>${esc((r.created_at||'').slice(0,10)||'—')}</td>
+ <td>${(r.status||'pending').toLowerCase()==='pending'
+ ?`<button class="smallbtn success" data-reg-accept="${esc(r.id)}">قبول</button><button class="smallbtn danger" data-reg-reject="${esc(r.id)}">رفض وحذف</button>`
+ :`<button class="smallbtn secondary" data-reg-pending="${esc(r.id)}">إرجاع للانتظار</button>`}</td>
+ </tr>`)
  );
 }
-
 function renderAthletes(){
  const q=$('athleteSearch').value.trim().toLowerCase();
- const list=athletes.filter(a=>[
-  athleteName(a),a.guardian_name,a.guardian_phone,a.belt
- ].join(' ').toLowerCase().includes(q));
-
- $('athletesTable').innerHTML=table(
- ['الاسم الكامل','تاريخ الميلاد','المجموعة','الحزام','هاتف الولي','الإجراء'],
- list.map(a=>`
- <tr>
- <td>${esc(athleteName(a))}</td>
- <td>${esc(a.date_of_birth||'—')}</td>
+ const list=athletes.filter(a=>[athleteName(a),a.guardian_name,a.guardian_phone,a.belt].join(' ').toLowerCase().includes(q));
+ $('athletesTable').innerHTML=table(['الاسم الكامل','تاريخ الميلاد','المجموعة','الحزام','هاتف الولي','الإجراء'],
+ list.map(a=>`<tr>
+ <td>${esc(athleteName(a))}</td><td>${esc(a.date_of_birth||'—')}</td>
  <td>${esc(groups.find(g=>String(g.id)===String(a.group_id))?.name||'بدون مجموعة')}</td>
- <td>${esc(a.belt||'—')}</td>
- <td>${esc(a.guardian_phone||'—')}</td>
- <td>
- <button class="smallbtn" data-athlete-edit="${esc(a.id)}">تعديل</button>
- <button class="smallbtn danger" data-athlete-delete="${esc(a.id)}">حذف</button>
- </td>
- </tr>
- `)
- );
+ <td>${esc(a.belt||'—')}</td><td>${esc(a.guardian_phone||'—')}</td>
+ <td><button class="smallbtn" data-athlete-edit="${esc(a.id)}">تعديل</button><button class="smallbtn danger" data-athlete-delete="${esc(a.id)}">حذف</button></td>
+ </tr>`));
 }
-
 function renderParentCodes(){
  const q=$('codeSearch').value.trim().toLowerCase();
-
  const list=athletes.filter(a=>{
   const code=athleteCodes.find(c=>String(c.athlete_id)===String(a.id));
-  return [
-   athleteName(a),a.guardian_name,a.guardian_phone,code?.access_code
-  ].join(' ').toLowerCase().includes(q);
+  return [athleteName(a),a.guardian_name,a.guardian_phone,code?.access_code].join(' ').toLowerCase().includes(q);
  });
-
- const missing=athletes.filter(a=>
-  !athleteCodes.some(c=>String(c.athlete_id)===String(a.id))
- ).length;
-
- $('codeAthleteCount').textContent=athletes.length;
- $('codeCount').textContent=athleteCodes.length;
- $('missingCodeCount').textContent=missing;
-
- $('codesTable').innerHTML=table(
- ['الرياضي','اسم الولي','هاتف الولي','رمز التفعيل','الإجراءات'],
+ const missing=athletes.filter(a=>!athleteCodes.some(c=>String(c.athlete_id)===String(a.id))).length;
+ $('codeAthleteCount').textContent=athletes.length;$('codeCount').textContent=athleteCodes.length;$('missingCodeCount').textContent=missing;
+ $('codesTable').innerHTML=table(['الرياضي','اسم الولي','هاتف الولي','رمز التفعيل','الإجراءات'],
  list.map(a=>{
   const code=athleteCodes.find(c=>String(c.athlete_id)===String(a.id));
-  return `
-  <tr>
-   <td>${esc(athleteName(a))}</td>
-   <td>${esc(a.guardian_name||'—')}</td>
-   <td>${esc(a.guardian_phone||'—')}</td>
-   <td>${code
-    ?`<span class="access-code">${esc(code.access_code)}</span>`
-    :'<span class="pill unpaid">لا يوجد رمز</span>'}</td>
+  return `<tr><td>${esc(athleteName(a))}</td><td>${esc(a.guardian_name||'—')}</td><td>${esc(a.guardian_phone||'—')}</td>
+  <td>${code?`<span class="access-code">${esc(code.access_code)}</span>`:'<span class="pill unpaid">لا يوجد رمز</span>'}</td>
+  <td>${code?`<button class="smallbtn success" data-code-copy="${esc(code.access_code)}">نسخ الرمز</button><button class="smallbtn warning" data-code-regenerate="${esc(a.id)}">إعادة التوليد</button>`:`<button class="smallbtn success" data-code-regenerate="${esc(a.id)}">إنشاء الرمز</button>`}</td></tr>`;
+ }));
+}
+
+/* -------------------------
+   KIMONO: أدوات عامة
+------------------------- */
+const kimonoColorLabel=v=>v==='white'?'أبيض':v==='blue'?'أزرق':v||'—';
+const kimonoQualityLabel=v=>v==='regular'?'عادي':v==='professional'?'احترافي':v||'—';
+const kimonoTypeFromValues=(color,quality)=>`${kimonoColorLabel(color)} ${kimonoQualityLabel(quality)}`;
+const kimonoStockKey=s=>`${s.color}_${s.quality}_${String(s.size).trim().toLowerCase()}`;
+
+function kimonoDefaultPrice(){
+ const key=$('kimonoColor').value+'_'+$('kimonoQuality').value;
+ return KIMONO_PRICES[key]||0;
+}
+function updateKimonoSuggestedPrice(){
+ if(!$('kimonoId').value)$('kimonoPrice').value=kimonoDefaultPrice();
+ renderKimonoStockPreview();
+ updateKimonoPaymentPreview();
+}
+function kimonoPaidValue(row){
+ const stored=Number(row.paid_amount||0);
+ if(stored===0&&row.paid===true)return Number(row.price||0);
+ return stored;
+}
+function kimonoPaymentStatus(price,paidAmount){
+ const total=Number(price||0),paid=Number(paidAmount||0);
+ if(total>0&&paid>=total)return {key:'paid',label:'مدفوع بالكامل'};
+ if(paid>0)return {key:'partial',label:'تسبيق'};
+ return {key:'unpaid',label:'غير مدفوع'};
+}
+function kimonoStatusPill(status){
+ const info={paid:{label:'مدفوع بالكامل',className:'paid'},partial:{label:'تسبيق',className:'partial'},unpaid:{label:'غير مدفوع',className:'unpaid'}};
+ const item=info[status]||info.unpaid;
+ return `<span class="pill ${item.className}">${item.label}</span>`;
+}
+function updateKimonoPaymentPreview(){
+ const price=Number($('kimonoPrice').value||0),paid=Number($('kimonoPaidAmount').value||0);
+ const remaining=Math.max(price-paid,0),status=kimonoPaymentStatus(price,paid);
+ $('kimonoPaymentPreview').textContent=`المبلغ المتبقي: ${money(remaining)} · الحالة: ${status.label}`;
+ $('kimonoPaymentPreview').className=`kimono-payment-preview ${status.key}`;
+}
+function renderKimonoStockPreview(){
+ const id=$('kimonoStockSelect').value;
+ const stock=kimonoStock.find(s=>String(s.id)===String(id));
+ if(!stock){$('kimonoStockPreview').textContent='اختر الصنف لعرض الكمية المتوفرة.';return;}
+ $('kimonoStockPreview').textContent=`المتوفر حاليًا: ${Number(stock.quantity||0)} قطعة · ${kimonoTypeFromValues(stock.color,stock.quality)} · القياس ${stock.size}`;
+}
+function fillKimonoStockSelect(selectedId=''){
+ const select=$('kimonoStockSelect');
+ const available=kimonoStock.filter(s=>Number(s.quantity)>0);
+ select.innerHTML='<option value="">اختر الصنف والقياس</option>'+
+ available.map(s=>`<option value="${esc(s.id)}">${esc(kimonoTypeFromValues(s.color,s.quality))} — ${esc(s.size)} — المتوفر ${Number(s.quantity)}</option>`).join('');
+ if(selectedId)select.value=String(selectedId);
+ renderKimonoStockPreview();
+}
+function clearKimonoForm(){
+ $('kimonoForm').reset();$('kimonoId').value='';
+ $('kimonoDate').value=new Date().toISOString().slice(0,10);
+ $('kimonoPaidAmount').value='0';
+ $('kimonoSaveButton').textContent='إضافة عملية بيع';
+ $('kimonoCancelEdit').classList.add('hidden');
+ $('kimonoStockSelect').disabled=false;
+ $('kimonoColor').disabled=false;$('kimonoQuality').disabled=false;$('kimonoSize').readOnly=false;
+ $('kimonoPrice').value=kimonoDefaultPrice();
+ fillKimonoStockSelect();updateKimonoPaymentPreview();
+}
+
+/* -------------------------
+   KIMONO: تحليل المبيعات
+------------------------- */
+function kimonoDateMatches(date,period){
+ if(!date||period==='all')return true;
+ const d=String(date).slice(0,10),now=new Date();
+ const today=now.toISOString().slice(0,10);
+ if(period==='day')return d===today;
+ if(period==='month')return d.slice(0,7)===today.slice(0,7);
+ if(period==='year')return d.slice(0,4)===today.slice(0,4);
+ return true;
+}
+function renderKimono(){
+ const period=$('kimonoPeriod').value||'all';
+ const q=$('kimonoSearch').value.trim().toLocaleLowerCase('ar');
+ const periodRows=kimonoRows.filter(r=>kimonoDateMatches(r.sale_date,period));
+ const totalSales=periodRows.reduce((s,r)=>s+Number(r.price||0),0);
+ const collected=periodRows.reduce((s,r)=>s+kimonoPaidValue(r),0);
+ const remaining=periodRows.reduce((s,r)=>s+Math.max(Number(r.price||0)-kimonoPaidValue(r),0),0);
+ const paidRows=periodRows.filter(r=>kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='paid').length;
+ const partialRows=periodRows.filter(r=>kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='partial').length;
+ const unpaidRows=periodRows.filter(r=>kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='unpaid').length;
+
+ $('kimonoAnalysis').innerHTML=`
+ <div class="analysis-card"><span>عدد عمليات البيع</span><strong>${periodRows.length}</strong></div>
+ <div class="analysis-card"><span>إجمالي قيمة المبيعات</span><strong>${money(totalSales)}</strong></div>
+ <div class="analysis-card"><span>المبالغ المحصلة</span><strong>${money(collected)}</strong></div>
+ <div class="analysis-card"><span>المبالغ المتبقية</span><strong>${money(remaining)}</strong></div>
+ <div class="analysis-card"><span>مدفوع بالكامل</span><strong>${paidRows}</strong></div>
+ <div class="analysis-card"><span>تسبيق</span><strong>${partialRows}</strong></div>
+ <div class="analysis-card"><span>غير مدفوع</span><strong>${unpaidRows}</strong></div>`;
+
+ const breakdown={};
+ periodRows.forEach(r=>{
+  const key=`${r.color||'—'}_${r.quality||'—'}`;
+  breakdown[key]=(breakdown[key]||0)+1;
+ });
+ $('kimonoBreakdown').innerHTML=Object.entries(breakdown).map(([key,count])=>{
+  const [color,quality]=key.split('_');
+  return `<div class="analysis-card"><span>${kimonoTypeFromValues(color,quality)}</span><strong>${count}</strong><small>عملية بيع</small></div>`;
+ }).join('')||'<div class="empty">لا توجد مبيعات في الفترة المحددة.</div>';
+
+ const list=kimonoRows.filter(r=>{
+  const text=[r.athlete_name,r.kimono_type,r.size,kimonoColorLabel(r.color),kimonoQualityLabel(r.quality)].join(' ').toLocaleLowerCase('ar');
+  return text.includes(q);
+ });
+ $('kimonoTable').innerHTML=table(
+ ['المشتري','الصنف','القياس','التاريخ','السعر','المدفوع','المتبقي','الحالة','الإجراءات'],
+ list.map(r=>{
+  const total=Number(r.price||0),paid=kimonoPaidValue(r),left=Math.max(total-paid,0);
+  const status=kimonoPaymentStatus(total,paid);
+  const legacy=!r.stock_id;
+  return `<tr>
+   <td>${esc(r.athlete_name||'—')}</td>
+   <td>${esc(r.kimono_type||kimonoTypeFromValues(r.color,r.quality))}</td>
+   <td>${esc(r.size||'—')}</td><td>${esc(r.sale_date||'—')}</td>
+   <td>${money(total)}</td><td>${money(paid)}</td><td>${money(left)}</td>
+   <td>${kimonoStatusPill(status.key)} ${legacy?'<span class="pill">بيع قديم</span>':''}</td>
+   <td>${legacy
+    ?'<span class="pill">سجل محفوظ</span>'
+    :`<button class="smallbtn" data-kimono-edit="${esc(r.id)}">تعديل</button><button class="smallbtn danger" data-kimono-delete="${esc(r.id)}">حذف</button>`}
+   </td>
+  </tr>`;
+ })
+ );
+
+ renderKimonoStock();
+ renderKimonoMovements();
+ fillKimonoStockSelect($('kimonoStockSelect').value);
+}
+
+/* -------------------------
+   KIMONO: المخزون والحركات
+------------------------- */
+function stockStatus(s){
+ const qty=Number(s.quantity||0),min=Number(s.min_quantity||0);
+ if(qty<=0)return {label:'نافد',cls:'stock-empty'};
+ if(qty<=min)return {label:'منخفض',cls:'stock-low'};
+ return {label:'متوفر',cls:'stock-ok'};
+}
+function renderKimonoStock(){
+ $('kimonoStockTable').innerHTML=table(
+ ['اللون','النوعية','القياس','الكمية الحالية','حد التنبيه','الحالة','الإجراءات'],
+ kimonoStock.map(s=>{
+  const status=stockStatus(s);
+  return `<tr>
+   <td>${kimonoColorLabel(s.color)}</td><td>${kimonoQualityLabel(s.quality)}</td>
+   <td>${esc(s.size)}</td><td><strong>${Number(s.quantity||0)}</strong></td>
+   <td>${Number(s.min_quantity||0)}</td><td><span class="pill ${status.cls}">${status.label}</span></td>
    <td>
-    ${code
-     ?`
-      <button class="smallbtn success" data-code-copy="${esc(code.access_code)}">نسخ الرمز</button>
-      <button class="smallbtn warning" data-code-regenerate="${esc(a.id)}">إعادة التوليد</button>`
-     :`
-      <button class="smallbtn success" data-code-regenerate="${esc(a.id)}">إنشاء الرمز</button>`}
+    <button class="smallbtn success" data-stock-restock="${esc(s.id)}">توريد</button>
+    <button class="smallbtn warning" data-stock-adjust="${esc(s.id)}">تسوية</button>
    </td>
   </tr>`;
  })
  );
 }
-
-/* =========================
-   KIMONO — إدارة المبيعات
-========================= */
-
-function kimonoPaidValue(row){
- const stored=Number(row.paid_amount||0);
-
- // توافق مع عمليات البيع القديمة التي كانت تسجل paid فقط.
- if(stored===0&&row.paid===true){
-  return Number(row.price||0);
- }
-
- return stored;
-}
-
-function kimonoPaymentStatus(price,paidAmount){
- const total=Number(price||0);
- const paid=Number(paidAmount||0);
-
- if(total>0&&paid>=total){
-  return {key:'paid',label:'مدفوع بالكامل'};
- }
-
- if(paid>0){
-  return {key:'partial',label:'تسبيق'};
- }
-
- return {key:'unpaid',label:'غير مدفوع'};
-}
-
-function kimonoStatusPill(status){
- const info={
-  paid:{label:'مدفوع بالكامل',className:'paid'},
-  partial:{label:'تسبيق',className:'partial'},
-  unpaid:{label:'غير مدفوع',className:'unpaid'}
+function renderKimonoMovements(){
+ const filter=$('kimonoMovementFilter').value;
+ const rows=kimonoMovements.filter(m=>filter==='all'||m.movement_type===filter);
+ const stockName=id=>{
+  const s=kimonoStock.find(x=>String(x.id)===String(id));
+  return s?`${kimonoTypeFromValues(s.color,s.quality)} / ${s.size}`:'صنف غير موجود';
  };
-
- const item=info[status]||info.unpaid;
-
- return `<span class="pill ${item.className}">${item.label}</span>`;
-}
-
-function updateKimonoPaymentPreview(){
- const price=Number($('kimonoPrice').value||0);
- const paid=Number($('kimonoPaidAmount').value||0);
- const remaining=Math.max(price-paid,0);
- const status=kimonoPaymentStatus(price,paid);
-
- const preview=$('kimonoPaymentPreview');
-
- preview.textContent=
-  `المبلغ المتبقي: ${money(remaining)} · الحالة: ${status.label}`;
-
- preview.className=
-  `kimono-payment-preview ${status.key}`;
-}
-
-function clearKimonoForm(){
- $('kimonoForm').reset();
- $('kimonoId').value='';
- $('kimonoDate').value=new Date().toISOString().slice(0,10);
- $('kimonoPaidAmount').value='0';
- $('kimonoSaveButton').textContent='إضافة عملية بيع';
- $('kimonoCancelEdit').classList.add('hidden');
- updateKimonoPaymentPreview();
-}
-
-function renderKimono(){
- const q=$('kimonoSearch').value.trim().toLocaleLowerCase('ar');
-
- const count=kimonoRows.length;
-
- const totalSales=kimonoRows.reduce(
-  (sum,r)=>sum+Number(r.price||0),0
- );
-
- const paidAmount=kimonoRows.reduce(
-  (sum,r)=>sum+kimonoPaidValue(r),0
- );
-
- const unpaidAmount=kimonoRows.reduce(
-  (sum,r)=>sum+Math.max(Number(r.price||0)-kimonoPaidValue(r),0),0
- );
-
- const paidRows=kimonoRows.filter(r=>
-  kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='paid'
- );
-
- const partialRows=kimonoRows.filter(r=>
-  kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='partial'
- );
-
- const unpaidRows=kimonoRows.filter(r=>
-  kimonoPaymentStatus(r.price,kimonoPaidValue(r)).key==='unpaid'
- );
-
- $('kimonoAnalysis').innerHTML=`
-  <div class="analysis-card">
-   <span>إجمالي عدد الكيمونو المباع</span>
-   <strong>${count}</strong>
-   <small>عملية بيع</small>
-  </div>
-
-  <div class="analysis-card">
-   <span>إجمالي قيمة المبيعات</span>
-   <strong>${money(totalSales)}</strong>
-   <small>قيمة جميع عمليات البيع</small>
-  </div>
-
-  <div class="analysis-card">
-   <span>مجموع المبالغ المدفوعة</span>
-   <strong>${money(paidAmount)}</strong>
-   <small>المبالغ المحصلة فعليًا</small>
-  </div>
-
-  <div class="analysis-card">
-   <span>مجموع المبالغ المتبقية</span>
-   <strong>${money(unpaidAmount)}</strong>
-   <small>المبالغ التي لم تُحصّل بعد</small>
-  </div>
-
-  <div class="analysis-card">
-   <span>مدفوع بالكامل</span>
-   <strong>${paidRows.length}</strong>
-   <small>عملية بيع</small>
-  </div>
-
-  <div class="analysis-card">
-   <span>دفع تسبيق</span>
-   <strong>${partialRows.length}</strong>
-   <small>عملية بيع</small>
-  </div>
-
-  <div class="analysis-card">
-   <span>غير مدفوع</span>
-   <strong>${unpaidRows.length}</strong>
-   <small>عملية بيع</small>
-  </div>
- `;
-
- const list=kimonoRows.filter(r=>{
-  const name=String(r.athlete_name||'').toLocaleLowerCase('ar');
-  const type=String(r.kimono_type||'').toLocaleLowerCase('ar');
-  const size=String(r.size||'').toLocaleLowerCase('ar');
-
-  return name.includes(q)||type.includes(q)||size.includes(q);
- });
-
- $('kimonoTable').innerHTML=table(
-  [
-   'اسم ولقب الرياضي أو المشتري',
-   'نوع الكيمونو والقياس',
-   'تاريخ البيع',
-   'السعر الإجمالي',
-   'المبلغ المدفوع',
-   'المبلغ المتبقي',
-   'حالة الدفع',
-   'الإجراءات'
-  ],
-  list.map(r=>{
-   const total=Number(r.price||0);
-   const paid=kimonoPaidValue(r);
-   const remaining=Math.max(total-paid,0);
-   const status=kimonoPaymentStatus(total,paid);
-
-   return `
-    <tr>
-     <td><strong>${esc(r.athlete_name||'—')}</strong></td>
-
-     <td>
-      <strong>${esc(r.kimono_type||'—')}</strong>
-      <br>
-      <span class="pill">القياس: ${esc(r.size||'—')}</span>
-     </td>
-
-     <td>${esc(r.sale_date||'—')}</td>
-
-     <td><strong>${money(total)}</strong></td>
-
-     <td>${money(paid)}</td>
-
-     <td>${money(remaining)}</td>
-
-     <td>
-      <span class="kimono-status">${kimonoStatusPill(status.key)}</span>
-     </td>
-
-     <td>
-      <div class="kimono-actions">
-       <button class="smallbtn"
-        data-kimono-edit="${esc(r.id)}">
-        تعديل
-       </button>
-
-       <button class="smallbtn danger"
-        data-kimono-delete="${esc(r.id)}">
-        حذف
-       </button>
-      </div>
-     </td>
-    </tr>
-   `;
-  })
+ $('kimonoMovementsTable').innerHTML=table(
+ ['التاريخ','الصنف','نوع الحركة','الكمية قبل','التغير','الكمية بعد','ملاحظات'],
+ rows.map(m=>{
+  const type=m.movement_type==='in'?'توريد':m.movement_type==='out'?'بيع':'تسوية';
+  return `<tr>
+   <td>${esc(String(m.created_at||'').replace('T',' ').slice(0,16))}</td>
+   <td>${esc(stockName(m.stock_id))}</td><td>${type}</td>
+   <td>${Number(m.quantity_before||0)}</td><td>${Number(m.quantity_change||0)}</td>
+   <td>${Number(m.quantity_after||0)}</td><td>${esc(m.notes||'—')}</td>
+  </tr>`;
+ })
  );
 }
+async function saveKimonoStock(e){
+ e.preventDefault();
+ const btn=e.submitter;
+ if(btn)btn.disabled=true;
+ try{
+  if(!kimonoStockAvailable)throw new Error('جداول المخزون غير جاهزة في Supabase.');
+  const color=$('newStockColor').value,quality=$('newStockQuality').value;
+  const size=$('newStockSize').value.trim();
+  const quantity=Number($('newStockQuantity').value);
+  const minimum=Number($('newStockMinimum').value);
+  if(!size)throw new Error('أدخل القياس.');
+  if(!Number.isInteger(quantity)||quantity<0)throw new Error('الكمية يجب أن تكون عددًا صحيحًا غير سالب.');
+  if(!Number.isInteger(minimum)||minimum<0)throw new Error('حد التنبيه يجب أن يكون عددًا صحيحًا غير سالب.');
+  const {data,error}=await client.rpc('admin_kimono_add_stock',{
+   p_color:color,p_quality:quality,p_size:size,p_quantity:quantity,p_min_quantity:minimum,p_notes:'إضافة صنف جديد'
+  });
+  if(error)throw error;
+  await loadKimonoInventory();
+  renderKimono();
+  $('kimonoNewStockForm').reset();
+  $('newStockQuantity').value='0';$('newStockMinimum').value='2';
+  msg('kimonoStockMessage','تمت إضافة الصنف إلى المخزون.');
+ }catch(err){msg('kimonoStockMessage','تعذرت إضافة الصنف: '+err.message,true);}
+ finally{if(btn)btn.disabled=false;}
+}
+async function stockRestock(id){
+ const s=kimonoStock.find(x=>String(x.id)===String(id));
+ if(!s)throw new Error('الصنف غير موجود.');
+ const answer=prompt(`أدخل عدد القطع المضافة إلى ${kimonoTypeFromValues(s.color,s.quality)} قياس ${s.size}:`);
+ if(answer===null)return;
+ const qty=Number(answer);
+ if(!Number.isInteger(qty)||qty<=0)throw new Error('أدخل كمية صحيحة أكبر من صفر.');
+ const notes=prompt('ملاحظات التوريد (اختياري):')||'توريد مخزون';
+ const {error}=await client.rpc('admin_kimono_restock',{p_stock_id:id,p_quantity:qty,p_notes:notes});
+ if(error)throw error;
+ await loadKimonoInventory();renderKimono();
+ globalMsg('تمت إضافة الكمية إلى المخزون.');
+}
+async function stockAdjust(id){
+ const s=kimonoStock.find(x=>String(x.id)===String(id));
+ if(!s)throw new Error('الصنف غير موجود.');
+ const answer=prompt(`الكمية الفعلية بعد الجرد للصنف ${kimonoTypeFromValues(s.color,s.quality)} قياس ${s.size}؟\nالكمية المسجلة حاليًا: ${s.quantity}`,String(s.quantity));
+ if(answer===null)return;
+ const qty=Number(answer);
+ if(!Number.isInteger(qty)||qty<0)throw new Error('أدخل كمية فعلية صحيحة غير سالبة.');
+ const notes=prompt('سبب التسوية أو ملاحظات الجرد:')||'تسوية جرد يدوي';
+ const {error}=await client.rpc('admin_kimono_adjust_stock',{p_stock_id:id,p_new_quantity:qty,p_notes:notes});
+ if(error)throw error;
+ await loadKimonoInventory();renderKimono();
+ globalMsg('تمت تسوية المخزون حسب الكمية الفعلية.');
+}
 
+/* -------------------------
+   KIMONO: البيع والتعديل والحذف
+------------------------- */
 function editKimono(id){
  const r=kimonoRows.find(x=>String(x.id)===String(id));
-
  if(!r)throw new Error('لم يتم العثور على عملية البيع.');
-
+ if(!r.stock_id)throw new Error('هذه عملية بيع قديمة غير مرتبطة بالمخزون. أبقيناها محفوظة دون تعديل حتى لا تتغير سجلاتك السابقة.');
  $('kimonoId').value=r.id;
  $('kimonoAthlete').value=r.athlete_name||'';
- $('kimonoType').value=r.kimono_type||'';
+ $('kimonoColor').value=r.color||'white';
+ $('kimonoQuality').value=r.quality||'regular';
  $('kimonoSize').value=r.size||'';
  $('kimonoDate').value=r.sale_date||'';
  $('kimonoPrice').value=r.price??0;
  $('kimonoPaidAmount').value=kimonoPaidValue(r);
-
+ $('kimonoStockSelect').disabled=true;
+ $('kimonoStockSelect').innerHTML=`<option value="${esc(r.stock_id)}">الصنف المرتبط بهذه العملية</option>`;
+ $('kimonoStockSelect').value=String(r.stock_id);
+ $('kimonoColor').disabled=true;$('kimonoQuality').disabled=true;$('kimonoSize').readOnly=true;
  $('kimonoSaveButton').textContent='حفظ تعديل البيع';
  $('kimonoCancelEdit').classList.remove('hidden');
-
- updateKimonoPaymentPreview();
-
- msg('kimonoMessage','أنت تعدّل عملية بيع الكيمونو.');
-
- $('kimonoForm').scrollIntoView({
-  behavior:'smooth',
-  block:'start'
- });
+ renderKimonoStockPreview();updateKimonoPaymentPreview();
+ msg('kimonoMessage','عند حفظ التعديل ستتم إعادة الصنف السابق للمخزون وخصم الصنف الجديد بطريقة ذرية.');
+ $('kimonoForm').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
 async function saveKimono(e){
  e.preventDefault();
-
- const saveButton=$('kimonoSaveButton');
- saveButton.disabled=true;
-
+ const btn=$('kimonoSaveButton');btn.disabled=true;
  try{
+  if(!kimonoStockAvailable)throw new Error('المخزون غير جاهز. لا يمكن تسجيل بيع قبل إعداد جداول المخزون.');
   const id=$('kimonoId').value;
   const name=$('kimonoAthlete').value.trim().replace(/\s+/g,' ');
-  const type=$('kimonoType').value.trim();
-  const size=$('kimonoSize').value.trim();
   const date=$('kimonoDate').value;
   const price=Number($('kimonoPrice').value);
-  const paidAmount=Number($('kimonoPaidAmount').value||0);
-
-  if(!name)throw new Error('يرجى كتابة اسم الرياضي أو المشتري.');
-  if(!type)throw new Error('يرجى إدخال نوع الكيمونو.');
-  if(!size)throw new Error('يرجى إدخال قياس الكيمونو.');
-  if(!date)throw new Error('يرجى تحديد تاريخ البيع.');
-
-  const parsedDate=new Date(date+'T00:00:00');
-
-  if(Number.isNaN(parsedDate.getTime())){
-   throw new Error('تاريخ البيع غير صالح.');
-  }
-
-  const today=new Date();
-  today.setHours(23,59,59,999);
-
-  if(parsedDate>today){
-   throw new Error('تاريخ البيع لا يمكن أن يكون في المستقبل.');
-  }
-
-  if(!Number.isFinite(price)||price<0){
-   throw new Error('يرجى إدخال سعر صحيح وغير سالب.');
-  }
-
-  if(!Number.isFinite(paidAmount)||paidAmount<0){
-   throw new Error('يرجى إدخال مبلغ مدفوع صحيح وغير سالب.');
-  }
-
-  if(paidAmount>price){
-   throw new Error('المبلغ المدفوع لا يمكن أن يكون أكبر من السعر الإجمالي.');
-  }
-
-  const isFullyPaid=price>0&&paidAmount>=price;
-
-  const payload={
-   athlete_id:null,
-   athlete_name:name,
-   kimono_type:type,
-   size:size,
-   sale_date:date,
-   price:price,
-   paid_amount:paidAmount,
-   paid:isFullyPaid,
-   paid_at:isFullyPaid?new Date().toISOString():null
-  };
-
-  let result;
-
-  if(id){
-   result=await client.from('kimono_sales')
-    .update(payload)
-    .eq('id',id)
-    .select('id');
-  }else{
-   result=await client.from('kimono_sales')
-    .insert(payload)
-    .select('id');
-  }
-
-  if(result.error)throw result.error;
-
-  if(!result.data||!result.data.length){
-   throw new Error('لم يتم حفظ عملية البيع. تحقق من صلاحيات RLS.');
-  }
-
+  const paid=Number($('kimonoPaidAmount').value||0);
+  const stockId=$('kimonoStockSelect').value;
+  if(!name)throw new Error('أدخل اسم المشتري.');
+  if(!date)throw new Error('حدد تاريخ البيع.');
+  if(!stockId)throw new Error('اختر صنفًا متوفرًا من المخزون.');
+  if(!Number.isFinite(price)||price<=0)throw new Error('أدخل سعرًا صحيحًا أكبر من صفر.');
+  if(!Number.isFinite(paid)||paid<0||paid>price)throw new Error('المبلغ المدفوع يجب أن يكون بين صفر والسعر الإجمالي.');
+  const chosen=kimonoStock.find(s=>String(s.id)===String(stockId));
+  if(!chosen)throw new Error('الصنف المختار غير موجود في المخزون.');
+  if(!id&&Number(chosen.quantity)<1)throw new Error('هذا الصنف نافد من المخزون.');
+  const {error}=await client.rpc('admin_kimono_save_sale',{
+   p_sale_id:id||null,
+   p_stock_id:stockId,
+   p_athlete_name:name,
+   p_sale_date:date,
+   p_price:price,
+   p_paid_amount:paid
+  });
+  if(error)throw error;
   clearKimonoForm();
-
   await loadAll();
-
-  msg(
-   'kimonoMessage',
-   id?'تم تعديل عملية البيع بنجاح.':'تمت إضافة عملية بيع الكيمونو بنجاح.'
-  );
-
- }catch(err){
-  msg('kimonoMessage','تعذر حفظ عملية البيع: '+err.message,true);
- }finally{
-  saveButton.disabled=false;
- }
+  msg('kimonoMessage',id?'تم تعديل البيع وتحديث المخزون.':'تم تسجيل البيع وخصم قطعة من المخزون.');
+ }catch(err){msg('kimonoMessage','تعذر حفظ البيع: '+err.message,true);}
+ finally{btn.disabled=false;}
 }
-
 async function deleteKimonoSale(id){
  const row=kimonoRows.find(x=>String(x.id)===String(id));
-
  if(!row)throw new Error('لم يتم العثور على عملية البيع.');
-
- if(!confirm(
-  `هل تريد حذف عملية بيع الكيمونو الخاصة بـ ${row.athlete_name||'هذا المشتري'}؟`
- ))return;
-
- const {data,error}=await client.from('kimono_sales')
-  .delete()
-  .eq('id',id)
-  .select('id');
-
+ if(!row.stock_id)throw new Error('هذه عملية قديمة غير مرتبطة بالمخزون، لذلك لا يمكن حذفها من هذه الواجهة.');
+ if(!confirm(`حذف عملية بيع ${row.athlete_name||''}؟ ستُعاد القطعة إلى المخزون.`))return;
+ const {error}=await client.rpc('admin_kimono_delete_sale',{p_sale_id:id});
  if(error)throw error;
-
- if(!data||!data.length){
-  throw new Error('لم يؤكد Supabase حذف عملية البيع. تحقق من صلاحيات RLS.');
- }
-
- if(String($('kimonoId').value)===String(id)){
-  clearKimonoForm();
- }
-
+ if(String($('kimonoId').value)===String(id))clearKimonoForm();
  await loadAll();
-
- msg('kimonoMessage','تم حذف عملية البيع بنجاح.');
+ msg('kimonoMessage','تم حذف عملية البيع وإرجاع القطعة إلى المخزون.');
 }
 
-/* =========================
-   نهاية KIMONO
-========================= */
-
+/* -------------------------
+   إدارة الرياضيين
+------------------------- */
 function clearAthleteForm(){
- $('athleteForm').reset();
- $('athleteId').value='';
- $('athleteSaveButton').textContent='إضافة رياضي';
- $('athleteCancelEdit').classList.add('hidden');
+ $('athleteForm').reset();$('athleteId').value='';
+ $('athleteSaveButton').textContent='إضافة رياضي';$('athleteCancelEdit').classList.add('hidden');
 }
-
 function editAthlete(id){
- const a=athletes.find(x=>String(x.id)===String(id));
- if(!a)return;
-
- $('athleteId').value=a.id;
- $('athleteFullName').value=a.full_name||'';
- $('athleteDob').value=a.date_of_birth||'';
- $('athleteBirthPlace').value=a.birth_place||'';
- $('athleteGender').value=a.gender||'';
- $('athleteResidence').value=a.residence||'';
- $('athleteGuardian').value=a.guardian_name||'';
- $('athletePhone').value=a.guardian_phone||'';
+ const a=athletes.find(x=>String(x.id)===String(id));if(!a)return;
+ $('athleteId').value=a.id;$('athleteFullName').value=a.full_name||'';
+ $('athleteDob').value=a.date_of_birth||'';$('athleteBirthPlace').value=a.birth_place||'';
+ $('athleteGender').value=a.gender||'';$('athleteResidence').value=a.residence||'';
+ $('athleteGuardian').value=a.guardian_name||'';$('athletePhone').value=a.guardian_phone||'';
  $('athleteFather').value=a.father_name||'';
-
- $('athletePracticed').value=
-  typeof a.practiced_before==='boolean'?String(a.practiced_before):'';
-
- $('athleteBelt').value=a.belt||'';
- $('athleteGroup').value=a.group_id==null?'':String(a.group_id);
-
- $('athleteSaveButton').textContent='حفظ التعديلات';
- $('athleteCancelEdit').classList.remove('hidden');
-
+ $('athletePracticed').value=typeof a.practiced_before==='boolean'?String(a.practiced_before):'';
+ $('athleteBelt').value=a.belt||'';$('athleteGroup').value=a.group_id==null?'':String(a.group_id);
+ $('athleteSaveButton').textContent='حفظ التعديلات';$('athleteCancelEdit').classList.remove('hidden');
  msg('athleteMessage','أنت تعدّل بيانات: '+a.full_name);
-
  $('athleteForm').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
 async function saveAthlete(e){
  e.preventDefault();
-
  try{
-  const id=$('athleteId').value;
-  const full=$('athleteFullName').value.trim().replace(/\s+/g,' ');
-
+  const id=$('athleteId').value,full=$('athleteFullName').value.trim().replace(/\s+/g,' ');
   if(!full)throw new Error('يرجى إدخال الاسم الكامل.');
-
-  if(athletes.some(a=>
-   String(a.id)!==String(id)&&
-   normalizeName(a.full_name)===normalizeName(full)
-  )){
-   throw new Error('هذا الاسم مسجل مسبقًا.');
-  }
-
+  if(athletes.some(a=>String(a.id)!==String(id)&&normalizeName(a.full_name)===normalizeName(full)))throw new Error('هذا الاسم مسجل مسبقًا.');
   const practiced=$('athletePracticed').value;
-
   const payload={
-   full_name:full,
-   date_of_birth:$('athleteDob').value||null,
+   full_name:full,date_of_birth:$('athleteDob').value||null,
    birth_place:$('athleteBirthPlace').value.trim()||null,
-   gender:$('athleteGender').value||null,
-   residence:$('athleteResidence').value.trim()||null,
+   gender:$('athleteGender').value||null,residence:$('athleteResidence').value.trim()||null,
    guardian_name:$('athleteGuardian').value.trim()||null,
    guardian_phone:$('athletePhone').value.trim()||null,
    father_name:$('athleteFather').value.trim()||null,
-   practiced_before:practiced==='true',
-   belt:$('athleteBelt').value.trim()||null,
+   practiced_before:practiced==='true',belt:$('athleteBelt').value.trim()||null,
    group_id:$('athleteGroup').value||null
   };
-
   let result;
-
-  if(id){
-   result=await client.from('athletes').update(payload).eq('id',id).select('id');
-  }else{
-   result=await client.from('athletes')
-    .insert({...payload,status:'active'}).select('id');
-  }
-
+  if(id)result=await client.from('athletes').update(payload).eq('id',id).select('id');
+  else result=await client.from('athletes').insert({...payload,status:'active'}).select('id');
   if(result.error)throw result.error;
-
-  if(!result.data||!result.data.length){
-   throw new Error('لم يتم حفظ التغيير. تحقق من صلاحيات RLS.');
-  }
-
-  const savedId=result.data[0].id;
-
-  clearAthleteForm();
-  await loadAll();
-
-  if(id){
-   msg('athleteMessage','تم تعديل بيانات الرياضي بنجاح.');
-  }else{
+  if(!result.data||!result.data.length)throw new Error('لم يتم حفظ التغيير. تحقق من صلاحيات RLS.');
+  const savedId=result.data[0].id;clearAthleteForm();await loadAll();
+  if(id)msg('athleteMessage','تم تعديل بيانات الرياضي بنجاح.');
+  else{
    const createdCode=athleteCodes.find(c=>String(c.athlete_id)===String(savedId));
-   msg('athleteMessage',createdCode
-    ?'تمت إضافة الرياضي ورمز التفعيل: '+createdCode.access_code
-    :'تمت إضافة الرياضي، لكن لم يظهر رمز التفعيل. تحقق من Trigger في Supabase.',!createdCode);
+   msg('athleteMessage',createdCode?'تمت إضافة الرياضي ورمز التفعيل: '+createdCode.access_code:'تمت إضافة الرياضي، لكن لم يظهر رمز التفعيل. تحقق من Trigger في Supabase.',!createdCode);
   }
-
- }catch(err){
-  msg('athleteMessage','تعذر الحفظ: '+err.message,true);
- }
+ }catch(err){msg('athleteMessage','تعذر الحفظ: '+err.message,true);}
 }
 
 function insuranceRecord(athleteId,season){
- return insuranceRows.find(r=>
-  String(r.athlete_id)===String(athleteId)&&
-  Number(r.insurance_year)===Number(season)
- );
+ return insuranceRows.find(r=>String(r.athlete_id)===String(athleteId)&&Number(r.insurance_year)===Number(season));
 }
-
 function renderInsurance(){
- const season=Number($('insuranceSeason').value||seasonNow());
- const q=$('insuranceSearch').value.trim().toLowerCase();
-
+ const season=Number($('insuranceSeason').value||seasonNow()),q=$('insuranceSearch').value.trim().toLowerCase();
  const paidAthletes=athletes.filter(a=>{
   const record=insuranceRecord(a.id,season);
   return record&&String(record.status).toLowerCase()==='paid';
  });
-
- const list=paidAthletes.filter(a=>{
-  const text=[a.full_name,a.guardian_name,a.birth_place]
-   .join(' ').toLowerCase();
-  return !q||text.includes(q);
- });
-
- const paidCount=paidAthletes.length;
- const dueCount=Math.max(0,athletes.length-paidCount);
- const paidAmount=paidCount*INSURANCE_FEE;
- const dueAmount=dueCount*INSURANCE_FEE;
- const total=athletes.length*INSURANCE_FEE;
+ const list=paidAthletes.filter(a=>[a.full_name,a.guardian_name,a.birth_place].join(' ').toLowerCase().includes(q));
+ const paidCount=paidAthletes.length,dueCount=Math.max(0,athletes.length-paidCount);
+ const paidAmount=paidCount*INSURANCE_FEE,dueAmount=dueCount*INSURANCE_FEE,total=athletes.length*INSURANCE_FEE;
  const percent=total?Math.round(paidAmount/total*100):0;
-
  $('insuranceAnalysis').innerHTML=`
- <div class="analysis-card">
-  <span>التأمينات المدفوعة</span>
-  <strong>${money(paidAmount)}</strong>
-  <small>${paidCount} رياضي</small>
- </div>
- <div class="analysis-card">
-  <span>التأمينات المستحقة</span>
-  <strong>${money(dueAmount)}</strong>
-  <small>${dueCount} رياضي</small>
- </div>
- <div class="analysis-card">
-  <span>إجمالي التأمينات</span>
-  <strong>${money(total)}</strong>
-  <small>${athletes.length} رياضي</small>
- </div>
- <div class="analysis-card">
-  <span>نسبة التحصيل</span>
-  <strong>${percent}%</strong>
-  <small>من إجمالي المستحقات</small>
- </div>`;
-
- $('insuranceTable').innerHTML=table(
-  ['الاسم','اللقب','تاريخ ومكان الازدياد','اسم الولي','الإجراء'],
-  list.map(a=>{
-   const parts=String(a.full_name||'').trim().split(/\s+/);
-   const firstName=parts.shift()||'—';
-   const lastName=parts.join(' ')||'—';
-
-   const birthInfo=[
-    a.date_of_birth||'',
-    a.birth_place||''
-   ].filter(Boolean).join(' - ')||'—';
-
-   return `
-   <tr>
-    <td>${esc(firstName)}</td>
-    <td>${esc(lastName)}</td>
-    <td>${esc(birthInfo)}</td>
-    <td>${esc(a.guardian_name||'—')}</td>
-    <td>
-     <button class="smallbtn" data-insurance-edit="${esc(a.id)}">
-      تعديل المعلومات
-     </button>
-    </td>
-   </tr>`;
-  })
- );
+ <div class="analysis-card"><span>التأمينات المدفوعة</span><strong>${money(paidAmount)}</strong><small>${paidCount} رياضي</small></div>
+ <div class="analysis-card"><span>التأمينات المستحقة</span><strong>${money(dueAmount)}</strong><small>${dueCount} رياضي</small></div>
+ <div class="analysis-card"><span>إجمالي التأمينات</span><strong>${money(total)}</strong><small>${athletes.length} رياضي</small></div>
+ <div class="analysis-card"><span>نسبة التحصيل</span><strong>${percent}%</strong><small>من إجمالي المستحقات</small></div>`;
+ $('insuranceTable').innerHTML=table(['الاسم','اللقب','تاريخ ومكان الازدياد','اسم الولي','الإجراء'],
+ list.map(a=>{
+  const parts=String(a.full_name||'').trim().split(/\s+/),firstName=parts.shift()||'—',lastName=parts.join(' ')||'—';
+  const birthInfo=[a.date_of_birth||'',a.birth_place||''].filter(Boolean).join(' - ')||'—';
+  return `<tr><td>${esc(firstName)}</td><td>${esc(lastName)}</td><td>${esc(birthInfo)}</td><td>${esc(a.guardian_name||'—')}</td><td><button class="smallbtn" data-insurance-edit="${esc(a.id)}">تعديل المعلومات</button></td></tr>`;
+ }));
 }
-
 function openInsuranceEditModal(id){
- const a=athletes.find(x=>String(x.id)===String(id));
-
- if(!a){
-  throw new Error('لم يتم العثور على الرياضي.');
- }
-
- const parts=String(a.full_name||'').trim().split(/\s+/);
- const firstName=parts.shift()||'';
- const lastName=parts.join(' ')||'';
-
- $('insuranceEditAthleteId').value=a.id;
- $('insuranceEditFirstName').value=firstName;
- $('insuranceEditLastName').value=lastName;
- $('insuranceEditDob').value=a.date_of_birth||'';
- $('insuranceEditBirthPlace').value=a.birth_place||'';
- $('insuranceEditGuardian').value=a.guardian_name||'';
-
- msg('insuranceEditMessage','');
- $('insuranceEditModal').classList.remove('hidden');
-
- setTimeout(()=>{
-  $('insuranceEditFirstName').focus();
- },100);
+ const a=athletes.find(x=>String(x.id)===String(id));if(!a)throw new Error('لم يتم العثور على الرياضي.');
+ const parts=String(a.full_name||'').trim().split(/\s+/),firstName=parts.shift()||'',lastName=parts.join(' ')||'';
+ $('insuranceEditAthleteId').value=a.id;$('insuranceEditFirstName').value=firstName;
+ $('insuranceEditLastName').value=lastName;$('insuranceEditDob').value=a.date_of_birth||'';
+ $('insuranceEditBirthPlace').value=a.birth_place||'';$('insuranceEditGuardian').value=a.guardian_name||'';
+ msg('insuranceEditMessage','');$('insuranceEditModal').classList.remove('hidden');
+ setTimeout(()=>$('insuranceEditFirstName').focus(),100);
 }
-
 function closeInsuranceEditModal(){
- $('insuranceEditModal').classList.add('hidden');
- $('insuranceEditForm').reset();
- $('insuranceEditAthleteId').value='';
- msg('insuranceEditMessage','');
+ $('insuranceEditModal').classList.add('hidden');$('insuranceEditForm').reset();
+ $('insuranceEditAthleteId').value='';msg('insuranceEditMessage','');
 }
-
 async function saveInsuranceAthleteEdit(e){
- e.preventDefault();
-
- const saveButton=$('insuranceEditSave');
- saveButton.disabled=true;
- saveButton.textContent='جارٍ الحفظ...';
-
+ e.preventDefault();const saveButton=$('insuranceEditSave');saveButton.disabled=true;saveButton.textContent='جارٍ الحفظ...';
  try{
   const id=$('insuranceEditAthleteId').value;
-
   const firstName=$('insuranceEditFirstName').value.trim().replace(/\s+/g,' ');
   const lastName=$('insuranceEditLastName').value.trim().replace(/\s+/g,' ');
-
-  const dob=$('insuranceEditDob').value;
-  const birthPlace=$('insuranceEditBirthPlace').value.trim();
-  const guardian=$('insuranceEditGuardian').value.trim();
-
+  const dob=$('insuranceEditDob').value,birthPlace=$('insuranceEditBirthPlace').value.trim(),guardian=$('insuranceEditGuardian').value.trim();
   if(!id)throw new Error('معرّف الرياضي غير موجود.');
   if(!firstName)throw new Error('يرجى إدخال الاسم.');
   if(!lastName)throw new Error('يرجى إدخال اللقب.');
-
   if(dob){
    const date=new Date(dob+'T00:00:00');
-   if(Number.isNaN(date.getTime())||date.toISOString().slice(0,10)!==dob){
-    throw new Error('تاريخ الميلاد غير صحيح.');
-   }
-   if(date>new Date()){
-    throw new Error('تاريخ الميلاد لا يمكن أن يكون في المستقبل.');
-   }
+   if(Number.isNaN(date.getTime())||date.toISOString().slice(0,10)!==dob)throw new Error('تاريخ الميلاد غير صحيح.');
+   if(date>new Date())throw new Error('تاريخ الميلاد لا يمكن أن يكون في المستقبل.');
   }
-
   const fullName=`${firstName} ${lastName}`.trim();
-
-  const duplicate=athletes.some(a=>
-   String(a.id)!==String(id)&&
-   normalizeName(a.full_name)===normalizeName(fullName)
-  );
-
-  if(duplicate){
-   throw new Error('يوجد رياضي آخر مسجل بالاسم واللقب نفسيهما.');
-  }
-
-  const {data,error}=await client.from('athletes')
-   .update({
-    full_name:fullName,
-    date_of_birth:dob||null,
-    birth_place:birthPlace||null,
-    guardian_name:guardian||null
-   })
-   .eq('id',id)
-   .select('id');
-
-  if(error)throw error;
-
-  if(!data||!data.length){
-   throw new Error('لم يتم حفظ التعديلات. تحقق من صلاحيات RLS.');
-  }
-
-  closeInsuranceEditModal();
-  await loadAll();
-
-  globalMsg('تم تعديل الاسم واللقب وتاريخ ومكان الميلاد واسم الولي بنجاح. لم يتم تغيير سجل التأمين.');
-
- }catch(err){
-  msg('insuranceEditMessage','تعذر حفظ التعديلات: '+err.message,true);
- }finally{
-  saveButton.disabled=false;
-  saveButton.textContent='حفظ التعديلات';
- }
+  if(athletes.some(a=>String(a.id)!==String(id)&&normalizeName(a.full_name)===normalizeName(fullName)))throw new Error('يوجد رياضي آخر مسجل بالاسم واللقب نفسيهما.');
+  const {data,error}=await client.from('athletes').update({
+   full_name:fullName,date_of_birth:dob||null,birth_place:birthPlace||null,guardian_name:guardian||null
+  }).eq('id',id).select('id');
+  if(error)throw error;if(!data||!data.length)throw new Error('لم يتم حفظ التعديلات. تحقق من صلاحيات RLS.');
+  closeInsuranceEditModal();await loadAll();globalMsg('تم تعديل معلومات الرياضي دون تغيير سجل التأمين.');
+ }catch(err){msg('insuranceEditMessage','تعذر حفظ التعديلات: '+err.message,true);}
+ finally{saveButton.disabled=false;saveButton.textContent='حفظ التعديلات';}
 }
 
 function findSubscription(athleteId,season,month){
- const year=seasonMonthYear(season,month);
- const date=`${year}-${String(month).padStart(2,'0')}-01`;
-
- return subscriptionRows.find(x=>
-  String(x.athlete_id)===String(athleteId)&&
-  String(x.subscription_month||'').slice(0,10)===date&&
-  Number(x.season_year)===Number(season)
- );
+ const year=seasonMonthYear(season,month),date=`${year}-${String(month).padStart(2,'0')}-01`;
+ return subscriptionRows.find(x=>String(x.athlete_id)===String(athleteId)&&String(x.subscription_month||'').slice(0,10)===date&&Number(x.season_year)===Number(season));
 }
-
 function renderSubscriptions(){
- const season=Number($('subscriptionSeason').value||seasonNow());
- const q=$('subscriptionSearch').value.trim().toLowerCase();
-
+ const season=Number($('subscriptionSeason').value||seasonNow()),q=$('subscriptionSearch').value.trim().toLowerCase();
  const list=athletes.filter(a=>athleteName(a).toLowerCase().includes(q));
-
- let paidTotal=0;
- let dueTotal=0;
-
+ let paidTotal=0,dueTotal=0;
  const headers=['الرياضي',...MONTHS.map(m=>m.s),'التأمين','الامتحان الأول','الامتحان الثاني'];
-
  const rows=list.map(a=>{
   const monthCells=MONTHS.map(m=>{
-   const r=findSubscription(a.id,season,m.n);
-   const paid=r?.paid===true;
-
-   if(paid)paidTotal+=Number(r.amount||MONTHLY_FEE);
-   else dueTotal+=Number(r?.amount||MONTHLY_FEE);
-
-   return `
-   <td class="monthcell">
-    ${r
-     ?`
-      <button class="monthbtn ${paid?'success':'danger'}"
-       data-sub-toggle="${esc(r.id)}" data-paid="${paid}">
-       ${paid?'مدفوع':'غير مدفوع'}
-      </button>`
-     :`
-      <button class="monthbtn secondary"
-       data-sub-create="${esc(a.id)}"
-       data-month="${m.n}"
-       data-year="${seasonMonthYear(season,m.n)}"
-       data-season="${season}">
-       غير مسجل
-      </button>`}
-   </td>`;
+   const r=findSubscription(a.id,season,m.n),paid=r?.paid===true;
+   if(paid)paidTotal+=Number(r.amount||MONTHLY_FEE);else dueTotal+=Number(r?.amount||MONTHLY_FEE);
+   return `<td class="monthcell">${r
+    ?`<button class="monthbtn ${paid?'success':'danger'}" data-sub-toggle="${esc(r.id)}" data-paid="${paid}">${paid?'مدفوع':'غير مدفوع'}</button>`
+    :`<button class="monthbtn secondary" data-sub-create="${esc(a.id)}" data-month="${m.n}" data-year="${seasonMonthYear(season,m.n)}" data-season="${season}">غير مسجل</button>`}</td>`;
   }).join('');
-
-  const ins=insuranceRecord(a.id,season);
-  const insurancePaid=String(ins?.status||'').toLowerCase()==='paid';
-
-  const insCell=`
-   <td class="monthcell">
-    <button class="monthbtn ${insurancePaid?'success':'danger'}"
-     data-insurance-toggle="${esc(a.id)}" data-season="${season}">
-     ${insurancePaid?'مدفوع':'غير مدفوع'}
-    </button>
-   </td>`;
-
+  const ins=insuranceRecord(a.id,season),insurancePaid=String(ins?.status||'').toLowerCase()==='paid';
+  const insCell=`<td class="monthcell"><button class="monthbtn ${insurancePaid?'success':'danger'}" data-insurance-toggle="${esc(a.id)}" data-season="${season}">${insurancePaid?'مدفوع':'غير مدفوع'}</button></td>`;
   const examCells=[1,2].map(n=>{
-   const r=examFeeRows.find(x=>
-    String(x.athlete_id)===String(a.id)&&
-    Number(x.season_year)===season&&
-    Number(x.exam_number)===n
-   );
-
-   const paid=r?.paid===true;
-
-   return `
-   <td class="monthcell">
-    ${r
-     ?`
-      <button class="monthbtn ${paid?'success':'danger'}"
-       data-examfee-toggle="${esc(r.id)}" data-paid="${paid}">
-       ${paid?'مدفوع':'غير مدفوع'}
-      </button>`
-     :`
-      <button class="monthbtn secondary"
-       data-examfee-create="${esc(a.id)}"
-       data-number="${n}" data-season="${season}">
-       غير مسجل
-      </button>`}
-   </td>`;
+   const r=examFeeRows.find(x=>String(x.athlete_id)===String(a.id)&&Number(x.season_year)===season&&Number(x.exam_number)===n),paid=r?.paid===true;
+   return `<td class="monthcell">${r
+    ?`<button class="monthbtn ${paid?'success':'danger'}" data-examfee-toggle="${esc(r.id)}" data-paid="${paid}">${paid?'مدفوع':'غير مدفوع'}</button>`
+    :`<button class="monthbtn secondary" data-examfee-create="${esc(a.id)}" data-number="${n}" data-season="${season}">غير مسجل</button>`}</td>`;
   }).join('');
-
   return `<tr><td>${esc(athleteName(a))}</td>${monthCells}${insCell}${examCells}</tr>`;
  });
-
- $('subscriptionsTable').innerHTML=list.length
-  ?`<table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>`
-  :'<div class="empty">لا يوجد رياضيون مطابقون.</div>';
-
- $('subscriptionSummary').textContent=
-  `الموسم ${seasonLabel(season)} · الاشتراكات الشهرية المدفوعة: ${money(paidTotal)} · غير المدفوعة أو غير المسجلة: ${money(dueTotal)}.`;
+ $('subscriptionsTable').innerHTML=list.length?`<table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>`:'<div class="empty">لا يوجد رياضيون مطابقون.</div>';
+ $('subscriptionSummary').textContent=`الموسم ${seasonLabel(season)} · الاشتراكات الشهرية المدفوعة: ${money(paidTotal)} · غير المدفوعة أو غير المسجلة: ${money(dueTotal)}.`;
 }
-
 function exportSubscriptionsExcel(){
- if(!window.XLSX){
-  globalMsg('تعذر تحميل أداة Excel. تحقق من اتصال الإنترنت.',true);
-  return;
- }
-
- const season=Number($('subscriptionSeason').value||seasonNow());
- const q=$('subscriptionSearch').value.trim().toLowerCase();
-
+ if(!window.XLSX){globalMsg('تعذر تحميل أداة Excel. تحقق من اتصال الإنترنت.',true);return;}
+ const season=Number($('subscriptionSeason').value||seasonNow()),q=$('subscriptionSearch').value.trim().toLowerCase();
  const list=athletes.filter(a=>athleteName(a).toLowerCase().includes(q));
-
  const data=list.map(a=>{
-  const row={
-   'الاسم الكامل':a.full_name||'',
-   'تاريخ الميلاد':a.date_of_birth||'',
-   'مكان الميلاد':a.birth_place||'',
-   'الجنس':a.gender||'',
-   'الإقامة':a.residence||'',
-   'اسم الولي':a.guardian_name||'',
-   'هاتف الولي':a.guardian_phone||'',
-   'اسم الأب':a.father_name||'',
-   'الحزام':a.belt||'',
-   'المجموعة':groups.find(g=>String(g.id)===String(a.group_id))?.name||'بدون مجموعة',
-   'الموسم':seasonLabel(season)
-  };
-
-  MONTHS.forEach(m=>{
-   const r=findSubscription(a.id,season,m.n);
-   row[`${m.s} - الحالة`]=r?(r.paid===true?'مدفوع':'غير مدفوع'):'غير مسجل';
-   row[`${m.s} - المبلغ (دج)`]=r?Number(r.amount||MONTHLY_FEE):MONTHLY_FEE;
-  });
-
+  const row={'الاسم الكامل':a.full_name||'','تاريخ الميلاد':a.date_of_birth||'','مكان الميلاد':a.birth_place||'','الجنس':a.gender||'','الإقامة':a.residence||'','اسم الولي':a.guardian_name||'','هاتف الولي':a.guardian_phone||'','اسم الأب':a.father_name||'','الحزام':a.belt||'','المجموعة':groups.find(g=>String(g.id)===String(a.group_id))?.name||'بدون مجموعة','الموسم':seasonLabel(season)};
+  MONTHS.forEach(m=>{const r=findSubscription(a.id,season,m.n);row[`${m.s} - الحالة`]=r?(r.paid===true?'مدفوع':'غير مدفوع'):'غير مسجل';row[`${m.s} - المبلغ (دج)`]=r?Number(r.amount||MONTHLY_FEE):MONTHLY_FEE;});
   return row;
  });
-
- const ws=XLSX.utils.json_to_sheet(data);
- ws['!cols']=Object.keys(data[0]||{}).map(k=>({wch:Math.max(16,k.length+5)}));
-
- const wb=XLSX.utils.book_new();
- XLSX.utils.book_append_sheet(wb,ws,'الاشتراكات');
-
+ const ws=XLSX.utils.json_to_sheet(data);ws['!cols']=Object.keys(data[0]||{}).map(k=>({wch:Math.max(16,k.length+5)}));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'الاشتراكات');
  XLSX.writeFile(wb,`AST_Subscriptions_${seasonLabel(season).replace('/','-')}.xlsx`);
 }
-
 function exportInsuranceExcel(){
- if(!window.XLSX){
-  globalMsg('تعذر تحميل أداة Excel. تحقق من اتصال الإنترنت.',true);
-  return;
- }
-
- const season=Number($('insuranceSeason').value||seasonNow());
- const q=$('insuranceSearch').value.trim().toLowerCase();
-
- const paidAthletes=athletes.filter(a=>{
-  const r=insuranceRecord(a.id,season);
-  return r&&String(r.status).toLowerCase()==='paid';
- });
-
- const filtered=paidAthletes.filter(a=>{
-  const text=[a.full_name,a.guardian_name,a.birth_place].join(' ').toLowerCase();
-  return !q||text.includes(q);
- });
-
+ if(!window.XLSX){globalMsg('تعذر تحميل أداة Excel. تحقق من اتصال الإنترنت.',true);return;}
+ const season=Number($('insuranceSeason').value||seasonNow()),q=$('insuranceSearch').value.trim().toLowerCase();
+ const paidAthletes=athletes.filter(a=>{const r=insuranceRecord(a.id,season);return r&&String(r.status).toLowerCase()==='paid';});
+ const filtered=paidAthletes.filter(a=>[a.full_name,a.guardian_name,a.birth_place].join(' ').toLowerCase().includes(q));
  const data=filtered.map(a=>{
-  const parts=String(a.full_name||'').trim().split(/\s+/);
-  const firstName=parts.shift()||'';
-  const lastName=parts.join(' ')||'';
-
-  const birthInfo=[
-   a.date_of_birth||'',
-   a.birth_place||''
-  ].filter(Boolean).join(' - ');
-
-  return {
-   'الاسم':firstName,
-   'اللقب':lastName,
-   'تاريخ ومكان الازدياد':birthInfo,
-   'اسم الولي':a.guardian_name||''
-  };
+  const parts=String(a.full_name||'').trim().split(/\s+/),firstName=parts.shift()||'',lastName=parts.join(' ')||'';
+  const birthInfo=[a.date_of_birth||'',a.birth_place||''].filter(Boolean).join(' - ');
+  return {'الاسم':firstName,'اللقب':lastName,'تاريخ ومكان الازدياد':birthInfo,'اسم الولي':a.guardian_name||''};
  });
-
- const ws=XLSX.utils.json_to_sheet(data,{
-  header:['الاسم','اللقب','تاريخ ومكان الازدياد','اسم الولي']
- });
-
- ws['!cols']=[
-  {wch:20},{wch:24},{wch:30},{wch:25}
- ];
-
- const wb=XLSX.utils.book_new();
- XLSX.utils.book_append_sheet(wb,ws,'التأمين');
-
+ const ws=XLSX.utils.json_to_sheet(data,{header:['الاسم','اللقب','تاريخ ومكان الازدياد','اسم الولي']});
+ ws['!cols']=[{wch:20},{wch:24},{wch:30},{wch:25}];
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'التأمين');
  XLSX.writeFile(wb,`AST_Insurance_${seasonLabel(season).replace('/','-')}.xlsx`);
 }
 
 function renderExams(){
- const season=Number($('examSeason').value||seasonNow());
- const rows=examRows.filter(r=>seasonFromDate(r.exam_date)===season);
-
- $('examSummary').textContent=
-  `الموسم ${seasonLabel(season)} · عدد نتائج الاختبارات: ${rows.length}`;
-
- $('examsTable').innerHTML=table(
- ['الرياضي','التاريخ','الحزام السابق','الحزام الجديد','النتيجة','ملاحظات','الإجراء'],
- rows.map(r=>`
- <tr>
- <td>${esc(athleteName(athletes.find(a=>String(a.id)===String(r.athlete_id))||{}))}</td>
- <td>${esc(r.exam_date||'—')}</td>
- <td>${esc(r.belt_before||'—')}</td>
- <td>${esc(r.belt_after||'—')}</td>
- <td>${esc(r.result||'—')}</td>
- <td>${esc(r.notes||'—')}</td>
- <td><button class="smallbtn danger" data-exam-delete="${esc(r.id)}">حذف</button></td>
- </tr>
- `)
- );
+ const season=Number($('examSeason').value||seasonNow()),rows=examRows.filter(r=>seasonFromDate(r.exam_date)===season);
+ $('examSummary').textContent=`الموسم ${seasonLabel(season)} · عدد نتائج الاختبارات: ${rows.length}`;
+ $('examsTable').innerHTML=table(['الرياضي','التاريخ','الحزام السابق','الحزام الجديد','النتيجة','ملاحظات','الإجراء'],
+ rows.map(r=>`<tr><td>${esc(athleteName(athletes.find(a=>String(a.id)===String(r.athlete_id))||{}))}</td>
+ <td>${esc(r.exam_date||'—')}</td><td>${esc(r.belt_before||'—')}</td><td>${esc(r.belt_after||'—')}</td>
+ <td>${esc(r.result||'—')}</td><td>${esc(r.notes||'—')}</td><td><button class="smallbtn danger" data-exam-delete="${esc(r.id)}">حذف</button></td></tr>`));
 }
-
 function renderGroups(){
- $('groupsTable').innerHTML=table(
- ['اسم المجموعة','أصغر عمر','أكبر عمر','عدد الرياضيين','التفاصيل'],
- groups.map(g=>`
- <tr>
- <td>${esc(g.name||'—')}</td>
- <td>${esc(g.min_age??'—')}</td>
- <td>${esc(g.max_age??'—')}</td>
+ $('groupsTable').innerHTML=table(['اسم المجموعة','أصغر عمر','أكبر عمر','عدد الرياضيين','التفاصيل'],
+ groups.map(g=>`<tr><td>${esc(g.name||'—')}</td><td>${esc(g.min_age??'—')}</td><td>${esc(g.max_age??'—')}</td>
  <td>${athletes.filter(a=>String(a.group_id)===String(g.id)).length}</td>
- <td><button class="smallbtn secondary" data-group-view="${esc(g.id)}">عرض الرياضيين</button></td>
- </tr>
- `)
- );
+ <td><button class="smallbtn secondary" data-group-view="${esc(g.id)}">عرض الرياضيين</button></td></tr>`));
 }
-
 function showGroupAthletes(id){
- const g=groups.find(x=>String(x.id)===String(id));
- const list=athletes.filter(a=>String(a.group_id)===String(id));
- const old=$('groupDetails');
- if(old)old.remove();
-
- const box=document.createElement('div');
- box.id='groupDetails';
- box.className='panel';
-
- box.innerHTML=
-  `<h3>${esc(g?.name||'المجموعة')}</h3>`+
-  table(
-   ['الاسم الكامل','تاريخ الميلاد','العمر'],
-   list.map(a=>`
-    <tr>
-     <td>${esc(athleteName(a))}</td>
-     <td>${esc(a.date_of_birth||'—')}</td>
-     <td>${esc(ageFromDob(a.date_of_birth))}</td>
-    </tr>
-   `)
-  );
-
+ const g=groups.find(x=>String(x.id)===String(id)),list=athletes.filter(a=>String(a.group_id)===String(id));
+ const old=$('groupDetails');if(old)old.remove();
+ const box=document.createElement('div');box.id='groupDetails';box.className='panel';
+ box.innerHTML=`<h3>${esc(g?.name||'المجموعة')}</h3>`+table(['الاسم الكامل','تاريخ الميلاد','العمر'],list.map(a=>`<tr><td>${esc(athleteName(a))}</td><td>${esc(a.date_of_birth||'—')}</td><td>${esc(ageFromDob(a.date_of_birth))}</td></tr>`));
  $('groupsTable').after(box);
 }
-
 async function deleteAndVerify(tableName,id){
  const {data,error}=await client.from(tableName).delete().eq('id',id).select('id');
- if(error)throw error;
- if(!data||data.length!==1){
-  throw new Error('لم يؤكد Supabase حذف السجل. تحقق من سياسة DELETE في RLS.');
- }
+ if(error)throw error;if(!data||data.length!==1)throw new Error('لم يؤكد Supabase حذف السجل. تحقق من سياسة DELETE في RLS.');
 }
-
 async function acceptRegistration(id){
- const r=registrations.find(x=>String(x.id)===String(id));
- if(!r)throw new Error('لم يتم العثور على طلب التسجيل.');
-
- const full=String(r.full_name||'').trim().replace(/\s+/g,' ');
- if(!full)throw new Error('اسم الرياضي غير موجود.');
-
- if(athletes.some(a=>normalizeName(a.full_name)===normalizeName(full))){
-  throw new Error('هذا الاسم موجود مسبقًا في قائمة الرياضيين. لم تتم إضافة سجل مكرر.');
- }
-
- const payload={
-  full_name:full,
-  date_of_birth:r.date_of_birth||null,
-  birth_place:r.birth_place||null,
-  gender:r.gender||null,
-  guardian_name:r.guardian_name||r.father_name||null,
-  guardian_phone:r.guardian_phone||null,
-  father_name:r.father_name||null,
-  belt:r.belt||null,
-  status:'active',
-  practiced_before:r.practiced_before===true,
-  residence:r.residence||null,
-  group_id:r.requested_group_id||null
- };
-
- const {data:newAthlete,error:ae}=await client.from('athletes')
-  .insert(payload).select('id').single();
-
+ const r=registrations.find(x=>String(x.id)===String(id));if(!r)throw new Error('لم يتم العثور على طلب التسجيل.');
+ const full=String(r.full_name||'').trim().replace(/\s+/g,' ');if(!full)throw new Error('اسم الرياضي غير موجود.');
+ if(athletes.some(a=>normalizeName(a.full_name)===normalizeName(full)))throw new Error('هذا الاسم موجود مسبقًا في قائمة الرياضيين. لم تتم إضافة سجل مكرر.');
+ const payload={full_name:full,date_of_birth:r.date_of_birth||null,birth_place:r.birth_place||null,gender:r.gender||null,guardian_name:r.guardian_name||r.father_name||null,guardian_phone:r.guardian_phone||null,father_name:r.father_name||null,belt:r.belt||null,status:'active',practiced_before:r.practiced_before===true,residence:r.residence||null,group_id:r.requested_group_id||null};
+ const {data:newAthlete,error:ae}=await client.from('athletes').insert(payload).select('id').single();
  if(ae)throw new Error('تعذر إنشاء الرياضي: '+ae.message);
-
  const season=seasonNow();
-
- const monthlyRows=MONTHS.map(m=>({
-  athlete_id:newAthlete.id,
-  subscription_month:`${seasonMonthYear(season,m.n)}-${String(m.n).padStart(2,'0')}-01`,
-  season_year:season,
-  amount:MONTHLY_FEE,
-  paid:false
- }));
-
+ const monthlyRows=MONTHS.map(m=>({athlete_id:newAthlete.id,subscription_month:`${seasonMonthYear(season,m.n)}-${String(m.n).padStart(2,'0')}-01`,season_year:season,amount:MONTHLY_FEE,paid:false}));
  const {error:se}=await client.from('subscriptions').insert(monthlyRows);
-
- if(se){
-  throw new Error('تم إنشاء الرياضي، لكن تعذر إنشاء اشتراكاته. راجع سجل الرياضي قبل إعادة القبول. السبب: '+se.message);
- }
-
- await deleteAndVerify('registrations',id);
- await loadAll();
-
+ if(se)throw new Error('تم إنشاء الرياضي، لكن تعذر إنشاء اشتراكاته. راجع سجل الرياضي قبل إعادة القبول. السبب: '+se.message);
+ await deleteAndVerify('registrations',id);await loadAll();
  const createdCode=athleteCodes.find(c=>String(c.athlete_id)===String(newAthlete.id));
-
- globalMsg(createdCode
-  ?'تم قبول الطلب وإنشاء الرياضي واشتراكاته ورمز التفعيل: '+createdCode.access_code
-  :'تم قبول الطلب وإنشاء الرياضي واشتراكاته، لكن لم يظهر رمز التفعيل. تحقق من Trigger في Supabase.',
-  !createdCode
- );
+ globalMsg(createdCode?'تم قبول الطلب وإنشاء الرياضي واشتراكاته ورمز التفعيل: '+createdCode.access_code:'تم قبول الطلب وإنشاء الرياضي واشتراكاته، لكن لم يظهر رمز التفعيل. تحقق من Trigger في Supabase.',!createdCode);
 }
-
 async function toggleInsurance(athleteId,season){
- assertSeasonEditable(season);
-
- const row=insuranceRecord(athleteId,season);
-
+ assertSeasonEditable(season);const row=insuranceRecord(athleteId,season);
  if(row){
   const next=String(row.status).toLowerCase()==='paid'?'unpaid':'paid';
-
-  const {data,error}=await client.from('insurance')
-   .update({status:next,amount:INSURANCE_FEE})
-   .eq('id',row.id).select('id');
-
-  if(error)throw error;
-  if(!data?.length)throw new Error('لم يتم تحديث التأمين. تحقق من RLS.');
-
+  const {data,error}=await client.from('insurance').update({status:next,amount:INSURANCE_FEE}).eq('id',row.id).select('id');
+  if(error)throw error;if(!data?.length)throw new Error('لم يتم تحديث التأمين. تحقق من RLS.');
  }else{
-  const {data,error}=await client.from('insurance')
-   .insert({
-    athlete_id:athleteId,
-    insurance_year:season,
-    status:'paid',
-    amount:INSURANCE_FEE
-   }).select('id');
-
-  if(error)throw error;
-  if(!data?.length)throw new Error('لم يتم إنشاء سجل التأمين.');
+  const {data,error}=await client.from('insurance').insert({athlete_id:athleteId,insurance_year:season,status:'paid',amount:INSURANCE_FEE}).select('id');
+  if(error)throw error;if(!data?.length)throw new Error('لم يتم إنشاء سجل التأمين.');
  }
-
  await loadAll();
 }
-
 async function toggleExamFee(id,paid){
- const row=examFeeRows.find(x=>String(x.id)===String(id));
- if(!row)throw new Error('لم يتم العثور على سجل دفع الامتحان.');
-
- assertSeasonEditable(row.season_year);
-
- const next=!paid;
-
- const {data,error}=await client.from('exam_fees').update({
-  paid:next,
-  paid_at:next?new Date().toISOString():null,
-  updated_at:new Date().toISOString()
- }).eq('id',id).select('id');
-
- if(error)throw error;
- if(!data?.length)throw new Error('لم يتم تحديث دفع الامتحان. تحقق من RLS.');
-
+ const row=examFeeRows.find(x=>String(x.id)===String(id));if(!row)throw new Error('لم يتم العثور على سجل دفع الامتحان.');
+ assertSeasonEditable(row.season_year);const next=!paid;
+ const {data,error}=await client.from('exam_fees').update({paid:next,paid_at:next?new Date().toISOString():null,updated_at:new Date().toISOString()}).eq('id',id).select('id');
+ if(error)throw error;if(!data?.length)throw new Error('لم يتم تحديث دفع الامتحان. تحقق من RLS.');
  await loadAll();
 }
-
 async function createExamFee(athleteId,number,season){
  assertSeasonEditable(season);
-
- const existing=examFeeRows.find(x=>
-  String(x.athlete_id)===String(athleteId)&&
-  Number(x.season_year)===Number(season)&&
-  Number(x.exam_number)===Number(number)
- );
-
+ const existing=examFeeRows.find(x=>String(x.athlete_id)===String(athleteId)&&Number(x.season_year)===Number(season)&&Number(x.exam_number)===Number(number));
  if(existing)throw new Error('يوجد سجل لهذا الامتحان بالفعل.');
-
- const {data,error}=await client.from('exam_fees').insert({
-  athlete_id:athleteId,
-  season_year:season,
-  exam_number:number,
-  amount:0,
-  paid:true,
-  paid_at:new Date().toISOString(),
-  updated_at:new Date().toISOString()
- }).select('id');
-
- if(error)throw error;
- if(!data?.length)throw new Error('تعذر تسجيل الدفع.');
-
+ const {data,error}=await client.from('exam_fees').insert({athlete_id:athleteId,season_year:season,exam_number:number,amount:0,paid:true,paid_at:new Date().toISOString(),updated_at:new Date().toISOString()}).select('id');
+ if(error)throw error;if(!data?.length)throw new Error('تعذر تسجيل الدفع.');
  await loadAll();
 }
-
 async function regenerateAthleteCode(athleteId){
- const {data,error}=await client.rpc(
-  'admin_regenerate_athlete_access_code',
-  {p_athlete_id:Number(athleteId)}
- );
-
- if(error)throw error;
- if(!data)throw new Error('لم يرجع Supabase رمزًا جديدًا.');
-
- return data;
+ const {data,error}=await client.rpc('admin_regenerate_athlete_access_code',{p_athlete_id:Number(athleteId)});
+ if(error)throw error;if(!data)throw new Error('لم يرجع Supabase رمزًا جديدًا.');return data;
 }
-
 async function copyCode(code){
- try{
-  await navigator.clipboard.writeText(code);
-  globalMsg('تم نسخ رمز التفعيل بنجاح.');
- }catch(e){
-  const field=document.createElement('textarea');
-  field.value=code;
-  document.body.appendChild(field);
-  field.select();
-  const ok=document.execCommand('copy');
-  field.remove();
-
+ try{await navigator.clipboard.writeText(code);globalMsg('تم نسخ رمز التفعيل بنجاح.');}
+ catch(e){
+  const field=document.createElement('textarea');field.value=code;document.body.appendChild(field);field.select();
+  const ok=document.execCommand('copy');field.remove();
   if(!ok)throw new Error('تعذر نسخ الرمز. حدده وانسخه يدويًا.');
   globalMsg('تم نسخ رمز التفعيل بنجاح.');
  }
 }
 
+/* -------------------------
+   أحداث أزرار لوحة الإدارة
+------------------------- */
 async function onClick(e){
- const b=e.target.closest('button');
- if(!b)return;
-
+ const b=e.target.closest('button');if(!b)return;
  try{
-
-  if(b.dataset.kimonoEdit){
-   editKimono(b.dataset.kimonoEdit);
-
-  }else if(b.dataset.kimonoDelete){
-   await deleteKimonoSale(b.dataset.kimonoDelete);
-
-  }else if(b.dataset.regAccept){
+  if(b.dataset.kimonoEdit)editKimono(b.dataset.kimonoEdit);
+  else if(b.dataset.kimonoDelete)await deleteKimonoSale(b.dataset.kimonoDelete);
+  else if(b.dataset.stockRestock)await stockRestock(b.dataset.stockRestock);
+  else if(b.dataset.stockAdjust)await stockAdjust(b.dataset.stockAdjust);
+  else if(b.dataset.regAccept){
    if(!confirm('قبول الطلب وإضافة الرياضي وإنشاء اشتراكاته الشهرية ورمز تفعيله؟'))return;
    await acceptRegistration(b.dataset.regAccept);
-
   }else if(b.dataset.regReject){
    if(!confirm('رفض الطلب وحذفه نهائيًا؟'))return;
-   await deleteAndVerify('registrations',b.dataset.regReject);
-   await loadAll();
-
+   await deleteAndVerify('registrations',b.dataset.regReject);await loadAll();
   }else if(b.dataset.regPending){
-   const {data,error}=await client.from('registrations')
-    .update({status:'pending'})
-    .eq('id',b.dataset.regPending).select('id');
-
-   if(error)throw error;
-   if(!data?.length)throw new Error('لم يتم تحديث الطلب.');
-   await loadAll();
-
-  }else if(b.dataset.athleteEdit){
-   editAthlete(b.dataset.athleteEdit);
-
-  }else if(b.dataset.athleteDelete){
+   const {data,error}=await client.from('registrations').update({status:'pending'}).eq('id',b.dataset.regPending).select('id');
+   if(error)throw error;if(!data?.length)throw new Error('لم يتم تحديث الطلب.');await loadAll();
+  }else if(b.dataset.athleteEdit)editAthlete(b.dataset.athleteEdit);
+  else if(b.dataset.athleteDelete){
    if(!confirm('حذف الرياضي؟ قد تمنع العلاقات المرتبطة الحذف.'))return;
-   await deleteAndVerify('athletes',b.dataset.athleteDelete);
-   await loadAll();
-
-  }else if(b.dataset.insuranceEdit){
-   openInsuranceEditModal(b.dataset.insuranceEdit);
-
-  }else if(b.dataset.insuranceToggle){
-   await toggleInsurance(
-    b.dataset.insuranceToggle,
-    Number(b.dataset.season)
-   );
-
-  }else if(b.dataset.subCreate){
-   const season=Number(b.dataset.season);
-   const month=Number(b.dataset.month);
-   const year=Number(b.dataset.year);
-
+   await deleteAndVerify('athletes',b.dataset.athleteDelete);await loadAll();
+  }else if(b.dataset.insuranceEdit)openInsuranceEditModal(b.dataset.insuranceEdit);
+  else if(b.dataset.insuranceToggle)await toggleInsurance(b.dataset.insuranceToggle,Number(b.dataset.season));
+  else if(b.dataset.subCreate){
+   const season=Number(b.dataset.season),month=Number(b.dataset.month),year=Number(b.dataset.year);
    assertSeasonEditable(season);
-
    const date=`${year}-${String(month).padStart(2,'0')}-01`;
-
-   if(findSubscription(b.dataset.subCreate,season,month)){
-    throw new Error('يوجد سجل اشتراك لهذا الشهر بالفعل.');
-   }
-
-   const {data,error}=await client.from('subscriptions').insert({
-    athlete_id:b.dataset.subCreate,
-    season_year:season,
-    subscription_month:date,
-    amount:MONTHLY_FEE,
-    paid:false
-   }).select('id');
-
-   if(error)throw error;
-   if(!data?.length)throw new Error('تعذر إنشاء الاشتراك.');
-   await loadAll();
-
+   if(findSubscription(b.dataset.subCreate,season,month))throw new Error('يوجد سجل اشتراك لهذا الشهر بالفعل.');
+   const {data,error}=await client.from('subscriptions').insert({athlete_id:b.dataset.subCreate,season_year:season,subscription_month:date,amount:MONTHLY_FEE,paid:false}).select('id');
+   if(error)throw error;if(!data?.length)throw new Error('تعذر إنشاء الاشتراك.');await loadAll();
   }else if(b.dataset.subToggle){
    const subscription=subscriptionRows.find(x=>String(x.id)===String(b.dataset.subToggle));
-
    if(!subscription)throw new Error('لم يتم العثور على سجل الاشتراك.');
-
    assertSeasonEditable(subscription.season_year);
-
    const next=b.dataset.paid!=='true';
-
-   const {data,error}=await client.from('subscriptions').update({
-    paid:next,
-    paid_at:next?new Date().toISOString():null
-   }).eq('id',b.dataset.subToggle).select('id');
-
-   if(error)throw error;
-   if(!data?.length)throw new Error('لم يتم تحديث الاشتراك. تحقق من RLS.');
-   await loadAll();
-
-  }else if(b.dataset.examfeeToggle){
-   await toggleExamFee(b.dataset.examfeeToggle,b.dataset.paid==='true');
-
-  }else if(b.dataset.examfeeCreate){
-   await createExamFee(
-    b.dataset.examfeeCreate,
-    Number(b.dataset.number),
-    Number(b.dataset.season)
-   );
-
-  }else if(b.dataset.examDelete){
+   const {data,error}=await client.from('subscriptions').update({paid:next,paid_at:next?new Date().toISOString():null}).eq('id',b.dataset.subToggle).select('id');
+   if(error)throw error;if(!data?.length)throw new Error('لم يتم تحديث الاشتراك. تحقق من RLS.');await loadAll();
+  }else if(b.dataset.examfeeToggle)await toggleExamFee(b.dataset.examfeeToggle,b.dataset.paid==='true');
+  else if(b.dataset.examfeeCreate)await createExamFee(b.dataset.examfeeCreate,Number(b.dataset.number),Number(b.dataset.season));
+  else if(b.dataset.examDelete){
    if(!confirm('حذف سجل نتيجة الاختبار؟'))return;
-   await deleteAndVerify('exams',b.dataset.examDelete);
-   await loadAll();
-
-  }else if(b.dataset.groupView){
-   showGroupAthletes(b.dataset.groupView);
-
-  }else if(b.dataset.codeCopy){
-   await copyCode(b.dataset.codeCopy);
-
-  }else if(b.dataset.codeRegenerate){
-   const id=b.dataset.codeRegenerate;
-   const athlete=athletes.find(a=>String(a.id)===String(id));
-
+   await deleteAndVerify('exams',b.dataset.examDelete);await loadAll();
+  }else if(b.dataset.groupView)showGroupAthletes(b.dataset.groupView);
+  else if(b.dataset.codeCopy)await copyCode(b.dataset.codeCopy);
+  else if(b.dataset.codeRegenerate){
+   const id=b.dataset.codeRegenerate,athlete=athletes.find(a=>String(a.id)===String(id));
    if(!athlete)throw new Error('لم يتم العثور على الرياضي.');
-
    const oldCode=athleteCodes.find(c=>String(c.athlete_id)===String(id));
-
-   const confirmation=oldCode
-    ?`هل تريد إعادة توليد رمز ${athleteName(athlete)}؟
-
-سيُلغى الرمز السابق (${oldCode.access_code}) فورًا.`
-    :`لا يوجد رمز حالي للرياضي ${athleteName(athlete)}. هل تريد إنشاء رمز تفعيل جديد؟`;
-
+   const confirmation=oldCode?`هل تريد إعادة توليد رمز ${athleteName(athlete)}؟\nسيُلغى الرمز السابق (${oldCode.access_code}) فورًا.`:`لا يوجد رمز حالي للرياضي ${athleteName(athlete)}. هل تريد إنشاء رمز تفعيل جديد؟`;
    if(!confirm(confirmation))return;
-
    b.disabled=true;
-
    try{
-    const newCode=await regenerateAthleteCode(id);
-    await loadAll();
-
-    globalMsg(
-     `تم إنشاء رمز التفعيل بنجاح: ${newCode}\nيجب تسليم الرمز الجديد إلى ولي الأمر.`
-    );
-   }finally{
-    b.disabled=false;
-   }
+    const newCode=await regenerateAthleteCode(id);await loadAll();
+    globalMsg(`تم إنشاء رمز التفعيل بنجاح: ${newCode}\nيجب تسليم الرمز الجديد إلى ولي الأمر.`);
+   }finally{b.disabled=false;}
   }
-
- }catch(err){
-  globalMsg('لم تكتمل العملية: '+err.message,true);
- }
+ }catch(err){globalMsg('لم تكتمل العملية: '+err.message,true);}
 }
 
 async function onLogin(e){
- e.preventDefault();
- msg('loginMessage','جارٍ التحقق...');
-
+ e.preventDefault();msg('loginMessage','جارٍ التحقق...');
  try{
-  const {data,error}=await client.auth.signInWithPassword({
-   email:$('email').value.trim(),
-   password:$('password').value
-  });
-
-  if(error)throw error;
-
-  await requireAdmin(data.user);
-  setLoggedIn(data.user);
-  await loadAll();
-  msg('loginMessage','');
-
- }catch(err){
-  await client.auth.signOut();
-  setLoggedIn(null);
-  msg('loginMessage',err.message,true);
- }
+  const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
+  if(error)throw error;await requireAdmin(data.user);setLoggedIn(data.user);await loadAll();msg('loginMessage','');
+ }catch(err){await client.auth.signOut();setLoggedIn(null);msg('loginMessage',err.message,true);}
 }
-
 async function onExamSubmit(e){
  e.preventDefault();
-
  try{
-  const athleteId=$('examAthlete').value;
-  if(!athleteId)throw new Error('اختر الرياضي.');
-
-  const examDate=$('examDate').value||null;
-  const examSeason=seasonFromDate(examDate);
-
-  assertSeasonEditable(examSeason);
-
-  const payload={
-   athlete_id:athleteId,
-   exam_date:examDate,
-   belt_before:$('examBeltBefore').value.trim()||null,
-   belt_after:$('examBeltAfter').value.trim()||null,
-   result:$('examResult').value||null,
-   notes:$('examNotes').value.trim()||null
-  };
-
-  const {error}=await client.from('exams').insert(payload);
-  if(error)throw error;
-
-  $('examForm').reset();
-  msg('examMessage','تم تسجيل نتيجة الاختبار.');
-  await loadAll();
-
- }catch(err){
-  msg('examMessage','تعذر تسجيل الاختبار: '+err.message,true);
- }
+  const athleteId=$('examAthlete').value;if(!athleteId)throw new Error('اختر الرياضي.');
+  const examDate=$('examDate').value||null,examSeason=seasonFromDate(examDate);assertSeasonEditable(examSeason);
+  const payload={athlete_id:athleteId,exam_date:examDate,belt_before:$('examBeltBefore').value.trim()||null,belt_after:$('examBeltAfter').value.trim()||null,result:$('examResult').value||null,notes:$('examNotes').value.trim()||null};
+  const {error}=await client.from('exams').insert(payload);if(error)throw error;
+  $('examForm').reset();msg('examMessage','تم تسجيل نتيجة الاختبار.');await loadAll();
+ }catch(err){msg('examMessage','تعذر تسجيل الاختبار: '+err.message,true);}
 }
 
 function wire(){
  $('loginForm').addEventListener('submit',onLogin);
-
- $('logoutBtn').addEventListener('click',async()=>{
-  await client.auth.signOut();
-  setLoggedIn(null);
- });
-
+ $('logoutBtn').addEventListener('click',async()=>{await client.auth.signOut();setLoggedIn(null);});
  $('athleteForm').addEventListener('submit',saveAthlete);
-
- $('athleteCancelEdit').addEventListener('click',()=>{
-  clearAthleteForm();
-  msg('athleteMessage','');
- });
-
+ $('athleteCancelEdit').addEventListener('click',()=>{clearAthleteForm();msg('athleteMessage','');});
  $('examForm').addEventListener('submit',onExamSubmit);
-
  $('exportInsuranceExcel').addEventListener('click',exportInsuranceExcel);
  $('exportSubscriptionsExcel').addEventListener('click',exportSubscriptionsExcel);
 
- /* أحداث نافذة تعديل معلومات الرياضي */
  $('insuranceEditForm').addEventListener('submit',saveInsuranceAthleteEdit);
  $('insuranceEditClose').addEventListener('click',closeInsuranceEditModal);
  $('insuranceEditCancel').addEventListener('click',closeInsuranceEditModal);
+ $('insuranceEditModal').addEventListener('click',e=>{if(e.target===$('insuranceEditModal'))closeInsuranceEditModal();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('insuranceEditModal').classList.contains('hidden'))closeInsuranceEditModal();});
 
- $('insuranceEditModal').addEventListener('click',e=>{
-  if(e.target===$('insuranceEditModal')){
-   closeInsuranceEditModal();
-  }
- });
-
- document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&!$('insuranceEditModal').classList.contains('hidden')){
-   closeInsuranceEditModal();
-  }
- });
-
- /* أحداث KIMONO */
  $('kimonoForm').addEventListener('submit',saveKimono);
-
- $('kimonoCancelEdit').addEventListener('click',()=>{
-  clearKimonoForm();
-  msg('kimonoMessage','تم إلغاء التعديل.');
- });
-
- $('kimonoForm').addEventListener('reset',()=>{
-  setTimeout(()=>{
-   if(!$('kimonoId').value){
-    $('kimonoDate').value=new Date().toISOString().slice(0,10);
-    $('kimonoPaidAmount').value='0';
-    updateKimonoPaymentPreview();
-   }
-  },0);
- });
-
+ $('kimonoNewStockForm').addEventListener('submit',saveKimonoStock);
+ $('kimonoCancelEdit').addEventListener('click',()=>{clearKimonoForm();msg('kimonoMessage','تم إلغاء التعديل.');});
+ $('kimonoForm').addEventListener('reset',()=>setTimeout(()=>{
+  if(!$('kimonoId').value){
+   $('kimonoDate').value=new Date().toISOString().slice(0,10);
+   $('kimonoPaidAmount').value='0';$('kimonoPrice').value=kimonoDefaultPrice();
+   updateKimonoPaymentPreview();
+  }
+ },0));
+ $('kimonoColor').addEventListener('change',updateKimonoSuggestedPrice);
+ $('kimonoQuality').addEventListener('change',updateKimonoSuggestedPrice);
  $('kimonoPrice').addEventListener('input',updateKimonoPaymentPreview);
  $('kimonoPaidAmount').addEventListener('input',updateKimonoPaymentPreview);
-
+ $('kimonoStockSelect').addEventListener('change',renderKimonoStockPreview);
  $('kimonoSearch').addEventListener('input',renderKimono);
+ $('kimonoPeriod').addEventListener('change',renderKimono);
+ $('kimonoMovementFilter').addEventListener('change',renderKimonoMovements);
  $('refreshKimono').addEventListener('click',loadAll);
 
- document.querySelectorAll('.navbtn').forEach(b=>
-  b.addEventListener('click',()=>{
-   document.querySelectorAll('.navbtn').forEach(x=>
-    x.classList.toggle('active',x===b)
-   );
-
-   document.querySelectorAll('.tab').forEach(x=>
-    x.classList.toggle('hidden',x.id!=='tab-'+b.dataset.tab)
-   );
-  })
- );
+ document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('hidden',x.id!=='tab-'+b.dataset.tab));
+ }));
 
  document.addEventListener('click',onClick);
-
  $('registrationSearch').addEventListener('input',renderRegistrations);
  $('registrationFilter').addEventListener('change',renderRegistrations);
  $('athleteSearch').addEventListener('input',renderAthletes);
  $('insuranceSearch').addEventListener('input',renderInsurance);
  $('subscriptionSearch').addEventListener('input',renderSubscriptions);
  $('codeSearch').addEventListener('input',renderParentCodes);
-
  $('refreshCodes').addEventListener('click',loadAll);
 
  $('insuranceSeason').addEventListener('change',renderInsurance);
  $('subscriptionSeason').addEventListener('change',renderSubscriptions);
  $('examSeason').addEventListener('change',renderExams);
 
- [
-  'refreshRegistrations',
-  'refreshAthletes',
-  'refreshInsurance',
-  'refreshSubscriptions',
-  'refreshExams'
- ].forEach(id=>$(id).addEventListener('click',loadAll));
+ ['refreshRegistrations','refreshAthletes','refreshInsurance','refreshSubscriptions','refreshExams'].forEach(id=>$(id).addEventListener('click',loadAll));
 }
 
 async function init(){
- ['insuranceSeason','subscriptionSeason','examSeason'].forEach(id=>
-  addSeasonOptions(id)
- );
-
+ ['insuranceSeason','subscriptionSeason','examSeason'].forEach(id=>addSeasonOptions(id));
  $('kimonoDate').value=new Date().toISOString().slice(0,10);
  $('kimonoPaidAmount').value='0';
+ $('kimonoPrice').value=kimonoDefaultPrice();
  updateKimonoPaymentPreview();
-
  wire();
-
  const {data:{session}}=await client.auth.getSession();
-
  if(session){
-  try{
-   await requireAdmin(session.user);
-   setLoggedIn(session.user);
-   await loadAll();
-  }catch(e){
-   await client.auth.signOut();
-   setLoggedIn(null);
-   msg('loginMessage',e.message,true);
-  }
- }else{
-  setLoggedIn(null);
- }
-
- client.auth.onAuthStateChange((_event,session)=>{
-  if(!session)setLoggedIn(null);
- });
+  try{await requireAdmin(session.user);setLoggedIn(session.user);await loadAll();}
+  catch(e){await client.auth.signOut();setLoggedIn(null);msg('loginMessage',e.message,true);}
+ }else{setLoggedIn(null);}
+ client.auth.onAuthStateChange((_event,session)=>{if(!session)setLoggedIn(null);});
 }
-
 init();
-
 })();
 </script>
-
 </body>
 </html>
