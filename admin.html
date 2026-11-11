@@ -665,10 +665,18 @@ function updateKimonoPaymentPreview(){
 }
 function kimonoLegacyType(row){
  const type=String(row.kimono_type||'').toLowerCase();
- let color=row.color||'';
- let quality=row.quality||'';
- if(!color)color=type.includes('أزرق')||type.includes('blue')?'blue':type.includes('أبيض')||type.includes('white')?'white':'';
- if(!quality)quality=type.includes('احترافي')||type.includes('professional')?'professional':type.includes('عادي')||type.includes('regular')?'regular':'';
+
+ let color=row.kimono_color||row.color||'';
+ let quality=row.kimono_quality||row.quality||'';
+
+ if(!color)
+  color=type.includes('أزرق')||type.includes('blue')?'blue':
+        type.includes('أبيض')||type.includes('white')?'white':'';
+
+ if(!quality)
+  quality=type.includes('احترافي')||type.includes('professional')?'professional':
+          type.includes('عادي')||type.includes('regular')?'regular':'';
+
  return {color,quality};
 }
 function kimonoRowType(row){
@@ -869,7 +877,9 @@ function renderKimonoMovements(){
  $('kimonoMovementsTable').innerHTML=table(
  ['التاريخ','الصنف','نوع الحركة','الكمية قبل','التغير','الكمية بعد','ملاحظات'],
  rows.map(m=>{
-  const type=m.movement_type==='in'?'توريد':m.movement_type==='out'?'بيع':'تسوية';
+  const type=m.movement_type==='in'?'توريد':
+   m.movement_type==='out'?'بيع':
+   m.movement_type==='sale_reversal'?'إرجاع بيع':'تسوية';
   return `<tr>
    <td>${esc(String(m.created_at||'').replace('T',' ').slice(0,16))}</td>
    <td>${esc(stockName(m.stock_id))}</td><td>${type}</td>
@@ -894,11 +904,16 @@ async function saveKimonoStock(e){
   if(!size)throw new Error('أدخل القياس.');
   if(!Number.isInteger(quantity)||quantity<0)throw new Error('الكمية يجب أن تكون عددًا صحيحًا غير سالب.');
   if(!Number.isInteger(minimum)||minimum<0)throw new Error('حد التنبيه يجب أن يكون عددًا صحيحًا غير سالب.');
-  const {error}=await client.rpc('admin_kimono_add_stock',{
-   p_color:color,p_quality:quality,p_size:size,
-   p_quantity:quantity,p_min_quantity:minimum,p_notes:'إضافة صنف جديد'
+
+  const {error}=await client.rpc('kimono_create_stock_item',{
+   p_color:color,
+   p_quality:quality,
+   p_size:size,
+   p_quantity:quantity,
+   p_min_quantity:minimum
   });
   if(error)throw error;
+
   await loadKimonoInventory();
   renderKimono();
   $('kimonoNewStockForm').reset();
@@ -917,8 +932,15 @@ async function stockRestock(id){
  const qty=Number(answer);
  if(!Number.isInteger(qty)||qty<=0)throw new Error('أدخل كمية صحيحة أكبر من صفر.');
  const notes=prompt('ملاحظات التوريد (اختياري):')||'توريد مخزون';
- const {error}=await client.rpc('admin_kimono_restock',{p_stock_id:id,p_quantity:qty,p_notes:notes});
+
+ const {error}=await client.rpc('kimono_adjust_stock',{
+  p_stock_id:Number(id),
+  p_mode:'add',
+  p_quantity:qty,
+  p_notes:notes
+ });
  if(error)throw error;
+
  await loadKimonoInventory();renderKimono();
  globalMsg('تمت إضافة الكمية إلى المخزون.');
 }
@@ -932,8 +954,15 @@ async function stockAdjust(id){
  const qty=Number(answer);
  if(!Number.isInteger(qty)||qty<0)throw new Error('أدخل كمية فعلية صحيحة غير سالبة.');
  const notes=prompt('سبب التسوية أو ملاحظات الجرد:')||'تسوية جرد يدوي';
- const {error}=await client.rpc('admin_kimono_adjust_stock',{p_stock_id:id,p_new_quantity:qty,p_notes:notes});
+
+ const {error}=await client.rpc('kimono_adjust_stock',{
+  p_stock_id:Number(id),
+  p_mode:'set',
+  p_quantity:qty,
+  p_notes:notes
+ });
  if(error)throw error;
+
  await loadKimonoInventory();renderKimono();
  globalMsg('تمت تسوية المخزون حسب الكمية الفعلية.');
 }
@@ -1007,13 +1036,17 @@ async function saveKimono(e){
   const returnedOldUnit=oldRow&&oldRow.stock_id&&String(oldRow.stock_id)===String(stockId)?1:0;
   if(Number(chosen.quantity)+returnedOldUnit<1)throw new Error('الكمية غير كافية لهذا الصنف.');
 
-  const {error}=await client.rpc('admin_kimono_save_sale',{
-   p_sale_id:id||null,
-   p_stock_id:stockId,
+  const {error}=await client.rpc('kimono_save_sale',{
+   p_sale_id:id?Number(id):null,
    p_athlete_name:name,
+   p_type_label:kimonoTypeFromValues(chosen.color,chosen.quality),
+   p_color:chosen.color,
+   p_quality:chosen.quality,
+   p_size:String(chosen.size).trim(),
    p_sale_date:date,
    p_price:price,
-   p_paid_amount:paid
+   p_paid_amount:paid,
+   p_stock_id:Number(stockId)
   });
   if(error)throw error;
 
@@ -1033,7 +1066,9 @@ async function deleteKimonoSale(id){
   :`حذف عملية بيع ${row.athlete_name||''}؟ ستُعاد القطعة إلى المخزون.`;
  if(!confirm(confirmText))return;
 
- const {error}=await client.rpc('admin_kimono_delete_sale',{p_sale_id:id});
+ const {error}=await client.rpc('kimono_delete_sale',{
+  p_sale_id:Number(id)
+ });
  if(error)throw error;
  if(String($('kimonoId').value)===String(id))clearKimonoForm();
  await loadAll();
