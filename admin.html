@@ -103,6 +103,13 @@ tr:last-child td{border-bottom:0}
 .kimono-legacy{background:#f1f3f6;color:#596579}
 .kimono-stock-choice{font-size:12px;color:var(--muted);margin-top:5px}
 .kimono-breakdown-title{font-size:14px;font-weight:800;color:var(--navy);margin:18px 0 8px}
+.kimono-accordion{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;overflow:hidden}
+.kimono-accordion>summary{list-style:none;cursor:pointer;padding:15px 16px;font-weight:800;color:var(--navy);background:#f3f7fc;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.kimono-accordion>summary::-webkit-details-marker{display:none}
+.kimono-accordion>summary::after{content:'＋';font-size:19px;color:var(--blue);line-height:1}
+.kimono-accordion[open]>summary::after{content:'−'}
+.kimono-accordion[open]>summary{background:var(--bluebg);border-bottom:1px solid var(--line)}
+.kimono-accordion-body{padding:14px}
 @media(max-width:850px){
  .layout{grid-template-columns:1fr}
  .sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
@@ -291,11 +298,12 @@ tr:last-child td{border-bottom:0}
 <section id="tab-kimono" class="tab panel hidden">
 <h2>KIMONO — مبيعات ومخزون ألبسة الجودو</h2>
 <div class="notice">
-تُسجّل المبيعات الجديدة من المخزون المتوفر فقط. لا يمكن بيع صنف غير موجود أو بكمية غير كافية.
+يمكن تسجيل البيع حتى عندما تكون الكمية صفرًا أو سالبة؛ وسيُحدّث المخزون تلقائيًا (مثلًا من 0 إلى ‎-1).
 المبيعات القديمة تبقى محفوظة كما هي، ولا يتم ربطها تلقائيًا بالمخزون.
 </div>
 <div id="kimonoSetupMessage" class="notice hidden"></div>
 
+<details class="kimono-accordion"><summary>تسجيل عملية بيع</summary><div class="kimono-accordion-body">
 <h2 class="kimono-subtitle">تسجيل عملية بيع</h2>
 <form id="kimonoForm">
 <input type="hidden" id="kimonoId">
@@ -322,7 +330,9 @@ tr:last-child td{border-bottom:0}
 </div>
 </form>
 <div id="kimonoMessage" aria-live="polite"></div>
+</div></details>
 
+<details class="kimono-accordion"><summary>إضافة صنف جديد إلى المخزون</summary><div class="kimono-accordion-body">
 <h2 class="kimono-subtitle">إضافة صنف جديد إلى المخزون</h2>
 <form id="kimonoNewStockForm" class="kimono-section">
 <div class="grid">
@@ -335,7 +345,9 @@ tr:last-child td{border-bottom:0}
 <div class="toolbar"><button type="submit" class="success">إضافة الصنف للمخزون</button></div>
 </form>
 <div id="kimonoStockMessage" aria-live="polite"></div>
+</div></details>
 
+<details class="kimono-accordion"><summary>تحليل المبيعات</summary><div class="kimono-accordion-body">
 <h2 class="kimono-subtitle">تحليل المبيعات</h2>
 <div class="toolbar">
 <select id="kimonoPeriod">
@@ -348,11 +360,15 @@ tr:last-child td{border-bottom:0}
 </div>
 <div id="kimonoAnalysis" class="analysis-grid kimono-analysis"></div>
 <div id="kimonoBreakdown"></div>
+</div></details>
 
+<details class="kimono-accordion"><summary>المخزون الحالي</summary><div class="kimono-accordion-body">
 <h2 class="kimono-subtitle">المخزون الحالي</h2>
 <div class="notice">التسوية اليدوية تعني إدخال الكمية الفعلية الموجودة بعد الجرد، وليس مقدار الزيادة أو النقص.</div>
 <div id="kimonoStockTable" class="tablewrap"></div>
+</div></details>
 
+<details class="kimono-accordion"><summary>سجل حركات المخزون</summary><div class="kimono-accordion-body">
 <h2 class="kimono-subtitle">سجل حركات المخزون</h2>
 <div class="toolbar">
 <select id="kimonoMovementFilter">
@@ -363,10 +379,13 @@ tr:last-child td{border-bottom:0}
 </select>
 </div>
 <div id="kimonoMovementsTable" class="tablewrap"></div>
+</div></details>
 
+<details class="kimono-accordion"><summary>سجل المبيعات</summary><div class="kimono-accordion-body">
 <h2 class="kimono-subtitle">سجل المبيعات</h2>
 <div class="toolbar"><input id="kimonoSearch" placeholder="بحث باسم المشتري أو اللون أو النوعية أو القياس"></div>
 <div id="kimonoTable" class="tablewrap"></div>
+</div></details>
 </section>
 </div>
 </div>
@@ -648,12 +667,12 @@ function kimonoPaidValue(row){
 }
 function kimonoPaymentStatus(price,paidAmount){
  const total=Number(price||0),paid=Number(paidAmount||0);
- if(total>0&&paid>=total)return {key:'paid',label:'مدفوع بالكامل'};
+ if(total>0&&paid>=total)return {key:'paid',label:'مدفوع'};
  if(paid>0)return {key:'partial',label:'تسبيق'};
  return {key:'unpaid',label:'غير مدفوع'};
 }
 function kimonoStatusPill(status){
- const info={paid:{label:'مدفوع بالكامل',className:'paid'},partial:{label:'تسبيق',className:'partial'},unpaid:{label:'غير مدفوع',className:'unpaid'}};
+ const info={paid:{label:'مدفوع',className:'paid'},partial:{label:'تسبيق',className:'partial'},unpaid:{label:'غير مدفوع',className:'unpaid'}};
  const item=info[status]||info.unpaid;
  return `<span class="pill ${item.className}">${item.label}</span>`;
 }
@@ -694,17 +713,17 @@ function renderKimonoStockPreview(){
  const oldId=$('kimonoId').value;
  const oldRow=oldId?kimonoRows.find(r=>String(r.id)===String(oldId)):null;
  const effectiveQty=Number(stock.quantity||0)+(oldRow&&String(oldRow.stock_id)===String(stock.id)?1:0);
- $('kimonoStockPreview').textContent=`المتوفر حاليًا: ${Number(stock.quantity||0)} قطعة${effectiveQty!==Number(stock.quantity||0)?' (تُعاد قطعة البيع الحالية عند حفظ التعديل)':''} · ${kimonoTypeFromValues(stock.color,stock.quality)} · القياس ${stock.size}`;
+ $('kimonoStockPreview').textContent=`الرصيد الحالي: ${Number(stock.quantity||0)} قطعة${effectiveQty!==Number(stock.quantity||0)?' (تُعاد قطعة البيع الحالية عند حفظ التعديل)':''} · يمكن البيع حتى عند الصفر أو الرصيد السالب · ${kimonoTypeFromValues(stock.color,stock.quality)} · القياس ${stock.size}`;
 }
 function fillKimonoStockSelect(selectedId='',includeEmptyCurrent=false){
  const select=$('kimonoStockSelect');
- const options=kimonoStock.filter(s=>Number(s.quantity)>0);
+ const options=[...kimonoStock];
  if(includeEmptyCurrent&&selectedId){
   const current=kimonoStock.find(s=>String(s.id)===String(selectedId));
   if(current&&!options.some(s=>String(s.id)===String(current.id)))options.push(current);
  }
  select.innerHTML='<option value="">اختر الصنف والقياس</option>'+
- options.map(s=>`<option value="${esc(s.id)}">${esc(kimonoTypeFromValues(s.color,s.quality))} — ${esc(s.size)} — المتوفر ${Number(s.quantity)}</option>`).join('');
+ options.map(s=>`<option value="${esc(s.id)}">${esc(kimonoTypeFromValues(s.color,s.quality))} — ${esc(s.size)} — الرصيد ${Number(s.quantity)}</option>`).join('');
  if(selectedId)select.value=String(selectedId);
  renderKimonoStockPreview();
 }
@@ -1024,17 +1043,14 @@ async function saveKimono(e){
 
   if(!name)throw new Error('أدخل اسم المشتري.');
   if(!date)throw new Error('حدد تاريخ البيع.');
-  if(!stockId)throw new Error(id&&kimonoEditingLegacy?'اختر صنفًا من المخزون لربط عملية البيع القديمة به.':'اختر صنفًا متوفرًا من المخزون.');
+  if(!stockId)throw new Error(id&&kimonoEditingLegacy?'اختر صنفًا من المخزون لربط عملية البيع القديمة به.':'اختر الصنف والقياس من المخزون.');
   if(!Number.isInteger(price)||price<=0)throw new Error('أدخل سعرًا صحيحًا أكبر من صفر.');
   if(!Number.isInteger(paid)||paid<0||paid>price)throw new Error('المبلغ المدفوع يجب أن يكون عددًا صحيحًا بين صفر والسعر الإجمالي.');
 
   const chosen=kimonoStock.find(s=>String(s.id)===String(stockId));
   if(!chosen)throw new Error('الصنف المختار غير موجود في المخزون.');
 
-  // تحقق واجهة أولي فقط؛ القرار النهائي والتحقق من التوفر داخل RPC ذري.
-  const oldRow=id?kimonoRows.find(r=>String(r.id)===String(id)):null;
-  const returnedOldUnit=oldRow&&oldRow.stock_id&&String(oldRow.stock_id)===String(stockId)?1:0;
-  if(Number(chosen.quantity)+returnedOldUnit<1)throw new Error('الكمية غير كافية لهذا الصنف.');
+  // البيع مسموح حتى عند الرصيد صفر أو السالب؛ RPC يخصم قطعة ويسجل الرصيد الجديد ذريًا.
 
   const {error}=await client.rpc('kimono_save_sale',{
    p_sale_id:id?Number(id):null,
@@ -1052,7 +1068,7 @@ async function saveKimono(e){
 
   clearKimonoForm();
   await loadAll();
-  msg('kimonoMessage',id?'تم تعديل البيع وتحديث المخزون.':'تم تسجيل البيع وخصم قطعة من المخزون.');
+  msg('kimonoMessage',id?'تم تعديل البيع وتحديث المخزون.':'تم تسجيل البيع وخصم قطعة من المخزون، حتى لو أصبح الرصيد سالبًا.');
  }catch(err){msg('kimonoMessage','تعذر حفظ البيع: '+err.message,true);}
  finally{btn.disabled=false;}
 }
@@ -1425,6 +1441,16 @@ async function onExamSubmit(e){
    ربط الأحداث
 ------------------------- */
 function wire(){
+ // إظهار محتوى قسم KIMONO المفتوح فقط وإغلاق بقية الأقسام تلقائيًا.
+ document.querySelectorAll('#tab-kimono .kimono-accordion').forEach(section=>{
+  section.addEventListener('toggle',()=>{
+   if(section.open){
+    document.querySelectorAll('#tab-kimono .kimono-accordion').forEach(other=>{
+     if(other!==section)other.open=false;
+    });
+   }
+  });
+ });
  $('loginForm').addEventListener('submit',onLogin);
  $('logoutBtn').addEventListener('click',async()=>{await client.auth.signOut();setLoggedIn(null);});
  $('athleteForm').addEventListener('submit',saveAthlete);
