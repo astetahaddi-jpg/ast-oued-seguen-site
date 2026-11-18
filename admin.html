@@ -847,7 +847,7 @@ function renderKimono(){
    <td>${money(total)}</td><td>${money(paid)}</td><td>${money(left)}</td>
    <td>${kimonoStatusPill(status.key)} ${legacy?'<span class="pill kimono-legacy">عملية قديمة غير مرتبطة بالمخزون</span>':''}</td>
    <td>
-    <button class="smallbtn" data-kimono-edit="${esc(r.id)}">تعديل</button>
+    <button type="button" class="smallbtn" data-kimono-edit="${esc(r.id)}">تعديل</button>
     <button class="smallbtn danger" data-kimono-delete="${esc(r.id)}">حذف</button>
    </td>
   </tr>`;
@@ -1364,8 +1364,7 @@ async function copyCode(code){
 async function onClick(e){
  const b=e.target.closest('button');if(!b)return;
  try{
-  if(b.dataset.kimonoEdit)editKimono(b.dataset.kimonoEdit);
-  else if(b.dataset.kimonoDelete)await deleteKimonoSale(b.dataset.kimonoDelete);
+  if(b.dataset.kimonoDelete)await deleteKimonoSale(b.dataset.kimonoDelete);
   else if(b.dataset.stockRestock)await stockRestock(b.dataset.stockRestock);
   else if(b.dataset.stockAdjust)await stockAdjust(b.dataset.stockAdjust);
   else if(b.dataset.regAccept){
@@ -1465,6 +1464,18 @@ function wire(){
  $('insuranceEditModal').addEventListener('click',e=>{if(e.target===$('insuranceEditModal'))closeInsuranceEditModal();});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('insuranceEditModal').classList.contains('hidden'))closeInsuranceEditModal();});
 
+ // ربط زر تعديل المبيعات مباشرة بجدول المبيعات لضمان التقاط الضغط دائمًا.
+ $('kimonoTable').addEventListener('click',e=>{
+  const editButton=e.target.closest('button[data-kimono-edit]');
+  if(!editButton)return;
+  e.preventDefault();
+  e.stopPropagation();
+  try{
+   editKimono(editButton.getAttribute('data-kimono-edit'));
+  }catch(err){
+   msg('kimonoMessage','تعذر فتح تعديل البيع: '+(err?.message||String(err)),true);
+  }
+ });
  $('kimonoForm').addEventListener('submit',saveKimono);
  $('kimonoNewStockForm').addEventListener('submit',saveKimonoStock);
  $('kimonoCancelEdit').addEventListener('click',()=>{clearKimonoForm();msg('kimonoMessage','تم إلغاء التعديل.');});
