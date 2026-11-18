@@ -110,6 +110,14 @@ tr:last-child td{border-bottom:0}
 .kimono-accordion[open]>summary::after{content:'−'}
 .kimono-accordion[open]>summary{background:var(--bluebg);border-bottom:1px solid var(--line)}
 .kimono-accordion-body{padding:14px}
+.kimono-stock-group{border:1px solid var(--line);border-radius:12px;background:#fff;margin:10px 0;overflow:hidden}
+.kimono-stock-group>summary{list-style:none;cursor:pointer;padding:13px 15px;background:#f3f7fc;color:var(--navy);font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.kimono-stock-group>summary::-webkit-details-marker{display:none}
+.kimono-stock-group>summary::after{content:'＋';color:var(--blue);font-size:18px}
+.kimono-stock-group[open]>summary{background:var(--bluebg);border-bottom:1px solid var(--line)}
+.kimono-stock-group[open]>summary::after{content:'−'}
+.kimono-stock-count{font-size:12px;font-weight:600;color:var(--muted);margin-inline-start:auto}
+.kimono-stock-group-body{padding:10px 12px}
 @media(max-width:850px){
  .layout{grid-template-columns:1fr}
  .sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
@@ -870,21 +878,44 @@ function stockStatus(s){
  return {label:'متوفر',cls:'stock-ok'};
 }
 function renderKimonoStock(){
- $('kimonoStockTable').innerHTML=table(
- ['اللون','النوعية','القياس','الكمية الحالية','حد التنبيه','الحالة','الإجراءات'],
- kimonoStock.map(s=>{
-  const status=stockStatus(s);
-  return `<tr>
-   <td>${kimonoColorLabel(s.color)}</td><td>${kimonoQualityLabel(s.quality)}</td>
-   <td>${esc(s.size)}</td><td><strong>${Number(s.quantity||0)}</strong></td>
-   <td>${Number(s.min_quantity||0)}</td><td><span class="pill ${status.cls}">${status.label}</span></td>
-   <td>
-    <button class="smallbtn success" data-stock-restock="${esc(s.id)}">توريد</button>
-    <button class="smallbtn warning" data-stock-adjust="${esc(s.id)}">تسوية جرد</button>
-   </td>
-  </tr>`;
- })
+ const groupOrder={
+  'white|regular':1,'blue|regular':2,
+  'white|professional':3,'blue|professional':4
+ };
+ const groupsMap=new Map();
+ kimonoStock.forEach(s=>{
+  const key=`${s.color||''}|${s.quality||''}`;
+  if(!groupsMap.has(key))groupsMap.set(key,[]);
+  groupsMap.get(key).push(s);
+ });
+ const groups=[...groupsMap.entries()].sort((a,b)=>
+  (groupOrder[a[0]]||99)-(groupOrder[b[0]]||99)||a[0].localeCompare(b[0])
  );
+ if(!groups.length){
+  $('kimonoStockTable').innerHTML='<div class="empty">لا توجد أصناف في المخزون حاليًا.</div>';
+  return;
+ }
+ $('kimonoStockTable').innerHTML=groups.map(([key,items])=>{
+  const [color,quality]=key.split('|');
+  const sorted=[...items].sort((a,b)=>String(a.size??'').localeCompare(String(b.size??''),'en',{numeric:true,sensitivity:'base'}));
+  const rows=sorted.map(s=>{
+   const status=stockStatus(s);
+   return `<tr>
+    <td><strong>${esc(s.size)}</strong></td>
+    <td><strong>${Number(s.quantity||0)}</strong></td>
+    <td>${Number(s.min_quantity||0)}</td>
+    <td><span class="pill ${status.cls}">${status.label}</span></td>
+    <td>
+     <button type="button" class="smallbtn success" data-stock-restock="${esc(s.id)}">توريد</button>
+     <button type="button" class="smallbtn warning" data-stock-adjust="${esc(s.id)}">تسوية جرد</button>
+    </td>
+   </tr>`;
+  });
+  return `<details class="kimono-stock-group">
+   <summary><span>كيمونو ${esc(kimonoColorLabel(color))} ${esc(kimonoQualityLabel(quality))}</span><span class="kimono-stock-count">${items.length} قياس</span></summary>
+   <div class="kimono-stock-group-body">${table(['القياس','الكمية الحالية','حد التنبيه','الحالة','الإجراءات'],rows)}</div>
+  </details>`;
+ }).join('');
 }
 function renderKimonoMovements(){
  const filter=$('kimonoMovementFilter').value;
